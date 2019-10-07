@@ -8,91 +8,79 @@ public class AsyncGPUReadbackTest : MonoBehaviour
 {
     struct Particle
     {
-        public Vector4 color;
+        public Vector3 position;
     };
     
+    public int warpCount = 5;
     public ComputeShader computeShader;
-    public int res = 128;
-    public Material mat;
+    public GameObject refObj;
 
-    private const int warpSize = 32;
-    private ComputeBuffer particleBuffer;
-    private int particleCount;
+    private GameObject[] objs;
+    private const int warpSize = 32; //match with compute numOfThread X
+    private ComputeBuffer cBuffer;
+    
     private NativeArray<Particle> plists;
-    private Texture2D tex;
-
     private AsyncGPUReadbackRequest request;
-    private Color[] texturecolors;
 
-    private void Setup()
+    private void Start()
     {
         if(!SystemInfo.supportsAsyncGPUReadback) { this.gameObject.SetActive(false); return;}
 
-        particleCount = res*res;
-        CleanUp();
+        //The actual number of particles
+        int particleCount = warpCount * warpSize;
 
-        tex = new Texture2D(res,res);
-
-        // Init particles
+        // Init particles to same place
         plists = new NativeArray<Particle>(particleCount, Allocator.Temp);
         for (int i = 0; i < particleCount; ++i)
         {
-            Color col = Color.HSVToRGB(Random.Range(0f,1f),1,0.5f);
             var c = new Particle();
-            c.color = new Vector4(col.r,col.g,col.b,col.a);
+            c.position = transform.position;
             plists[i] = c;
         }
+        
+        //Initiate the objects
+        objs = new GameObject[particleCount];
+        for (int i = 0; i < objs.Length; ++i)
+        {
+            objs[i] = Instantiate(refObj, this.transform);
+            objs[i].transform.position = plists[i].position;
+        }
 
-        // Init colors
-        texturecolors = new Color[particleCount];
+        //init compute buffer
+        cBuffer = new ComputeBuffer(particleCount, 12); // 3*4bytes = sizeof(Particle)
+        if(plists.IsCreated) cBuffer.SetData(plists);
 
-        //Set data to buffer
-        particleBuffer = new ComputeBuffer(particleCount, 16); // 4floats * 4bytes
-        if(plists.IsCreated) particleBuffer.SetData(plists);
-
-        //Set buffer to computeShader
-        computeShader.SetBuffer(0, "particleBuffer", particleBuffer);
-
-        //Bind texture to material
-        mat.mainTexture = tex;
-
+        //set compute buffer to compute shader
+        computeShader.SetBuffer(0, "particleBuffer", cBuffer);
+        
         //Request AsyncReadback
-        request = AsyncGPUReadback.Request(particleBuffer);
+        request = AsyncGPUReadback.Request(cBuffer);
     }
 
     void Update()
     {
-        computeShader.Dispatch(0, Mathf.CeilToInt(particleCount / 32f), 1, 1); //numthreads.x = 32 in compute
+        //run the compute shader, the position of particles will be updated in GPU
+        computeShader.Dispatch(0, warpCount, 1, 1);
         
-        //Readback And show result on texture
         if(request.done && !request.hasError)
         {
+            //Readback And show result on texture
             plists = request.GetData<Particle>();
-            for(int i=0; i<res; i++)
+            
+            //Place the GameObjects
+            for (int i = 0; i < plists.Length; ++i)
             {
-                for(int j=0; j<res; j++)
-                {
-                    int id = i*res + j;
-                    texturecolors[id] = plists[id].color;
-                }
+                objs[i].transform.position = plists[i].position;
             }
-            tex.SetPixels(texturecolors);
-            tex.Apply();
 
             //Request AsyncReadback again
-            request = AsyncGPUReadback.Request(particleBuffer);
+            request = AsyncGPUReadback.Request(cBuffer);
         }
-    }
-
-    void OnEnable()
-    {
-        Setup();
     }
 
     private void CleanUp()
     {
-        if(particleBuffer != null) particleBuffer.Release();
-        //if(plists.IsCreated) plists.Dispose(); //Cannot be disposed because of invalid allocator...
+        if(cBuffer != null) cBuffer.Release();
     }
 
     void OnDisable()

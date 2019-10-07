@@ -9,12 +9,14 @@ public class StructuredBufferWithCompute : MonoBehaviour
         public Vector3 position;
     };
 
-    public int warpCount = 5; // The number particle /32.
+    public int warpCount = 5;
     public ComputeShader computeShader;
     public GameObject refObj;
 
-    private const int warpSize = 32; // GPUs process data by warp, 32 for every modern ones.
+    private GameObject[] objs;
+    private const int warpSize = 32; //match with compute numOfThread X
     private ComputeBuffer cBuffer;
+    private Particle[] particleArray;
 
     void Start()
     {
@@ -22,10 +24,18 @@ public class StructuredBufferWithCompute : MonoBehaviour
         int particleCount = warpCount * warpSize;
 
         // Init particles to same place
-        Particle[] particleArray = new Particle[particleCount];
+        particleArray = new Particle[particleCount];
         for (int i = 0; i < particleCount; ++i)
         {
             particleArray[i].position = transform.position;
+        }
+        
+        //Initiate the objects
+        objs = new GameObject[particleCount];
+        for (int i = 0; i < objs.Length; ++i)
+        {
+            objs[i] = Instantiate(refObj, this.transform);
+            objs[i].transform.position = particleArray[i].position;
         }
 
         //init compute buffer
@@ -34,18 +44,20 @@ public class StructuredBufferWithCompute : MonoBehaviour
 
         //set compute buffer to compute shader
         computeShader.SetBuffer(0, "particleBuffer", cBuffer);
+    }
 
+    void Update()
+    {
         //run the compute shader, the position of particles will be updated in GPU
         computeShader.Dispatch(0, warpCount, 1, 1);
 
         //Get data back from GPU to CPU
         cBuffer.GetData(particleArray);
-
-        //Place the new GameObjects
+        
+        //Place the GameObjects
         for (int i = 0; i < particleArray.Length; ++i)
         {
-            GameObject go = Instantiate(refObj, this.transform);
-            go.transform.position = particleArray[i].position;
+            objs[i].transform.position = particleArray[i].position;
         }
     }
 
