@@ -1,0 +1,39 @@
+﻿#pragma kernel CSMain
+
+struct VertexData
+{
+    float4 pos;
+    float3 nor;
+    float2 uv;
+    float4 col;
+
+    float4 opos;
+    float3 velocity;
+};
+
+RWStructuredBuffer<VertexData> vertexBuffer;
+float _Time;
+
+[numthreads(1,1,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    //Vertex animation
+    vertexBuffer[id.x].pos.xz = vertexBuffer[id.x].opos.xz * (1 + sin(_Time + vertexBuffer[id.x].opos.y * 3.0f) * 0.3f);
+
+    //UV animation
+    //float2 opos = vertexBuffer[id.x].opos.xz;
+    float2 p1 = vertexBuffer[id.x].pos.xz;
+    float2 p0 = vertexBuffer[id.x-1].pos.xz;
+    float2 d = p0-p1;
+    float2 nuv = vertexBuffer[id.x].uv;
+    nuv += d * 0.0001f;
+    vertexBuffer[id.x].uv = frac(nuv);
+    vertexBuffer[id.x+1].uv = vertexBuffer[id.x].uv;
+
+    //Rainbow color
+    float3 c;
+    c.r = frac(sin(_Time + vertexBuffer[id.x].velocity.x));
+    c.g = frac(sin(_Time + vertexBuffer[id.x].velocity.y));
+    c.b = frac(sin(_Time + vertexBuffer[id.x].velocity.z));
+    vertexBuffer[id.x].col = float4(c,1);
+}

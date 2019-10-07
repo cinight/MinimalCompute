@@ -1,0 +1,23 @@
+#pragma kernel main
+
+struct Particle
+{
+	float3 position;
+};
+RWStructuredBuffer<Particle> particleBuffer; //has to be same name with rendering shader
+
+[numthreads(32,1,1)]
+void main (uint3 id : SV_DispatchThreadID)
+{
+	float3 pos = particleBuffer[id.x].position;
+
+	float a = 0.01f;
+
+	float3x3 m = {
+		1, 0, 0,
+		0, cos(a), -sin(a),
+		0, sin(a), cos(a)
+	};
+
+	particleBuffer[id.x].position = mul( m , pos );
+}

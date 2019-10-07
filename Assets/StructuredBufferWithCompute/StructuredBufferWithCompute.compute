@@ -1,0 +1,15 @@
+#pragma kernel main
+
+struct Particle
+{
+	float3 position;
+};
+
+RWStructuredBuffer<Particle> particleBuffer;
+
+[numthreads(32,1,1)]
+void main (uint3 id : SV_DispatchThreadID)
+{
+	float spacingFactor = 0.5f;
+	particleBuffer[id.x].position.x = particleBuffer[0].position.x + id.x * spacingFactor;
+}

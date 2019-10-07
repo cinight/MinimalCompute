@@ -1,0 +1,43 @@
+#pragma kernel main1
+
+struct Particle
+{
+	float3 position;
+	uint idx;
+	float4 color;
+};
+AppendStructuredBuffer<uint> particleFiltered; //Filtered index
+RWStructuredBuffer<Particle> particleBuffer; //has to be same name with rendering shader
+float _Time;
+
+float3 myrotate(float3 pos, float a)
+{
+	float3x3 m = {
+		1, 0, 0,
+		0, cos(a), -sin(a),
+		0, sin(a), cos(a)
+	};
+
+	return mul( m , pos );
+}
+
+[numthreads(1,1,1)]
+void main1 (uint3 id : SV_DispatchThreadID)
+{
+	//take the actual particle id in array
+	uint idx = particleBuffer[id.x].idx;
+
+	//Move the particles
+	float3 pos = particleBuffer[idx].position;
+	pos = myrotate(pos,0.01f);
+	particleBuffer[idx].position = pos;
+
+	//Moving filter
+	float f = sin(_Time)*4;
+
+	//only want the filtered ones
+	if (pos.x <= f)
+	{
+		particleFiltered.Append(idx);
+	}
+}
