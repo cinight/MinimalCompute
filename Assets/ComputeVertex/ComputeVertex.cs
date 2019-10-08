@@ -7,6 +7,7 @@ public class ComputeVertex : MonoBehaviour
 {
     public struct VertexData
     {
+        public uint id;
         public Vector4 pos;
         public Vector3 nor;
         public Vector2 uv;
@@ -56,6 +57,7 @@ public class ComputeVertex : MonoBehaviour
         meshVertData = new VertexData[mesh.vertexCount];
         for (int j=0; j< mesh.vertexCount; j++)
         {
+            meshVertData[j].id = (uint)j;
             meshVertData[j].pos = mesh.vertices[j];
             meshVertData[j].nor = mesh.normals[j];
             meshVertData[j].uv = mesh.uv[j];
@@ -66,7 +68,7 @@ public class ComputeVertex : MonoBehaviour
         }
 
         //Compute Buffer
-        vertexBuffer = new ComputeBuffer(mesh.vertexCount, 20*4); // sizeof(VertexData) in bytes
+        vertexBuffer = new ComputeBuffer(mesh.vertexCount, 21*4); // sizeof(VertexData) in bytes
 		vertexBuffer.SetData(meshVertData);
 
         //Compute Shader
@@ -77,6 +79,7 @@ public class ComputeVertex : MonoBehaviour
         shader.GetKernelThreadGroupSizes(_kernel, out threadX, out threadY, out threadZ);
         dispatchCount = Mathf.CeilToInt(meshVertData.Length / threadX);
         shader.SetBuffer(_kernel, "vertexBuffer", vertexBuffer);
+        shader.SetInt("_VertexCount",meshVertData.Length);
 
         //The Material
         MeshRenderer ren = this.GetComponent<MeshRenderer>();

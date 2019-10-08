@@ -18,6 +18,7 @@
 			// Same with the one with compute shader & C# script
 			struct vertexData
 			{
+			    uint id;
 				float4 pos;
 				float3 nor;
 				float2 uv;
@@ -42,9 +43,12 @@
 			v2f vert (uint id : SV_VertexID)
 			{
 				v2f o;
-				o.vertex = UnityObjectToClipPos(vertexBuffer[id].pos);
-				o.uv = TRANSFORM_TEX(vertexBuffer[id].uv, _MainTex);
-				o.color = vertexBuffer[id].col;
+				
+				uint realid = vertexBuffer[id].id;
+				
+				o.vertex = UnityObjectToClipPos(vertexBuffer[realid].pos);
+				o.uv = TRANSFORM_TEX(vertexBuffer[realid].uv, _MainTex);
+				o.color = vertexBuffer[realid].col;
 				return o;
 			}
 			
