@@ -148,10 +148,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 488501289}
-  m_Text: 'CPU -> direct GPU (filter) -> indirect GPU (draw particles)
-
-    dynamic
-    count, no readback to CPU'
+  m_Text: GPU Particles (dynamic amount)
   m_OffsetZ: 0
   m_CharacterSize: 0.2
   m_LineSpacing: 1
