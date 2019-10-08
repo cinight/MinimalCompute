@@ -8,8 +8,8 @@ Tested with : Win DX11, Mac Metal
 
 | Scene | Image | Description |
 | --- | - | --- |
-| `ComputeUAVTexture` | ![](READMEImages/ComputeUAVTexture.gif) | The most basic one, edit texture with compute shader |
-| `StructuredBufferWithCompute` | ![](READMEImages/StructuredBufferWithCompute.JPG) | Another basic one, use compute to calculate some data and send back to CPU |
+| `ComputeUAVTexture` | ![](READMEimages/ComputeUAVTexture.gif) | The most basic one, edit texture with compute shader |
+| `StructuredBufferWithCompute` | ![](READMEImages/StructuredBufferWithCompute.gif) | Another basic one, use compute to calculate some data and send back to CPU |
 | `StructuredBufferNoCompute` | ![](READMEImages/StructuredBufferNoCompute.gif) | ComputeBuffer doesn't always need to stick with ComputeShader |
 | `IndirectCompute` | ![](READMEImages/IndirectCompute.gif) | Simple indirect compute (indirect dispatch) and CopyCount |
 | `ComputeParticlesDirect` | ![](READMEImages/ComputeParticlesDirect.gif) | GPU Particle, drawing fixed no. of particles |
