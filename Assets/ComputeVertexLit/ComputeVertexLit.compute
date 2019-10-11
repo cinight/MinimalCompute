@@ -1,0 +1,42 @@
+﻿#pragma kernel CSMain
+
+struct MyVertexData
+{
+    uint id;
+    float4 pos;
+    float3 nor;
+    float4 tan;
+    float4 uv;
+};
+
+RWStructuredBuffer<MyVertexData> vertexBuffer;
+
+float _Time;
+uint _VertexCount;
+float3 _MousePos;
+
+#define _EmissionDistance 1.0f
+#define trailStep 0.97f
+
+[numthreads(32,1,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    //Real id
+    uint rid = vertexBuffer[id.x].id;
+    
+    //Shortcut
+    float4 pos = vertexBuffer[rid].pos;
+
+    //Position calculation
+	pos.y *= trailStep;
+	pos.y = clamp(pos.y, -10.0f, 0);
+    float dist = abs(distance(_MousePos, pos.xyz));
+    float e = _EmissionDistance;
+    float power = 1 - clamp(dist / e, 0.0f, 1.0f);
+    pos.y -= (sin(3.14f*power -1.57f)+1.0f)*0.05f;
+	pos.y = clamp(pos.y, -1.0f, 1.0f);
+
+    //Assign back
+    vertexBuffer[rid].pos = pos;
+    vertexBuffer[rid].uv.z = pos.y; //this is for coloring
+}
