@@ -15,9 +15,11 @@ Tested with : Win DX11, Mac Metal
 | `ComputeParticlesDirect` | ![](READMEimages/ComputeParticlesDirect.gif) | GPU Particle, drawing fixed no. of particles |
 | `ComputeParticlesIndirect` | ![](READMEimages/ComputeParticlesIndirect.gif) | GPU Particle, drawing dynamic no. of particles, no need to read back to CPU! |
 | `ComputeVertex` | ![](READMEimages/ComputeVertex.gif) | Replace vertex buffer with StructuredBuffer and drive vertex displacement by compute |
+| `ComputeVertexLit` | ![](READMEimages/ComputeVertexLit.gif) | A usecase of ComputeVertex so that different shader passes share same vertex data |
 | `UAVInShader` | ![](READMEimages/UAVInShader.gif) | Read some data back to CPU from fragment shader |
 | `AsyncGPUReadback` | ![](READMEimages/AsyncGPUReadback.gif) | Similar to StructuredBufferWithCompute, but use AsyncGPUReadback to get array data back to CPU |
 | `AsyncGPUReadbackTex` | ![](READMEimages/AsyncGPUReadbackTex.gif) | Similar to ComputeUAVTexture, but use AsyncGPUReadback to get texture data back to CPU |
+| `AsyncGPUReadbackMesh` | ![](READMEimages/AsyncGPUReadbackMesh.gif) | It is much faster to update mesh vertices with compute + AsyncGPUReadback |
 
 -------------
 
