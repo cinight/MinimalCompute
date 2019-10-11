@@ -17,7 +17,7 @@ public class ComputeVertexLitPlane : MonoBehaviour
     //The mesh
     public MeshFilter mf;
     public Material mat;
-    public MeshCollider mc;
+    public Collider mc;
     private Mesh mesh;
 
     //Compute
@@ -81,8 +81,7 @@ public class ComputeVertexLitPlane : MonoBehaviour
         {
             if (!Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit)) return;
                 
-            MeshCollider meshCollider = hit.collider as MeshCollider;
-            if (meshCollider == mc)
+            if (hit.collider == mc)
             {
                 if (mousePos != hit.point) mousePos = hit.point;
             }
