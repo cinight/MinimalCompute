@@ -22,7 +22,7 @@ public class ComputeVertexLitPlane : MonoBehaviour
     private Mesh mesh;
 
     //Heightmap
-    private int sizeHeightMap = 1024;
+    private int sizeHeightMap = 256;
     private int _kernelHeightMap;
     private Vector2Int dispatchCountHeightMap;
     public Material heightMapDebug;
