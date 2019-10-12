@@ -1,4 +1,5 @@
-﻿#pragma kernel CSMain
+﻿#pragma kernel CSMainHeightMap
+#pragma kernel CSMain
 
 struct MyVertexData
 {
@@ -9,14 +10,65 @@ struct MyVertexData
     float4 uv;
 };
 
-RWStructuredBuffer<MyVertexData> vertexBuffer;
+//This is only for first kernel
+RWTexture2D<float> heightMap;
 
+//This is only for second kernel
+RWStructuredBuffer<MyVertexData> vertexBuffer;
+Texture2D<float> heightMapTex;
+SamplerState samplerheightMapTex;
+
+uint _heightMapSize;
 float _Time;
-uint _VertexCount;
 float3 _MousePos;
 
+#define sizeOfPlane 10.0f
 #define _EmissionDistance 1.0f
-#define trailStep 0.99f
+#define trailStep 0.995f
+#define heightMultiplier 1.0f
+#define uvNorSpace 0.01f
+
+float4 GetNewPosition(float4 opos)
+{
+    float4 pos = opos;
+	pos.y -= 1-trailStep;
+    float dist = abs(distance(_MousePos, pos.xyz));
+    float e = _EmissionDistance;
+    float power = 1 - clamp(dist / e, 0.0f, 1.0f);
+    pos.y += (sin(3.14f*power -1.57f)+1.0f)*0.20f;
+    pos.y = clamp(pos.y,0,pos.y);
+    return pos;
+}
+
+float3 CalculateNormal(float4 p, float4 p1, float4 p2)
+{
+    float3 tangent = p1.xyz - p.xyz;
+    float3 bitangent = p2.xyz - p.xyz;
+    float3 normal = cross(tangent,bitangent);
+    normal = normalize(normal);
+    return normal;
+}
+
+float2 GetPositionFromUVID(uint2 id)
+{
+    return ( (1-float2(id)/float(_heightMapSize))- 0.5f )*sizeOfPlane;
+}
+
+[numthreads(8,8,1)]
+void CSMainHeightMap (uint3 id : SV_DispatchThreadID)
+{
+    //Shortcut
+    float4 pos;
+    pos.xz = GetPositionFromUVID(id.xy);
+    pos.y = heightMap[id.xy];
+    pos.w = 1;
+
+    //New position
+    pos = GetNewPosition(pos);
+
+    //Assign back
+	heightMap[id.xy] = pos.y;
+}
 
 [numthreads(32,1,1)]
 void CSMain (uint3 id : SV_DispatchThreadID)
@@ -26,17 +78,52 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     
     //Shortcut
     float4 pos = vertexBuffer[rid].pos;
+    float2 uv = vertexBuffer[rid].uv.xy;
 
-    //Position calculation
-	pos.y *= trailStep;
-	pos.y = clamp(pos.y, -10.0f, 0);
-    float dist = abs(distance(_MousePos, pos.xyz));
-    float e = _EmissionDistance;
-    float power = 1 - clamp(dist / e, 0.0f, 1.0f);
-    pos.y -= (sin(3.14f*power -1.57f)+1.0f)*0.05f;
-	//pos.y = clamp(pos.y, -1.0f, 1.0f);
+    //uv for normal calculation
+    float2 uvTL = uv;
+    uvTL.x -=uvNorSpace;
+    uvTL.y +=uvNorSpace;
+    uvTL = saturate(uvTL);
+    float2 uvTR = uv;
+    uvTR.x +=uvNorSpace;
+    uvTR.y +=uvNorSpace;
+    uvTR = saturate(uvTR);
+    float2 uvBL = uv;
+    uvBL.x -=uvNorSpace;
+    uvBL.y -=uvNorSpace;
+    uvBL = saturate(uvBL);
+    float2 uvBR = uv;
+    uvBR.x +=uvNorSpace;
+    uvBR.y -=uvNorSpace;
+    uvBR = saturate(uvBR);
+
+    //pos for normal calculation
+    float4 posTL = pos;
+    posTL.xz = GetPositionFromUVID(uvTL * _heightMapSize);
+    float4 posTR = pos;
+    posTR.xz = GetPositionFromUVID(uvTR * _heightMapSize);
+    float4 posBL = pos;
+    posBL.xz = GetPositionFromUVID(uvBL * _heightMapSize);
+    float4 posBR = pos;
+    posBR.xz = GetPositionFromUVID(uvBR * _heightMapSize);
+
+    //Read heightmap
+    pos.y = heightMapTex.SampleLevel(samplerheightMapTex, uv, 0);
+    posTL.y = heightMapTex.SampleLevel(samplerheightMapTex, uvTL, 0);
+    posTR.y = heightMapTex.SampleLevel(samplerheightMapTex, uvTR, 0);
+    posBL.y = heightMapTex.SampleLevel(samplerheightMapTex, uvBL, 0);
+    posBR.y = heightMapTex.SampleLevel(samplerheightMapTex, uvBR, 0);
+    
+    //Calculate normal
+    float3 nor1 = CalculateNormal(pos,posTL,posTR);
+    float3 nor2 = CalculateNormal(pos,posTR,posBR);
+    float3 nor3 = CalculateNormal(pos,posBR,posBL);
+    float3 nor4 = CalculateNormal(pos,posBL,posTL);
+    float3 nor = (nor1+nor2+nor3+nor4)/4.0f;
 
     //Assign back
     vertexBuffer[rid].pos = pos;
-    vertexBuffer[rid].uv.z = pos.y; //this is for coloring
+    vertexBuffer[rid].nor = nor;
+    vertexBuffer[rid].uv.z = pos.y *0.5f; //this is for coloring
 }

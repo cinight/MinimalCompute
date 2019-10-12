@@ -127,7 +127,7 @@
              half4 fragBaseEdited (VertexOutputForwardBase i) : SV_Target 
              {
                  //This is for coloring the trail
-                 float4 col = lerp(0,float4(1,0,0,1),-i.tex.z*1.5f);
+                 float4 col = lerp(0,float4(1,0,0,1),i.tex.z);
                  return fragForwardBaseInternal(i) + col; 
              }
 
