@@ -19,7 +19,7 @@ Tested with : Win DX11, Mac Metal
 | `UAVInShader` | ![](READMEimages/UAVInShader.gif) | Read some data back to CPU from fragment shader |
 | `AsyncGPUReadback` | ![](READMEimages/AsyncGPUReadback.gif) | Similar to StructuredBufferWithCompute, but use AsyncGPUReadback to get array data back to CPU |
 | `AsyncGPUReadbackTex` | ![](READMEimages/AsyncGPUReadbackTex.gif) | Similar to ComputeUAVTexture, but use AsyncGPUReadback to get texture data back to CPU |
-| `AsyncGPUReadbackMesh` | ![](READMEimages/AsyncGPUReadbackMesh.gif) | It is much faster to update mesh vertices with compute + AsyncGPUReadback |
+| `AsyncGPUReadbackMesh` | ![](READMEimages/AsyncGPUReadbackMesh.gif) | It is much faster to update mesh vertices with compute + AsyncGPUReadback to get the vertex data back to CPU for physics |
 
 -------------
 
