@@ -123,7 +123,10 @@ public class ComputeVertexLitPlane : MonoBehaviour
         //The Material
         mat.name = "My Mat";
         mat.SetBuffer("vertexBuffer", vertexBuffer);
+    }
 
+    void Update()
+    {
         if(useMaterialNormal)
         {
             //Because normal map is only generated in runtime, 
@@ -131,10 +134,12 @@ public class ComputeVertexLitPlane : MonoBehaviour
             mat.SetTexture("_BumpMap", texNor);
             mat.EnableKeyword("_NORMALMAP");
         }
-    }
-
-    void Update()
-    {
+        else
+        {
+            //mat.SetTexture("_BumpMap", texNor);
+            mat.DisableKeyword("_NORMALMAP");
+        }
+        
         //Getting mouse position. MeshCollider is needed for getting hit.textureCoord
         if (
             Input.GetMouseButton(0) &&
