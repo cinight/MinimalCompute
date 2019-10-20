@@ -22,6 +22,7 @@ public class ComputeUAVTexFlow : MonoBehaviour
     private RaycastHit hit;
     private Vector2 mousePos;
     private Vector2 defaultposition = new Vector2(-9, -9); //make it far away
+	private int mouseMode = 0;
 	
 	void Start () 
 	{
@@ -47,20 +48,28 @@ public class ComputeUAVTexFlow : MonoBehaviour
 	void Update()
 	{
         //Getting mouse position. MeshCollider is needed for getting hit.textureCoord
-        if (
-            Input.GetMouseButton(0) &&
-            Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit) &&
-            hit.collider == mc
-        )
-        {
-            if (mousePos != hit.textureCoord) mousePos = hit.textureCoord;
-        }
+        if ( Input.GetMouseButton(0) || Input.GetMouseButton(1) )
+		{
+			if( Input.GetMouseButton(0) && Input.GetMouseButton(1) ) mouseMode = 1; //1=drawobstacle
+			else if( Input.GetMouseButton(0) && !Input.GetMouseButton(1) ) mouseMode = 0; //0=drawpixel
+			else if( !Input.GetMouseButton(0) && Input.GetMouseButton(1) ) mouseMode = 2; //2=removeobstacle
+
+			if( Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit) && hit.collider == mc )
+			{
+				if (mousePos != hit.textureCoord) mousePos = hit.textureCoord;
+			}
+			else
+			{
+				if (mousePos != defaultposition) mousePos = defaultposition;
+			}
+		}
         else
         {
             if (mousePos != defaultposition) mousePos = defaultposition;
         }
 
         //Run compute shader
+		shader.SetInt("_MouseMode", mouseMode);	
         shader.SetVector("_MousePos", mousePos);		
 		shader.SetFloat("_Time",Time.time);
 		shader.Dispatch (_kernel, Mathf.CeilToInt(size / 1f), Mathf.CeilToInt(size / 1f), 1);
