@@ -2,13 +2,13 @@
 Minimal test scenes contains compute shaders, compute buffers etc
 Playing with the transport between CPU <-> GPU
 
-Unity version : 2019.3+, but should work in older versions as well
-
+Unity version : 2019.3+, but should work in older versions as well \
 Tested with : Win DX11, Mac Metal
 
 | Scene | Image | Description |
 | --- | - | --- |
 | `ComputeUAVTexture` | ![](READMEimages/ComputeUAVTexture.gif) | The most basic one, edit texture with compute shader |
+| `ComputeUAVTexFlow` | ![](READMEimages/ComputeUAVTexFlow.gif) | Example of using compute to animate texture pixels |
 | `StructuredBufferWithCompute` | ![](READMEimages/StructuredBufferWithCompute.gif) | Another basic one, use compute to calculate some data and send back to CPU |
 | `StructuredBufferNoCompute` | ![](READMEimages/StructuredBufferNoCompute.gif) | ComputeBuffer doesn't always need to stick with ComputeShader |
 | `IndirectCompute` | ![](READMEimages/IndirectCompute.gif) | Simple indirect compute (indirect dispatch) and CopyCount |
