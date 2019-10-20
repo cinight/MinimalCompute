@@ -20,8 +20,6 @@ public class ComputeUAVTexture : MonoBehaviour
 		tex.Create ();
 		
 		_mat.SetTexture ("_MainTex", tex);
-		_mat = GetComponent<Renderer> ().material;
-		
 		shader.SetTexture (_kernel, "Result", tex);
 	}
 
