@@ -6,21 +6,17 @@ float _Time;
 float2 _MousePos;
 int _MouseMode;
 //=========================================================================
-int2 GetMoveTargetID(int2 dir, int2 pID, float4 p)
+float4 GetResultPixel(int2 pID_new)
 {
-	//new position
-	int2 pID_new = pID+dir;//*(10*p.y);
-
-	//clamp new position
-	if(pID_new.x < 0) pID_new.x = 0; else if(pID_new.x > _Size-1) pID_new.x = _Size-1;
-	if(pID_new.y < 0) pID_new.y = 0; else if(pID_new.y > _Size-1) pID_new.y = _Size-1;
-
-	return pID_new;
+	float4 result = Result[pID_new];
+	if( pID_new.x < 0 || pID_new.x >= _Size || pID_new.y < 0 || pID_new.y >= _Size ) result = float4(0,1,1,1);  //outside canvas is obstacle
+	return result;
 }
 
 void MakeNewPixelObstacle(int2 id)
 {
-	if( _MouseMode == 0 ) Result[id] = float4(1,1,0,1);
+	float4 p = Result[id];
+	if( _MouseMode == 0 && p.x == 0 && p.z == 0  ) Result[id] = float4(1,1,0,1);
 	else if( _MouseMode == 1 ) Result[id] = float4(0,1,1,1);
 	else if( _MouseMode == 2 ) Result[id] = float4(0,0,0,1);
 }
@@ -35,30 +31,16 @@ void CSMain (uint3 id : SV_DispatchThreadID)
 {
 	//make new pixel / obstacle ----------------------
 	int2 newPixelID = _MousePos*_Size;
-	MakeNewPixelObstacle(newPixelID);
 	if( _MouseMode != 0)
 	{
-		newPixelID.x += 1; // left
-		MakeNewPixelObstacle(newPixelID);
-		newPixelID.y += 1; // top left
-		MakeNewPixelObstacle(newPixelID);
-		newPixelID.x -= 1; // top
-		MakeNewPixelObstacle(newPixelID);
-		newPixelID.x -= 1; // top right
-		MakeNewPixelObstacle(newPixelID);
-		newPixelID.y -= 1; // right
-		MakeNewPixelObstacle(newPixelID);
-		newPixelID.y -= 1; // bottom right
-		MakeNewPixelObstacle(newPixelID);
-		newPixelID.x += 1; // bottom
-		MakeNewPixelObstacle(newPixelID);
-		newPixelID.x += 1; // bottom left
+		//so that the brush is thicker
+		float dist = distance(float2(id.xy),float2(newPixelID));
+		if(dist < 3.0f) MakeNewPixelObstacle(id.xy);
+	}
+	else
+	{
 		MakeNewPixelObstacle(newPixelID);
 	}
-	// float4 newPixel = Result[newPixelID];
-	// if( _MouseMode == 0  && newPixel.x == 0 && newPixel.z == 0 ) Result[newPixelID] = float4(1,1,0,1);
-	// else if( _MouseMode == 1 && newPixel.x == 0 && newPixel.z == 0 ) Result[newPixelID] = float4(0,1,1,1);
-	// else if( _MouseMode == 2 && !newPixel.x == 1 ) Result[newPixelID] = float4(0,0,0,1);
 
 	//move pixels ----------------------
 	int2 pID = id.xy;
@@ -68,15 +50,15 @@ void CSMain (uint3 id : SV_DispatchThreadID)
 	{
 		//move down
 		int2 direction = int2( 0 , -1 );
-		int2 pID_new = GetMoveTargetID(direction,pID,p);
-		float4 p_new = Result[pID_new];
+		int2 pID_new = pID+direction;//*(10*p.y);
+		float4 p_new = GetResultPixel(pID_new);
 
-		//if not empty - move again
+		//if not empty - move horizontal
 		if(p_new.x > 0 || p_new.z > 0)
 		{
 			direction = int2( sign(random(float2(pID) + _Time)-0.5f) , 0 );
-			pID_new = GetMoveTargetID(direction,pID,p);
-			p_new = Result[pID_new];
+			pID_new = pID+direction;
+			p_new = GetResultPixel(pID_new);
 		}
 
 		//if empty - assign

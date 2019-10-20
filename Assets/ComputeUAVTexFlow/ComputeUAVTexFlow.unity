@@ -265,7 +265,7 @@ TextMesh:
     mouse L+R - AddObstacle
 
     mouse R    
-    - RemoveObstacle'
+    - Remove'
   m_OffsetZ: 0
   m_CharacterSize: 0.015
   m_LineSpacing: 1
