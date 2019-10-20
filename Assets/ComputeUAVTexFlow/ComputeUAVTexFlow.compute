@@ -1,0 +1,63 @@
+﻿#pragma kernel CSMain
+
+RWTexture2D<float4> Result;
+int _Size;
+float _Time;
+float2 _MousePos;
+//=========================================================================
+int2 GetMoveTargetID(int2 dir, int2 pID, float4 p)
+{
+	//new position
+	int2 pID_new = pID+dir;//*(10*p.y);
+
+	//clamp new position
+	if(pID_new.x < 0) pID_new.x = 0; else if(pID_new.x > _Size-1) pID_new.x = _Size-1;
+	if(pID_new.y < 0) pID_new.y = 0; else if(pID_new.y > _Size-1) pID_new.y = _Size-1;
+
+	return pID_new;
+}
+
+float random(float2 st) 
+{
+	return frac(sin(dot(st.xy,float2(12.9898f, 78.233f)))*43758.5453123f);
+}
+//============================= MAIN ====================================
+[numthreads(1,1,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+	//make new pixel ----------------------
+	int2 newPixelID = _MousePos*_Size;
+	float4 newPixel = Result[newPixelID];
+	if(newPixel.x == 0 && newPixel.z == 0)
+	{
+		Result[newPixelID] = float4(1,1,0,1);
+	}
+
+	//move pixels ----------------------
+	int2 pID = id.xy;
+	float4 p = Result[pID];
+
+	if(p.x == 1)
+	{
+		//move down
+		int2 direction = int2( 0 , -1 );
+		int2 pID_new = GetMoveTargetID(direction,pID,p);
+		float4 p_new = Result[pID_new];
+
+		//if not empty - move again
+		if(p_new.x > 0 || p_new.z > 0)
+		{
+			direction = int2( sign(random(float2(pID) + _Time)-0.5f) , 0 );
+			pID_new = GetMoveTargetID(direction,pID,p);
+			p_new = Result[pID_new];
+		}
+
+		//if empty - assign
+		if(p_new.x == 0 && p_new.z == 0)
+		{
+			Result[pID_new] = p;
+			Result[pID] = float4(0,0,0,1);
+		}
+	}
+}
+
