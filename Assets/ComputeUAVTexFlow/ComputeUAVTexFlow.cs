@@ -11,10 +11,11 @@ public class ComputeUAVTexFlow : MonoBehaviour
 
 	private int size;
 	private int _kernel;
+	private Vector2Int dispatchCount;
 
 	//Initial texture
 	// R = 1 is particle
-	// G = speed
+	// G = no meaning now
 	// B = 1 is obstacle
 
     //Mouse input
@@ -43,6 +44,13 @@ public class ComputeUAVTexFlow : MonoBehaviour
 		_mat.SetTexture ("_MainTex", tex);
 		shader.SetTexture (_kernel, "Result", tex);
 		shader.SetInt("_Size",size);
+
+        uint threadX = 0;
+        uint threadY = 0;
+        uint threadZ = 0;
+        shader.GetKernelThreadGroupSizes(_kernel, out threadX, out threadY, out threadZ);
+		dispatchCount.x = Mathf.CeilToInt(size / threadX);
+		dispatchCount.y = Mathf.CeilToInt(size / threadY);
 	}
 
 	void Update()
@@ -72,6 +80,6 @@ public class ComputeUAVTexFlow : MonoBehaviour
 		shader.SetInt("_MouseMode", mouseMode);	
         shader.SetVector("_MousePos", mousePos);		
 		shader.SetFloat("_Time",Time.time);
-		shader.Dispatch (_kernel, Mathf.CeilToInt(size / 1f), Mathf.CeilToInt(size / 1f), 1);
+		shader.Dispatch (_kernel,dispatchCount.x , dispatchCount.y, 1);
 	}
 }

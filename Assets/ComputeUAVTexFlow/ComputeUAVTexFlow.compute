@@ -9,7 +9,7 @@ int _MouseMode;
 float4 GetResultPixel(int2 pID_new)
 {
 	float4 result = Result[pID_new];
-	if( pID_new.x < 0 || pID_new.x >= _Size || pID_new.y < 0 || pID_new.y >= _Size ) result = float4(0,1,1,1);  //outside canvas is obstacle
+	//if( pID_new.x < 0 || pID_new.x >= _Size || pID_new.y < 0 || pID_new.y >= _Size ) result = float4(0,1,1,1);  //outside canvas is obstacle
 	return result;
 }
 
@@ -56,7 +56,7 @@ void CSMain (uint3 id : SV_DispatchThreadID)
 		//if not empty - move horizontal
 		if(p_new.x > 0 || p_new.z > 0)
 		{
-			direction = int2( sign(random(float2(pID) + _Time)-0.5f) , 0 );
+			direction = int2( sign(random(float2(pID) + _Time)-0.5f) , -1 );
 			pID_new = pID+direction;
 			p_new = GetResultPixel(pID_new);
 		}
