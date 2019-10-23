@@ -1,5 +1,7 @@
-﻿// Around 60 FPS if we do not use AsyncGPUReadback
-// Around 145 FPS if we use AsyncGPUReadback!
+﻿
+// This is same as AsyncGPUReadbackMesh, but using new Mesh API introduced in 2019.3
+// https://docs.unity3d.com/2019.3/Documentation/ScriptReference/Mesh.SetVertexBufferData.html
+//doesn't seem to have any further speedup using new API in this scenario
 
 using System.Collections;
 using System.Collections.Generic;
@@ -7,17 +9,26 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using Unity.Collections;
 
-public class AsyncGPUReadbackMesh : MonoBehaviour
+public class AsyncGPUReadbackMesh_NewMeshAPI : MonoBehaviour
 {
     public ComputeShader computeShader;
     public MeshFilter mf;
     public MeshCollider mc;
 
+    //Using 2019.3 new Mesh API
+    [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+    struct VertexData
+    {
+        public Vector3 pos;
+        public Vector3 nor;
+        public Vector2 uv;
+    }
+
     private Mesh mesh;
     private ComputeBuffer cBuffer;
     private int _kernel;
     private int dispatchCount = 0;
-    private NativeArray<Vector3> vertData;
+    private NativeArray<VertexData> vertData;
     private AsyncGPUReadbackRequest request;
 
     private void Start()
@@ -37,20 +48,34 @@ public class AsyncGPUReadbackMesh : MonoBehaviour
         dispatchCount = Mathf.CeilToInt(mesh.vertexCount / threadX +1);
 
         // Init mesh vertex array
-        Vector3[] meshVerts = mesh.vertices;
-        vertData = new NativeArray<Vector3>(mesh.vertexCount, Allocator.Temp);
+        vertData = new NativeArray<VertexData>(mesh.vertexCount, Allocator.Temp);
         for (int i = 0; i < mesh.vertexCount; ++i)
         {
-            vertData[i] = meshVerts[i];
+            VertexData v = new VertexData();
+            v.pos = mesh.vertices[i];
+            v.nor = mesh.normals[i];
+            v.uv = mesh.uv[i];
+            vertData[i] = v;
         }
+
+        //Using 2019.3 new Mesh API
+        var layout = new[]
+        {
+            new VertexAttributeDescriptor(VertexAttribute.Position, mesh.GetVertexAttributeFormat(VertexAttribute.Position), 3),
+            new VertexAttributeDescriptor(VertexAttribute.Normal, mesh.GetVertexAttributeFormat(VertexAttribute.Normal), 3),
+            new VertexAttributeDescriptor(VertexAttribute.TexCoord0, mesh.GetVertexAttributeFormat(VertexAttribute.TexCoord0), 2),
+        };
+        mesh.SetVertexBufferParams(mesh.vertexCount, layout);
         
         //init compute buffer
-        cBuffer = new ComputeBuffer(mesh.vertexCount, 12); // 3*4bytes = sizeof(Vector3)
+        cBuffer = new ComputeBuffer(mesh.vertexCount, 8*4); // 3*4bytes = sizeof(Vector3)
         if(vertData.IsCreated) cBuffer.SetData(vertData);
         computeShader.SetBuffer(_kernel, "vertexBuffer", cBuffer);
 
         //Request AsyncReadback
         request = AsyncGPUReadback.Request(cBuffer);
+
+        Debug.Log("VertexCount = "+vertData.Length);
     }
 
     void Update()
@@ -62,11 +87,11 @@ public class AsyncGPUReadbackMesh : MonoBehaviour
         if(request.done && !request.hasError)
         {
             //Readback and show result on texture
-            vertData = request.GetData<Vector3>();
+            vertData = request.GetData<VertexData>();
 
             //Update mesh
             mesh.MarkDynamic();
-            mesh.SetVertices(vertData);
+            mesh.SetVertexBufferData(vertData,0,0,vertData.Length);
             mesh.RecalculateNormals();
 
             //Update to collider

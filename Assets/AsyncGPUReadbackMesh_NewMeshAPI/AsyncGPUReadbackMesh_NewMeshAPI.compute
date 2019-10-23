@@ -1,0 +1,29 @@
+﻿#pragma kernel CSMain
+
+struct VertexData
+{
+    float3 pos;
+    float3 nor;
+    float2 uv;
+};
+
+RWStructuredBuffer<VertexData> vertexBuffer;
+
+float _Time;
+//uint _VertexCount;
+
+[numthreads(32,1,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    //Shortcut
+    float3 pos = vertexBuffer[id.x].pos;
+
+    //distance to center factor
+    float dist = 6.0f-distance(pos.xz,float2(0,0));
+    
+    pos.y = sin(_Time*2.0f + dist)*0.25f;
+    //if(pos.y <0) pos.y *= 2.0f;
+
+    //Assign back
+    vertexBuffer[id.x].pos.y = pos.y;
+}
