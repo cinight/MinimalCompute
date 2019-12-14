@@ -1,0 +1,129 @@
+﻿#pragma kernel CSMainHeightMap
+#pragma kernel CSMainNormalMap
+#pragma kernel CSMain
+
+struct MyVertexData
+{
+    uint id;
+    float4 pos;
+    float3 nor;
+    float4 tan;
+    float4 uv;
+};
+
+//This is only for heightmap kernel
+RWTexture2D<float> heightMap;
+
+//This is only for normalmap kernel
+RWTexture2D<float4> normalMap;
+
+//This is only for vertex kernel
+RWStructuredBuffer<MyVertexData> vertexBuffer;
+
+//Read-only textures
+Texture2D<float> heightMapTex;
+Texture2D<float4> normalMapTex;
+SamplerState samplerheightMapTex;
+SamplerState samplernormalMapTex;
+
+float2 _MousePos;
+uint _texResolution;
+
+//----------------------POSITION-----------------------------
+
+#define _EmissionDistance 0.1f
+
+float GetNewPosition(float2 uv, float oh) //uv 0-1
+{
+    float h = oh;
+    float dist = abs(distance(_MousePos, uv));
+    float power = 1 - saturate(dist / _EmissionDistance);
+    h = lerp(h - 1.0f/255.0f /*8 bit texture */ , max(power,h) ,power);
+    h = clamp(h,0,h);
+    return h;
+}
+
+[numthreads(8,8,1)]
+void CSMainHeightMap (uint3 id : SV_DispatchThreadID)
+{
+    float2 uv = float2(id.xy) / float(_texResolution);
+    float pos = heightMap[id.xy];
+    pos = GetNewPosition(uv,pos);
+	heightMap[id.xy] = pos;
+}
+
+//----------------------NORMAL-----------------------------
+
+#define sizeOfPlane 10.0f
+
+float3 GetPositionFromUVID(uint2 id)
+{
+    uint2 rid = clamp(id,0,_texResolution-1);
+    float3 pos;
+    pos.xz = ( (1-float2(rid)/float(_texResolution))- 0.5f )*sizeOfPlane;
+    pos.y = -heightMapTex[rid];
+    return float3( pos.x , pos.z , pos.y ); //normalmap uses z as height
+}
+
+[numthreads(8,8,1)]
+void CSMainNormalMap (uint3 id : SV_DispatchThreadID)
+{
+    //uv
+    uint2 uvN = id.xy;
+    uvN.y +=1;
+    uint2 uvE = id.xy;
+    uvE.x +=1;
+    uint2 uvS = id.xy;
+    uvS.y -=1;
+    uint2 uvW = id.xy;
+    uvW.x -=1;
+
+    //pos
+    float3 pos = GetPositionFromUVID(id.xy);
+    float3 posN = GetPositionFromUVID(uvN);
+    float3 posE = GetPositionFromUVID(uvE);
+    float3 posS = GetPositionFromUVID(uvS);
+    float3 posW = GetPositionFromUVID(uvW);
+
+    //vectors
+    float3 vecN = posN - pos;
+    float3 vecE = posE - pos;
+    float3 vecS = posS - pos;
+    float3 vecW = posW - pos;
+
+    //normal
+    float3 nor = ( cross(vecN, vecE) + cross(vecE, vecS) + cross(vecS, vecW) + cross(vecW, vecN) ) / 4;
+    nor = normalize( nor );
+    nor = nor * 0.5f + 0.5f;
+
+    //fix edge
+    if(id.x ==0 || id.y ==0) nor = float3(0.5,0.5,0);
+
+	normalMap[id.xy] = float4(nor,1);
+}
+
+//----------------------VERTEX-----------------------------
+
+[numthreads(32,1,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    //Real id
+    uint rid = vertexBuffer[id.x].id;
+    
+    //Shortcut
+    float4 pos = vertexBuffer[rid].pos;
+    float2 uv = vertexBuffer[rid].uv.xy;
+
+    //Read heightmap
+    pos.y = -heightMapTex.SampleLevel(samplerheightMapTex, uv, 0);
+
+    //Read normalmap
+    float4 n = normalMapTex.SampleLevel(samplernormalMapTex, uv, 0);
+    float3 nor = n.rgb * 2 - 1; // to -1 and 1 space
+    nor = float3(-nor.x,1-nor.z,-nor.y); //fix the world coordinates
+
+    //Assign back
+    vertexBuffer[rid].pos = pos;
+    vertexBuffer[rid].nor = nor;
+    vertexBuffer[rid].uv.z = pos.y *0.5f; //this is for coloring
+}
