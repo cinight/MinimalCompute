@@ -20,7 +20,7 @@ public class IndirectReflectedStar : MonoBehaviour
 	private ComputeBuffer particleFilteredResultBuffer;
 	private ComputeBuffer argsBuffer;
 	private int[] args;
-	private Particle[] plists;
+	//private Particle[] plists;
     private CommandBuffer cmd;
 
 	void Start ()
@@ -32,18 +32,18 @@ public class IndirectReflectedStar : MonoBehaviour
         _kernelDirect = computeShader.FindKernel("CSMainDirect");
 		
 		// Init particles position
-		plists = new Particle[particleCount];
-		for (int i = 0; i < particleCount; ++i)
-		{
-			plists[i].uv = Vector2Int.zero;
-            plists[i].intensity = 1;
-        }
+		// plists = new Particle[particleCount];
+		// for (int i = 0; i < particleCount; ++i)
+		// {
+		// 	plists[i].uv = Vector2Int.zero;
+        //     plists[i].intensity = 1;
+        // }
 		
 		//particleBuffer, for rendering
-		particleBuffer = new ComputeBuffer(particleCount, 12); // 2*int+1*float, 4 bytes each = sizeof(Particle)
-		particleBuffer.SetData(plists);
+		//particleBuffer = new ComputeBuffer(particleCount, 12); // 2*int+1*float, 4 bytes each = sizeof(Particle)
+		//particleBuffer.SetData(plists);
 
-		particleFilteredResultBuffer = new ComputeBuffer(particleCount, sizeof(uint), ComputeBufferType.Append);
+		particleFilteredResultBuffer = new ComputeBuffer(particleCount, 12, ComputeBufferType.Append);
 		material.SetBuffer ("particleBuffer", particleFilteredResultBuffer);
 
 		//Args for indirect draw
@@ -106,12 +106,12 @@ public class IndirectReflectedStar : MonoBehaviour
             particleFilteredResultBuffer.Release();
             particleFilteredResultBuffer = null;
         }
-        if (particleBuffer != null)
-        {
-            particleBuffer.Dispose();
-            particleBuffer.Release();
-            particleBuffer = null;
-        }
+        // if (particleBuffer != null)
+        // {
+        //     particleBuffer.Dispose();
+        //     particleBuffer.Release();
+        //     particleBuffer = null;
+        // }
         if (argsBuffer != null)
         {
             argsBuffer.Dispose();
