@@ -9,12 +9,14 @@ Shader "IndirectReflectedStar"
 	{
 		Pass 
 		{
+			ZWrite Off ZTest Always Cull Off
 			Blend SrcAlpha OneMinusSrcAlpha
 
 			CGPROGRAM
 			#pragma target 5.0
 			#pragma vertex vert
 			#pragma fragment frag
+			#pragma multi_compile_instancing
 			#include "UnityCG.cginc"
 			
 			struct Particle
