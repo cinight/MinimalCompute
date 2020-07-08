@@ -12,7 +12,7 @@ Shader "DX11/DrawIndirect"
 		_Size ("Size",Range(0,1)) = 1
 		_Color ("Color", Color) = (1,1,1,1)
 		_Star ("Star", 2D) = "white" {}
-		_Rotation ("Rotation", Range(0,0.025)) = 0
+		_Rotation ("Rotation", Range(-10,10)) = 0
 	}
 	SubShader 
 	{
@@ -140,9 +140,14 @@ Shader "DX11/DrawIndirect"
 				//center position of star
 				float4 pos = float4(pointBuffer[inst] * 2.0 - 1.0, 0, 1);
 				pos.y *= -1;
+				
+				//Rotation
+				float rot = _Rotation;
+				//rot *= 4.0f;
+				//rot = radians(rot);
 
 				float4 npos = v.vertex;
-				npos.xy = ApplyRotation(npos,float3(_Rotation,0,1)).xy;
+				npos.xy = ApplyRotation(npos,float3(rot,1,1)).xy;
 				npos.x *= _Size;
 				npos.y *= _Size * _ScreenParams.x / _ScreenParams.y; //respect screen ratio
 				npos.xy += pos;
