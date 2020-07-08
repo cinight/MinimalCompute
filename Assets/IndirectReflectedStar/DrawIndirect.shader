@@ -6,7 +6,7 @@ Shader "DX11/DrawIndirect"
 
 		[Header(Filter settings)]
 		_SampleDistance ("SampleDistance",Range(0,0.1)) = 0.02
-		_Threshold ("Threshold",Range(0,2)) = 1
+		_Threshold ("Threshold",Range(0,5)) = 1
 
 		[Header(Drawing settings)]
 		_Size ("Size",Range(0,1)) = 1
@@ -57,10 +57,10 @@ Shader "DX11/DrawIndirect"
 				float2 uv = i.uv;
 
 				float4 c = tex2D (_MainTex, uv);
-				float4 c1 = tex2D (_MainTex, uv + float2(1,0) * _SampleDistance );
-				float4 c2 = tex2D (_MainTex, uv + float2(0,1) * _SampleDistance );
-				float4 c3 = tex2D (_MainTex, uv + float2(-1,0) * _SampleDistance );
-				float4 c4 = tex2D (_MainTex, uv + float2(0,-1) * _SampleDistance );
+				float4 c1 = tex2D (_MainTex, uv + saturate(float2(1,0) * _SampleDistance) );
+				float4 c2 = tex2D (_MainTex, uv + saturate(float2(0,1) * _SampleDistance) );
+				float4 c3 = tex2D (_MainTex, uv + saturate(float2(-1,0) * _SampleDistance) );
+				float4 c4 = tex2D (_MainTex, uv + saturate(float2(0,-1) * _SampleDistance) );
 
 				float lumc = Luminance(c) + Luminance(c1) + Luminance(c2) + Luminance(c3) + Luminance(c4);
 				lumc /= 5.0f;

@@ -21,7 +21,7 @@ public class DrawIndirect : MonoBehaviour
 			var args = new int[]
 			{
 				(int)mesh.GetIndexCount(0),
-				maxCount,
+				1,
 				(int)mesh.GetIndexStart(0),
 				(int)mesh.GetBaseVertex(0),
 				0
@@ -49,7 +49,8 @@ public class DrawIndirect : MonoBehaviour
 		cmd.ReleaseTemporaryRT(m_ColorRTid);
 		cmd.SetRenderTarget(BuiltinRenderTextureType.CameraTarget);
 		//Tells actually how many stars we need to draw
-		cmd.CopyCounterValue(cbPoints, cbDrawArgs, 0);
+		//Copy the filtered star count to cbDrawArgs[1], which is at 4bytes int offset
+		cmd.CopyCounterValue(cbPoints, cbDrawArgs, 4);
 		//Draw the stars
 		cmd.DrawMeshInstancedIndirect(mesh,0,mat,1,cbDrawArgs,0);
 		Camera.main.AddCommandBuffer(CameraEvent.AfterForwardOpaque,cmd);
