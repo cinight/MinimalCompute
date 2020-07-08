@@ -9,10 +9,10 @@ Shader "DX11/DrawIndirect"
 		_Threshold ("Threshold",Range(0,5)) = 1
 
 		[Header(Drawing settings)]
-		_Size ("Size",Range(0,1)) = 1
+		_Size ("Size",Range(0,0.2)) = 0.1
+		_Rotation ("Rotation", Range(0,1)) = 0
 		_Color ("Color", Color) = (1,1,1,1)
 		_Star ("Star", 2D) = "white" {}
-		_Rotation ("Rotation", Range(-10,10)) = 0
 	}
 	SubShader 
 	{
@@ -114,23 +114,15 @@ Shader "DX11/DrawIndirect"
 			float _Size;
 			float _Rotation;
 
-			float4 ApplyRotation (float4 v, float3 rotation)
+			//https://forum.unity.com/threads/rotation-of-texture-uvs-directly-from-a-shader.150482/#post-1031763
+			float2 RotateStar(float2 pos)
 			{
-				// Create LookAt matrix
-				float3 up = float3(0,0,1);
-				
-				float3 zaxis = rotation+0.001f;
-				float3 xaxis = normalize(cross(up, zaxis));
-				float3 yaxis = cross(zaxis, xaxis);
-
-				float4x4 lookatMatrix = {
-					xaxis.x, yaxis.x, zaxis.x, 0,
-					xaxis.y, yaxis.y, zaxis.y, 0,
-					xaxis.z, yaxis.z, zaxis.z, 0,
-					0, 0, 0, 1
-				};
-				
-				return mul(lookatMatrix,v);
+				float rot = _Rotation*3.14159*2;
+				float sinX = sin ( rot );
+				float cosX = cos ( rot );
+				float sinY = sin ( rot );
+				float2x2 rotationMatrix = float2x2( cosX, -sinX, sinY, cosX);
+				return mul ( pos, rotationMatrix );
 			}
 
 			v2f vert (appdata v, uint inst : SV_InstanceID)
@@ -140,14 +132,9 @@ Shader "DX11/DrawIndirect"
 				//center position of star
 				float4 pos = float4(pointBuffer[inst] * 2.0 - 1.0, 0, 1);
 				pos.y *= -1;
-				
-				//Rotation
-				float rot = _Rotation;
-				//rot *= 4.0f;
-				//rot = radians(rot);
 
 				float4 npos = v.vertex;
-				npos.xy = ApplyRotation(npos,float3(rot,1,1)).xy;
+				npos.xy = RotateStar(npos.xy);
 				npos.x *= _Size;
 				npos.y *= _Size * _ScreenParams.x / _ScreenParams.y; //respect screen ratio
 				npos.xy += pos;
