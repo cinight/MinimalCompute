@@ -1,4 +1,4 @@
-Shader "DX11/DrawIndirect" 
+Shader "Custom/IndirectReflectedStar" 
 {
 	Properties 
 	{
@@ -9,6 +9,7 @@ Shader "DX11/DrawIndirect"
 		_Threshold ("Threshold",Range(0,5)) = 1
 
 		[Header(Drawing settings)]
+		_MaxSize ("MaxSize",Range(0,0.4)) = 0.1
 		_Size ("Size",Range(0,0.2)) = 0.1
 		_Rotation ("Rotation", Range(0,1)) = 0
 		_Color ("Color", Color) = (1,1,1,1)
@@ -47,8 +48,14 @@ Shader "DX11/DrawIndirect"
 				return o;
 			}
 
+			struct Particle
+			{
+				float2 uv;
+				float intensity;
+			};
+
 			sampler2D _MainTex;
-			AppendStructuredBuffer<float2> pointBufferOutput : register(u1); //make sure you have same id in C# script
+			AppendStructuredBuffer<Particle> pointBufferOutput : register(u1); //make sure you have same id in C# script
 			float _Threshold;
 			float _SampleDistance;
 
@@ -68,7 +75,10 @@ Shader "DX11/DrawIndirect"
 				[branch]
 				if (lumc > _Threshold )// && lumc > lumc1)
 				{
-					pointBufferOutput.Append (i.uv);
+					Particle p;
+					p.uv = i.uv;
+					p.intensity = lumc-_Threshold;
+					pointBufferOutput.Append (p);
 				}
 
 				return c;
@@ -88,12 +98,12 @@ Shader "DX11/DrawIndirect"
 			#pragma fragment frag
 			#include "UnityCG.cginc"
 			
-			// struct Particle
-			// {
-			// 	uint2 uv;
-			// 	float intensity;
-			// };
-			StructuredBuffer<float2> pointBuffer;
+			struct Particle
+			{
+				float2 uv;
+				float intensity;
+			};
+			StructuredBuffer<Particle> pointBuffer;
 
             struct appdata
             {
@@ -113,6 +123,7 @@ Shader "DX11/DrawIndirect"
 			float4 _Color;
 			float _Size;
 			float _Rotation;
+			float _MaxSize;
 
 			//https://forum.unity.com/threads/rotation-of-texture-uvs-directly-from-a-shader.150482/#post-1031763
 			float2 RotateStar(float2 pos)
@@ -130,13 +141,18 @@ Shader "DX11/DrawIndirect"
 				v2f o;
 
 				//center position of star
-				float4 pos = float4(pointBuffer[inst] * 2.0 - 1.0, 0, 1);
+				float4 pos = float4(pointBuffer[inst].uv * 2.0 - 1.0, 0, 1);
 				pos.y *= -1;
+
+				//size according to intensity
+				float size = _Size;
+				size *= pointBuffer[inst].intensity;
+				size = clamp(size,0,_MaxSize);
 
 				float4 npos = v.vertex;
 				npos.xy = RotateStar(npos.xy);
-				npos.x *= _Size;
-				npos.y *= _Size * _ScreenParams.x / _ScreenParams.y; //respect screen ratio
+				npos.x *= size;
+				npos.y *= size * _ScreenParams.x / _ScreenParams.y; //respect screen ratio
 				npos.xy += pos;
 				npos.z += 0.1;
 

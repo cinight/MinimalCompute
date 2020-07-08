@@ -28,15 +28,16 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Star:
-        m_Texture: {fileID: 2800000, guid: 03c7d4c57c33d25438f9cc3439040bb7, type: 3}
+        m_Texture: {fileID: 2800000, guid: 132c3f39f185e9745a2e965503d3862a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Rotation: 0.5
-    - _SampleDistance: 0.0038
-    - _Size: 0.723
-    - _Threshold: 4.1
+    - _MaxSize: 0.29
+    - _Rotation: 0.36
+    - _SampleDistance: 0.038
+    - _Size: 0.115
+    - _Threshold: 3.42
     m_Colors:
-    - _Color: {r: 0, g: 0.31307483, b: 1, a: 1}
+    - _Color: {r: 0.27843142, g: 0.3711969, b: 0.94509804, a: 1}
     - _Rotation: {r: 1, g: 0, b: 1, a: 0}
     - _Up: {r: 1, g: 0, b: 0, a: 0.1}

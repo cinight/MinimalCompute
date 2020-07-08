@@ -31,7 +31,7 @@ public class DrawIndirect : MonoBehaviour
 		}
 		if (cbPoints == null)
 		{
-			cbPoints = new ComputeBuffer (maxCount, 8, ComputeBufferType.Append); //pointBuffer is float2 so 2*4bytes = 8, see shader
+			cbPoints = new ComputeBuffer (maxCount, 12, ComputeBufferType.Append); //pointBuffer is 3 floats so 3*4bytes = 12, see shader
 			mat.SetBuffer ("pointBuffer", cbPoints); //Bind the buffer wwith material
 		}
 
