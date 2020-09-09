@@ -1,55 +1,97 @@
 using UnityEngine;
-using System.Collections;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
-public class ComputeParticlesDirect : MonoBehaviour 
+[CreateAssetMenu]
+public class ComputeParticlesDirect : ScriptableRendererFeature
 {
 	struct Particle
 	{
 		public Vector3 position;
 	};
 
-	public int warpCount = 5;
-	public Material material;
+	public int count = 480000;
+	public Material mat;
 	public ComputeShader computeShader;
+	public RenderPassEvent evt;
 
-	private const int warpSize = 32;
-	private ComputeBuffer particleBuffer;
-	private int particleCount;
+	private ComputeBuffer buffer;
 	private Particle[] plists;
-
-	void Start () 
+    
+	public ComputeParticlesDirect()
 	{
-		particleCount = warpCount * warpSize;
-		
+	}
+
+	public override void Create()
+	{
 		// Init particles
-		plists = new Particle[particleCount];
-		for (int i = 0; i < particleCount; ++i)
+		plists = new Particle[count];
+		for (int i = 0; i < count; ++i)
 		{
             plists[i].position = Random.insideUnitSphere * 4f;
         }
 		
 		//Set data to buffer
-		particleBuffer = new ComputeBuffer(particleCount, 12); // 12 = sizeof(Particle)
-		particleBuffer.SetData(plists);
+		OnDisable();
+		buffer = new ComputeBuffer(count, 12); // 12 = sizeof(Particle)
+		buffer.SetData(plists);
 		
 		//Set buffer to computeShader and Material
-		computeShader.SetBuffer(0, "particleBuffer", particleBuffer);
-		material.SetBuffer ("particleBuffer", particleBuffer);
+		computeShader.SetBuffer(0, "particleBuffer", buffer);
+		mat.SetBuffer ("particleBuffer", buffer);
 	}
 
-	void Update () 
-	{
-		computeShader.Dispatch(0, warpCount, 1, 1);
-	}
+    public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
+    {
+        var cameraColorTarget = renderer.cameraColorTarget;
+        var pass = new ComputeParticlesDirectPass(evt, cameraColorTarget,count,mat,computeShader,buffer);
+        renderer.EnqueuePass(pass);
+    }
 
-	void OnRenderObject()
-	{
-		material.SetPass(0);
-		Graphics.DrawProceduralNow(MeshTopology.Points,1,particleCount);
-	}
+    public void OnDisable()
+    {
+        //Clean up
+        if (buffer != null)
+        {
+			buffer.Release();
+            buffer = null;
+        } 
+    }
 
-	void OnDestroy()
+    //-------------------------------------------------------------------------
+
+	class ComputeParticlesDirectPass : ScriptableRenderPass
 	{
-		particleBuffer.Release();
-	}
+		private int count;
+		private Material mat;
+		private ComputeShader computeShader;
+		private ComputeBuffer buffer;
+
+		private RenderTargetIdentifier colorHandle;
+
+        public ComputeParticlesDirectPass(RenderPassEvent renderPassEvent, RenderTargetIdentifier colorHandle,int count,Material material,ComputeShader computeShader,ComputeBuffer buffer)
+        {
+            this.count = count;
+            this.mat = material;
+            this.colorHandle = colorHandle;
+            this.renderPassEvent = renderPassEvent;
+            this.computeShader = computeShader;
+            this.buffer = buffer;
+        }
+
+        public override void Configure(CommandBuffer cmd, RenderTextureDescriptor cameraTextureDescripor)
+        {
+        }
+
+        public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
+        {
+			CommandBuffer cmd = CommandBufferPool.Get("ComputeParticlesDirectPass");
+            cmd.SetRenderTarget(colorHandle);
+			cmd.DispatchCompute(computeShader,0,Mathf.CeilToInt(count / 32),1,1);
+			cmd.DrawProcedural(Matrix4x4.identity,mat,0,MeshTopology.Points,1,count);
+
+            context.ExecuteCommandBuffer(cmd);
+			CommandBufferPool.Release(cmd);
+		}
+    }
 }
