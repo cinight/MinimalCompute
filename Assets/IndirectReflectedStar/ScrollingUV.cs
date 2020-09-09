@@ -10,6 +10,6 @@ public class ScrollingUV : MonoBehaviour
     void Update()
     {
         uvOffset += Time.deltaTime*speed;
-        material.SetTextureOffset("_MainTex",uvOffset);
+        material.SetTextureOffset("_BaseMap",uvOffset);
     }
 }

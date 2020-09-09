@@ -34,10 +34,11 @@ Material:
     m_Floats:
     - _MaxSize: 0.29
     - _Rotation: 0.36
-    - _SampleDistance: 0.038
+    - _SampleDistance: 0
     - _Size: 0.115
-    - _Threshold: 3.42
+    - _Threshold: 54.8
     m_Colors:
     - _Color: {r: 0.27843142, g: 0.3711969, b: 0.94509804, a: 1}
     - _Rotation: {r: 1, g: 0, b: 1, a: 0}
     - _Up: {r: 1, g: 0, b: 0, a: 0.1}
+  m_BuildTextureStacks: []
