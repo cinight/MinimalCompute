@@ -22,6 +22,13 @@ public class IndirectReflectedStar : ScriptableRendererFeature
 
 	public override void Create()
 	{
+        if(mesh == null)
+        {
+            GameObject gameObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
+            mesh = gameObject.GetComponent<MeshFilter>().sharedMesh;
+            GameObject.Destroy(gameObject);
+        }
+
         //args
         if(args == null)
         {
