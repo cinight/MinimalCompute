@@ -5,6 +5,9 @@ Playing with the transport between CPU <-> GPU
 Unity version : 2019.3+, but should work in older versions as well \
 Tested with : Win DX11, Mac Metal
 
+#### Master is BuiltinRP. Please checkout `UniversalRP` branch for URP.
+####
+
 | Scene | Image | Description |
 | --- | - | --- |
 | `ComputeUAVTexture` | ![](READMEimages/ComputeUAVTexture.gif) | The most basic one, edit texture with compute shader |
