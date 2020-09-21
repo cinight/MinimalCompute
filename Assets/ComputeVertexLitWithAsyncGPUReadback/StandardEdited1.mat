@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: StandardEdited
-  m_Shader: {fileID: 4800000, guid: c7b754c9f4019c64391f189e3f2d9217, type: 3}
+  m_Name: My Mat
+  m_Shader: {fileID: 4800000, guid: d10c8696904cc3348bd780900694a0df, type: 3}
   m_ShaderKeywords: _DETAIL_MULX2 _NORMALMAP
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
