@@ -4,5 +4,77 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Base.unity
+    guid: 08d0f975260ac51448a6a5e5cfc12fa1
+  - enabled: 1
+    path: Assets/AsyncGPUReadback/AsyncGPUReadbackTest_URP.unity
+    guid: 60e908919e0b24a7caad62786eb94915
+  - enabled: 1
+    path: Assets/AsyncGPUReadback/AsyncGPUReadbackTest_Builtin.unity
+    guid: 6d71fba87391e324aa4e7aec5e34c051
+  - enabled: 1
+    path: Assets/AsyncGPUReadbackMesh/AsyncGPUReadbackMesh_URP.unity
+    guid: 00225e31ec3d70b4b84d11b2e26949ed
+  - enabled: 1
+    path: Assets/AsyncGPUReadbackMesh/AsyncGPUReadbackMesh_Builtin.unity
+    guid: 12d43617bbeec424385cbb80e79dc3db
+  - enabled: 1
+    path: Assets/AsyncGPUReadbackMesh_NewMeshAPI/AsyncGPUReadbackMesh_NewMeshAPI_URP.unity
+    guid: d3c96eb219a2eec4bbf5d7453836300a
+  - enabled: 1
+    path: Assets/AsyncGPUReadbackMesh_NewMeshAPI/AsyncGPUReadbackMesh_NewMeshAPI_Builtin.unity
+    guid: 706a906aaa3f7d84487a4b258545ddf6
+  - enabled: 1
+    path: Assets/AsyncGPUReadbackTex/AsyncGPUReadbackTex.unity
+    guid: 95d7e59c232c643a4b03b5b4ea1eb63e
+  - enabled: 1
+    path: Assets/ComputeParticlesDirect/ComputeParticlesDirect_URP.unity
+    guid: 863b2f68887b9a84093c35a56fe40fd7
+  - enabled: 1
+    path: Assets/ComputeParticlesDirect/ComputeParticlesDirect_Builtin.unity
+    guid: 26e96c7f8de773149a63daba6577c3b7
+  - enabled: 1
+    path: Assets/ComputeParticlesIndirect/ComputeParticlesIndirect.unity
+    guid: 9d7b6fbe1c7b0ae41b11aefa59d49916
+  - enabled: 1
+    path: Assets/ComputeUAVTexFlow/ComputeUAVTexFlow.unity
+    guid: a896f6a5cc103804e9d306e51225579a
+  - enabled: 1
+    path: Assets/ComputeUAVTexture/ComputeUAVTexture.unity
+    guid: 1f2ba23256a10664984befabb2475ddc
+  - enabled: 1
+    path: Assets/ComputeVertex/ComputeVertex.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/ComputeVertexLit/ComputeVertexLit_URP.unity
+    guid: 2307b2e0966f0d14d80ea0b60be37f65
+  - enabled: 1
+    path: Assets/ComputeVertexLit/ComputeVertexLit_Builtin.unity
+    guid: 86d92d3659681104a98207a89d5cb7b8
+  - enabled: 1
+    path: Assets/IndirectCompute/IndirectCompute.unity
+    guid: 9252618d4c859429bb078dc64994a59d
+  - enabled: 1
+    path: Assets/IndirectReflectedStar/IndirectReflectedStar_URP.unity
+    guid: 04f2d743f4a47564db46164bb9b1dae5
+  - enabled: 1
+    path: Assets/IndirectReflectedStar/IndirectReflectedStar_Builtin.unity
+    guid: d71a7b16266eace49a9e447a41bcc685
+  - enabled: 1
+    path: Assets/StructuredBufferNoCompute/StructuredBufferNoCompute_URP.unity
+    guid: 1ca723e72b75a4de0907320897374977
+  - enabled: 1
+    path: Assets/StructuredBufferNoCompute/StructuredBufferNoCompute_Builtin.unity
+    guid: c7e48cc238262104cb26588cf497fb28
+  - enabled: 1
+    path: Assets/StructuredBufferWithCompute/StructuredBufferWithCompute_URP.unity
+    guid: daecd565e54524cccadba35f2ee5a110
+  - enabled: 1
+    path: Assets/StructuredBufferWithCompute/StructuredBufferWithCompute_Builtin.unity
+    guid: d8b6f78c8fdef504da7f244d1be2a9ac
+  - enabled: 1
+    path: Assets/UAVInShader/UAVInShader.unity
+    guid: d1fd244de4303924f9bfcd55058b72aa
   m_configObjects: {}

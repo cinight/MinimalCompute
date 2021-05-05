@@ -6,7 +6,7 @@ Shader "Custom/IndirectReflectedStar"
 
 		[Header(Filter settings)]
 		_SampleDistance ("SampleDistance",Range(0,0.1)) = 0.02
-		_Threshold ("Threshold",Range(0,5)) = 1
+		_Threshold ("Threshold",Range(0,100)) = 1
 
 		[Header(Drawing settings)]
 		_MaxSize ("MaxSize",Range(0,0.4)) = 0.1
@@ -79,6 +79,8 @@ Shader "Custom/IndirectReflectedStar"
 					p.uv = i.uv;
 					p.intensity = lumc-_Threshold;
 					pointBufferOutput.Append (p);
+
+					c = float4(0,1,0,1); //For debug
 				}
 
 				return c;
@@ -89,6 +91,7 @@ Shader "Custom/IndirectReflectedStar"
 		//================= Drawing the stars
 		Pass 
 		{
+			Tags { "RenderPipeline" = "UniversalRenderPipeline"}
 			ZWrite Off ZTest Always Cull Off Fog { Mode Off }
 			Blend SrcAlpha One
 

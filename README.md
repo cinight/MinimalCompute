@@ -2,11 +2,8 @@
 Minimal test scenes contains compute shaders, compute buffers etc
 Playing with the transport between CPU <-> GPU
 
-Unity version : 2019.3+, but should work in older versions as well \
-Tested with : Win DX11, Mac Metal
-
-#### Master is BuiltinRP. Please checkout `UniversalRP` branch for URP.
-####
+Unity version : 2020.3+, contains both BuiltinRP and Universal RP (URP) scenes
+Tested with : Win DX11
 
 | Scene | Image | Description |
 | --- | - | --- |
