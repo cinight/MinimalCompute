@@ -2,7 +2,7 @@
 Minimal test scenes contains compute shaders, compute buffers etc
 Playing with the transport between CPU <-> GPU
 
-Unity version : 2020.3+, contains both BuiltinRP and Universal RP (URP) scenes
+Unity version : 2020.3+, contains both `BuiltinRP` and `Universal RP (URP)` scenes \
 Tested with : Win DX11
 
 | Scene | Image | Description |
