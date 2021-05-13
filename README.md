@@ -9,6 +9,7 @@ Tested with : Win DX11
 | --- | - | --- |
 | `ComputeUAVTexture` | ![](READMEimages/ComputeUAVTexture.gif) | The most basic one, edit texture with compute shader |
 | `ComputeUAVTexFlow` | ![](READMEimages/ComputeUAVTexFlow.gif) | Example of using compute to animate texture pixels |
+| `ComputePaintTexture` | ![](READMEimages/ComputePaintTexture.gif) | Paint the texture by sending object positions to compute shader |
 | `StructuredBufferWithCompute` | ![](READMEimages/StructuredBufferWithCompute.gif) | Another basic one, use compute to calculate some data and send back to CPU |
 | `StructuredBufferNoCompute` | ![](READMEimages/StructuredBufferNoCompute.gif) | ComputeBuffer doesn't always need to stick with ComputeShader |
 | `IndirectCompute` | ![](READMEimages/IndirectCompute.gif) | Simple indirect compute (indirect dispatch) and CopyCount |

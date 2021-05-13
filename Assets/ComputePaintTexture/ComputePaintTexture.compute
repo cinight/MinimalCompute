@@ -1,0 +1,59 @@
+﻿#pragma kernel CSMain
+
+struct Particle
+{
+	float3 prevposition;
+	float3 position;
+};
+
+StructuredBuffer<Particle> particleBuffer;
+RWTexture2D<float4> Result;
+
+int size; //texture resolution
+int particleCount; //no. of spheres
+#define quadSize 10 //scale of the Quad object in scene
+#define lineinterpolator 30
+
+float2 uvFromPos(float3 pos)
+{
+	return ( pos.xz + quadSize * 0.5f ) / (float) quadSize;
+}
+
+[numthreads(8,8,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+	float2 uv = 0;
+	float2 prevuv = 0;
+
+	for(int i=0; i<particleCount;i++)
+	{
+		//Convert positions to texture UV space
+		uv = uvFromPos(particleBuffer[i].position);
+		prevuv = uvFromPos(particleBuffer[i].prevposition);
+		float dist = distance(uv,prevuv);
+
+		//color
+		float c = float(i)/float(particleCount);
+		float4 color = 0;
+		color.rg = frac(abs(uv - prevuv) * 15.0);
+		color.b = frac(c + dist);
+		color *= 0.1f;
+		color *= dist;
+
+		//fill the pixels between prev and current positions
+		int interpolate = dist * lineinterpolator;
+		for(int k=0; k<lineinterpolator;k++)
+		{
+			float f = (float)k / lineinterpolator;
+			float2 miduv = lerp(uv,prevuv,f);
+
+			//Additive color
+			Result[uint2(miduv*size)] += color;
+		}
+	}
+
+	//fadeout
+	Result[id.xy] *= 0.999f;
+}
+
+
