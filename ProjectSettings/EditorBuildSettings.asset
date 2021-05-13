@@ -45,6 +45,9 @@ EditorBuildSettings:
     path: Assets/ComputeUAVTexture/ComputeUAVTexture.unity
     guid: 1f2ba23256a10664984befabb2475ddc
   - enabled: 1
+    path: Assets/ComputePaintTexture/ComputePaintTexture.unity
+    guid: ad7d24503a8f2404f8e0cf267d865451
+  - enabled: 1
     path: Assets/ComputeVertex/ComputeVertex.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
