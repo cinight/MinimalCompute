@@ -12,45 +12,58 @@ RWTexture2D<float4> Result;
 int size; //texture resolution
 int particleCount; //no. of spheres
 #define quadSize 10 //scale of the Quad object in scene
-#define lineinterpolator 30
+#define thickness 0.0001f
 
 float2 uvFromPos(float3 pos)
 {
 	return ( pos.xz + quadSize * 0.5f ) / (float) quadSize;
 }
 
+//https://forum.unity.com/threads/compute-shader-for-line-drawing.599989/#post-4013116
+float XonLineAB( float2 x, float2 a, float2 b )
+{
+    float2 XA = x-a;
+	float2 BA = b-a;
+
+	float dotAB = dot(BA,BA); //distAB * distAB
+	float dotX = dot(XA,BA);
+
+    float p = saturate( dotX / dotAB ); //percentage
+    float2 vec = XA - BA * p;  // perpendicular vector
+	float dist = dot(vec,vec) * 100.0;
+
+	return step(dist,thickness);
+}
+
 [numthreads(8,8,1)]
 void CSMain (uint3 id : SV_DispatchThreadID)
 {
-	float2 uv = 0;
+	float2 currentuv = 0;
 	float2 prevuv = 0;
+	float2 uv = float2(id.xy) / float(size);
+	float draw = 0;
 
 	for(int i=0; i<particleCount;i++)
 	{
 		//Convert positions to texture UV space
-		uv = uvFromPos(particleBuffer[i].position);
+		currentuv = uvFromPos(particleBuffer[i].position);
 		prevuv = uvFromPos(particleBuffer[i].prevposition);
-		float dist = distance(uv,prevuv);
 
-		//color
-		float c = float(i)/float(particleCount);
-		float4 color = 0;
-		color.rg = frac(abs(uv - prevuv) * 15.0);
-		color.b = frac(c + dist);
-		color *= 0.1f;
-		color *= dist;
-
-		//fill the pixels between prev and current positions
-		int interpolate = dist * lineinterpolator;
-		for(int k=0; k<lineinterpolator;k++)
-		{
-			float f = (float)k / lineinterpolator;
-			float2 miduv = lerp(uv,prevuv,f);
-
-			//Additive color
-			Result[uint2(miduv*size)] += color;
-		}
+		//check if current uv is between prev and current line
+		draw += XonLineAB(uv,prevuv,currentuv); 
 	}
+
+	draw = saturate(draw);
+
+	//color
+	float dist = distance(currentuv,prevuv);
+	float4 color = 0;
+	color.rg = frac(abs(currentuv - prevuv) * 15.0);
+	color.b = frac(uv.x * uv.y) * 2.0;
+	color *= dist * 20.0;
+
+	//Additive color
+	Result[id.xy] += color * draw;
 
 	//fadeout
 	Result[id.xy] *= 0.999f;
