@@ -280,6 +280,7 @@ MonoBehaviour:
   - {fileID: 1229870669}
   - {fileID: 1470922769}
   - {fileID: 484938690}
+  drawType: 0
 --- !u!23 &420556010
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -444,7 +445,7 @@ SpringJoint:
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0.4999981, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -4.18946, y: -13.500004, z: -0.060000002}
+  m_ConnectedAnchor: {x: -7.4394603, y: -13.500004, z: -0.060000002}
   serializedVersion: 2
   m_Spring: 20
   m_Damper: 0.5
@@ -1662,7 +1663,7 @@ SpringJoint:
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0.4999981, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 3.20054, y: -13.500004, z: -0.060000002}
+  m_ConnectedAnchor: {x: 7.34054, y: -13.500004, z: -0.060000002}
   serializedVersion: 2
   m_Spring: 20
   m_Damper: 0.5

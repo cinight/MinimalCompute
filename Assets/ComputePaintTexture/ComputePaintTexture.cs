@@ -9,6 +9,7 @@ public class ComputePaintTexture : MonoBehaviour
 	public Material _mat;
 	public int size = 128;
 	public Transform[] spheres;
+	public int drawType = 0;
 
     struct Particle
     {
@@ -38,6 +39,28 @@ public class ComputePaintTexture : MonoBehaviour
         cBuffer.SetData(particleArray);
 		shader.SetBuffer(_kernel,"particleBuffer",cBuffer);
 		shader.SetInt("particleCount",particleArray.Length);
+
+		//draw type
+		switch(drawType)
+		{
+			case 1: 
+				shader.EnableKeyword("CURVEDSTAIGHTLINE");
+				shader.DisableKeyword("DRAWLINE");
+				shader.DisableKeyword("CIRCLES");
+				break;
+
+			case 2: 
+				shader.EnableKeyword("CIRCLES");
+				shader.DisableKeyword("DRAWLINE");
+				shader.DisableKeyword("CURVEDSTAIGHTLINE");
+				break;
+
+			default:
+				shader.EnableKeyword("DRAWLINE");
+				shader.DisableKeyword("CURVEDSTAIGHTLINE");
+				shader.DisableKeyword("CIRCLES");
+				break;
+		}
 	}
 
 	void Update()
