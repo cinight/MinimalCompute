@@ -145,7 +145,7 @@
 
                 //This is for coloring the trail
                 Varyings o = LitPassVertex(input);
-                o.fogFactorAndVertexLight.x = vertexBuffer[realid].uv.z;
+                o.fogFactor.x = vertexBuffer[realid].uv.z;
 
                 return o;
             }
@@ -153,7 +153,7 @@
             half4 LitPassFragmentEdited(Varyings input) : SV_Target
             {
                  //This is for coloring the trail
-                 float4 col = lerp(0,float4(1,0,0,1),input.fogFactorAndVertexLight.x);
+                 float4 col = lerp(0,float4(1,0,0,1),input.fogFactor.x);
                  return LitPassFragment(input) + col; 
             }
             
