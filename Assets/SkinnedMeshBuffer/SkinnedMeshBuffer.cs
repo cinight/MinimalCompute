@@ -14,13 +14,11 @@ public class SkinnedMeshBuffer : MonoBehaviour
     public SkinnedMeshRenderer smrA;
     public Transform hipA;
     private GraphicsBuffer bufferA;
-    private GraphicsBuffer bufferA_index;
 
     [Header("Object B")]
     public SkinnedMeshRenderer smrB;
     public Transform hipB;
     private GraphicsBuffer bufferB;
-    private GraphicsBuffer bufferB_index;
 
     [Header("Object Mid")]
     public Material[] materials;
@@ -34,40 +32,27 @@ public class SkinnedMeshBuffer : MonoBehaviour
             //skinned mesh buffer is not available at Start(). so need to do it here
             if(bufferA == null) bufferA = smrA.GetVertexBuffer();
             if(bufferB == null) bufferB = smrB.GetVertexBuffer();
-            if(bufferA_index == null)
-            {
-                smrA.sharedMesh.indexBufferTarget |= GraphicsBuffer.Target.Raw;
-                bufferA_index = smrA.sharedMesh.GetIndexBuffer();
-            } 
-            if(bufferB_index == null)
-            {
-
-                smrB.sharedMesh.indexBufferTarget |= GraphicsBuffer.Target.Raw;
-                bufferB_index = smrB.sharedMesh.GetIndexBuffer();
-            }
 
             //bind the buffer to materials
-            if(bufferA != null && bufferB != null && bufferA_index != null && bufferB_index != null )
+            if(bufferA != null && bufferB != null )
             {
                 for(int i=0; i<materials.Length; i++)
                 {
                     materials[i].SetBuffer("bufVerticesA", bufferA);
                     materials[i].SetBuffer("bufVerticesB", bufferB);
-                    materials[i].SetBuffer("bufVerticesA_index", bufferA_index);
-                    materials[i].SetBuffer("bufVerticesB_index", bufferB_index);
                 }
                 initialized = true;
             }
         }
         else
         {
+            //runtime values
             for(int i=0; i<materials.Length; i++)
             {
                 materials[i].SetFloat("_Progress",progress);
                 materials[i].SetVector("_HipLocalPositionA", hipA.localPosition);
                 materials[i].SetVector("_HipLocalPositionB", hipB.localPosition);
             }
-            
         }
     }
 
@@ -75,7 +60,5 @@ public class SkinnedMeshBuffer : MonoBehaviour
     {
         if(bufferA != null) bufferA.Dispose();
         if(bufferB != null) bufferB.Dispose();
-        if(bufferA_index != null) bufferA_index.Dispose();
-        if(bufferB_index != null) bufferB_index.Dispose();
     }
 }

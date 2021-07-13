@@ -4,7 +4,6 @@
 	{
 		_MainTex ("_MainTex (RGBA)", 2D) = "white" {}
 		_Color ("_Color", Color) = (1,1,1,1)
-		_ByteAddressOffset_Pos ("_ByteAddressOffset_Pos", Vector) = (40,0,0,0)
 	}
 	SubShader
 	{
@@ -23,14 +22,16 @@
 			//Vertex buffers
 			ByteAddressBuffer bufVerticesA;
 			ByteAddressBuffer bufVerticesB;
-			//Index buffers
-			ByteAddressBuffer bufVerticesA_index;
-			ByteAddressBuffer bufVerticesB_index;
+
+            struct appdata
+            {
+                float2 uv : TEXCOORD0;
+            };
 
 			struct v2f
 			{
 				float4 vertex : SV_POSITION;
-				//float2 uv : TEXCOORD0;
+				float2 uv : TEXCOORD0;
 				float3 normal : NORMAL;
 				float4 color : COLOR;
 			};
@@ -40,58 +41,71 @@
 			float4 _Color;
 			float3 _HipLocalPositionA;
 			float3 _HipLocalPositionB;
-			uint4 _ByteAddressOffset_Pos;
+
+			uniform float4 _LightColor0;
 
 			//ref: https://github.com/Unity-Technologies/MeshApiExamples/blob/master/Assets/ProceduralWaterMesh/WaterComputeShader.compute
-			float3 GetVertexData_Position(ByteAddressBuffer vBuffer, ByteAddressBuffer iBuffer, uint vid)
+			float3 GetVertexData_Position(ByteAddressBuffer vBuffer, uint vid)
 			{
-				int vidx = vid * _ByteAddressOffset_Pos.x;
-				float3 position = asfloat(vBuffer.Load3(vidx)<<_ByteAddressOffset_Pos.y);
-				return position;
+				//layout for vertex buffer (observed by using RenderDoc):
+				//float3 position
+				//float3 normal
+				//float4 tamgent
+				//therefore total 10 floats and 4 bytes each = 10*4 = 40
+				int vidx = vid * 40;
+				float3 data = asfloat(vBuffer.Load3(vidx));
+				return data;
 			}
-			float3 GetVertexData_Normal(ByteAddressBuffer vBuffer, ByteAddressBuffer iBuffer, uint vid)
+			float3 GetVertexData_Normal(ByteAddressBuffer vBuffer, uint vid)
 			{
-				uint id = asuint(iBuffer.Load(vid)<<0);
-				int vidx = id * 6;
-				float3 normal = asfloat(vBuffer.Load3(vidx+3)<<2);
-				return normal;
+				int vidx = vid * 40;
+				float3 data = asfloat(vBuffer.Load3(vidx+12)); //offset by float3 position in front, so 3*4bytes = 12
+				return data;
 			}
 			
-			v2f vert (uint id : SV_VertexID)
+			v2f vert (appdata v, uint id : SV_VertexID)
 			{
 				v2f o;
 
+				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+
 				//Blend position
-				float3 posA = GetVertexData_Position(bufVerticesA,bufVerticesA_index,id) + _HipLocalPositionA;
-				float3 posB = GetVertexData_Position(bufVerticesB,bufVerticesB_index,id) + _HipLocalPositionB;
+				float3 posA = GetVertexData_Position(bufVerticesA,id) + _HipLocalPositionA;
+				float3 posB = GetVertexData_Position(bufVerticesB,id) + _HipLocalPositionB;
 				float3 pos = lerp( posA, posB, _Progress );
 				o.vertex = UnityObjectToClipPos(pos);
 
-				//float3 nor = lerp( GetVertexData_Normal(bufVerticesA,realid), GetVertexData_Normal(bufVerticesB,realid) , _Progress );
-				//float3 wpos = mul(unity_ObjectToWorld, pos);
-				float3 nor = GetVertexData_Normal(bufVerticesA,bufVerticesA_index,id);
+				//Blend normal
+				float3 norA = GetVertexData_Normal(bufVerticesA,id);
+				float3 norB = GetVertexData_Normal(bufVerticesB,id);
+				float3 nor = lerp( norA, norB , _Progress );
 				o.normal = nor;
 
-				o.color = o.vertex;
+				//world position for rim
+				o.color = mul(unity_ObjectToWorld, pos);
 
-				//Rim
-				//float3 wpos = mul(unity_ObjectToWorld, o.vertex);
-				//float3 viewDir = normalize( _WorldSpaceCameraPos.xyz - wpos );
-				//float rim = pow( 1.0 - saturate( dot( viewDir, o.normal ) ), 3.0 );
-				//o.color = lerp( 0, _Color, rim );
-
-				//o.uv = TRANSFORM_TEX(vertexBuffer[realid].uv, _MainTex);
-				//o.color = vertexBuffer[realid].col;
 				return o;
 			}
 			
 			fixed4 frag (v2f i) : SV_Target
 			{
+				//Texture
+				fixed4 col = tex2D(_MainTex, i.uv);
 
+				//Basic lighting
+				float3 wnor = normalize( mul( unity_WorldToObject, float4( i.normal, 0.0 ) ).xyz );
+				float3 lightdir = normalize(_WorldSpaceLightPos0.xyz);
+				float atten = 1.0;
+				float3 diffuse = atten * _LightColor0.xyz * max(0.0,dot(wnor, lightdir));
+				col *= float4(diffuse,1);
 
-				//fixed4 col = tex2D(_MainTex, i.uv);
-				//col.rgb *= i.color.rgb;
-				return frac(i.color);//col*_Color;
+				//Rim
+				float3 viewDir = normalize( _WorldSpaceCameraPos.xyz - i.color.rgb );
+				float rim = pow( 1.0 - saturate( dot( viewDir, wnor ) ), 3.0 );
+				float4 rimColor = lerp( 0, _Color, rim );
+				col += rimColor;
+
+				return col;
 			}
 			ENDCG
 		}
