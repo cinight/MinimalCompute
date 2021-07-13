@@ -2,7 +2,7 @@
 Minimal test scenes contains compute shaders, compute buffers etc
 Playing with the transport between CPU <-> GPU
 
-Unity version : 2020.3+, contains both `BuiltinRP` and `Universal RP (URP)` scenes \
+Unity version : 2021.2+, contains both `BuiltinRP` and `Universal RP (URP)` scenes \
 Tested with : Win DX11
 
 | Scene | Image | Description |
@@ -17,6 +17,7 @@ Tested with : Win DX11
 | `ComputeParticlesDirect` | ![](READMEimages/ComputeParticlesDirect.gif) | GPU Particle, drawing fixed no. of particles |
 | `ComputeParticlesIndirect` | ![](READMEimages/ComputeParticlesIndirect.gif) | GPU Particle, drawing dynamic no. of particles, no need to read back to CPU! |
 | `ComputeVertex` | ![](READMEimages/ComputeVertex.gif) | Replace vertex buffer with StructuredBuffer and drive vertex displacement by compute |
+| `SkinnedMeshBuffer` | ![](READMEimages/SkinnedMeshBuffer.gif) | Blend the vertex data from 2 SkinnedMeshRenderer vertex buffer and render it with MeshRenderer |
 | `ComputeVertexLit` | ![](READMEimages/ComputeVertexLit.gif) | A usecase of ComputeVertex so that different shader passes share same vertex data |
 | `UAVInShader` | ![](READMEimages/UAVInShader.gif) | Read some data back to CPU from fragment shader |
 | `AsyncGPUReadback` | ![](READMEimages/AsyncGPUReadback.gif) | Similar to StructuredBufferWithCompute, but use AsyncGPUReadback to get array data back to CPU |
