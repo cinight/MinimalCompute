@@ -50,7 +50,7 @@
 				//layout for vertex buffer (observed by using RenderDoc):
 				//float3 position
 				//float3 normal
-				//float4 tamgent
+				//float4 tangent
 				//therefore total 10 floats and 4 bytes each = 10*4 = 40
 				int vidx = vid * 40;
 				float3 data = asfloat(vBuffer.Load3(vidx));
@@ -59,7 +59,7 @@
 			float3 GetVertexData_Normal(ByteAddressBuffer vBuffer, uint vid)
 			{
 				int vidx = vid * 40;
-				float3 data = asfloat(vBuffer.Load3(vidx+12)); //offset by float3 position in front, so 3*4bytes = 12
+				float3 data = asfloat(vBuffer.Load3(vidx+12)); //offset by float3 (position) in front, so 3*4bytes = 12
 				return data;
 			}
 			
