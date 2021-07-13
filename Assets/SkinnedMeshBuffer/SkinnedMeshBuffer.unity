@@ -285,6 +285,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!4 &344953288 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8914113513233755437, guid: 36078ab0369161e49a29d349ae3e0739,
+    type: 3}
+  m_PrefabInstance: {fileID: 1387683856}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &593564924
 GameObject:
   m_ObjectHideFlags: 0
@@ -654,7 +660,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   smrA: {fileID: 1590660764}
+  hipA: {fileID: 344953288}
   smrB: {fileID: 1259163431}
+  hipB: {fileID: 1969658933}
   materials:
   - {fileID: 2100000, guid: 9938ef8d49e26044eaeff3faff614f46, type: 2}
   - {fileID: 2100000, guid: e5035fee117516646b5508a7f64d982c, type: 2}
@@ -811,3 +819,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   renderPipelineAsset: {fileID: 0}
+--- !u!4 &1969658933 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8914113513233755437, guid: 36078ab0369161e49a29d349ae3e0739,
+    type: 3}
+  m_PrefabInstance: {fileID: 1586202681}
+  m_PrefabAsset: {fileID: 0}

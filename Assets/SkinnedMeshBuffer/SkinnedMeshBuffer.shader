@@ -1,12 +1,10 @@
-﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
-
-Shader "SkinnedMeshBuffer"
+﻿Shader "SkinnedMeshBuffer"
 {
 	Properties
 	{
-		_Progress ("_Progress", Range(0,1)) = 0.5
 		_MainTex ("_MainTex (RGBA)", 2D) = "white" {}
 		_Color ("_Color", Color) = (1,1,1,1)
+		_ByteAddressOffset_Pos ("_ByteAddressOffset_Pos", Vector) = (40,0,0,0)
 	}
 	SubShader
 	{
@@ -25,6 +23,9 @@ Shader "SkinnedMeshBuffer"
 			//Vertex buffers
 			ByteAddressBuffer bufVerticesA;
 			ByteAddressBuffer bufVerticesB;
+			//Index buffers
+			ByteAddressBuffer bufVerticesA_index;
+			ByteAddressBuffer bufVerticesB_index;
 
 			struct v2f
 			{
@@ -37,42 +38,47 @@ Shader "SkinnedMeshBuffer"
 			sampler2D _MainTex;
 			float4 _MainTex_ST;
 			float4 _Color;
+			float3 _HipLocalPositionA;
+			float3 _HipLocalPositionB;
+			uint4 _ByteAddressOffset_Pos;
 
-			//from https://github.com/Unity-Technologies/MeshApiExamples/blob/master/Assets/ProceduralWaterMesh/WaterComputeShader.compute
-			float3 GetVertexData_Position(ByteAddressBuffer addBuffer, uint vid)
+			//ref: https://github.com/Unity-Technologies/MeshApiExamples/blob/master/Assets/ProceduralWaterMesh/WaterComputeShader.compute
+			float3 GetVertexData_Position(ByteAddressBuffer vBuffer, ByteAddressBuffer iBuffer, uint vid)
 			{
-				// We know that our vertex layout is 6 floats per vertex
-				// (float3 position + float3 normal).
-				int vidx = vid * 6;
-				float3 position = asfloat(addBuffer.Load3(vidx<<2));
+				int vidx = vid * _ByteAddressOffset_Pos.x;
+				float3 position = asfloat(vBuffer.Load3(vidx)<<_ByteAddressOffset_Pos.y);
 				return position;
 			}
-			float3 GetVertexData_Normal(ByteAddressBuffer addBuffer, uint vid)
+			float3 GetVertexData_Normal(ByteAddressBuffer vBuffer, ByteAddressBuffer iBuffer, uint vid)
 			{
-				// We know that our vertex layout is 6 floats per vertex
-				// (float3 position + float3 normal).
-				int vidx = vid * 6;
-				float3 normal = asfloat(addBuffer.Load3(vidx+3)<<2);
+				uint id = asuint(iBuffer.Load(vid)<<0);
+				int vidx = id * 6;
+				float3 normal = asfloat(vBuffer.Load3(vidx+3)<<2);
 				return normal;
 			}
 			
 			v2f vert (uint id : SV_VertexID)
 			{
 				v2f o;
-				
-				uint realid = id;
 
-				//Blend A and B
-				float3 pos = lerp( GetVertexData_Position(bufVerticesA,realid), GetVertexData_Position(bufVerticesB,realid) , _Progress );
-				float3 nor = lerp( GetVertexData_Normal(bufVerticesA,realid), GetVertexData_Normal(bufVerticesB,realid) , _Progress );
+				//Blend position
+				float3 posA = GetVertexData_Position(bufVerticesA,bufVerticesA_index,id) + _HipLocalPositionA;
+				float3 posB = GetVertexData_Position(bufVerticesB,bufVerticesB_index,id) + _HipLocalPositionB;
+				float3 pos = lerp( posA, posB, _Progress );
 				o.vertex = UnityObjectToClipPos(pos);
+
+				//float3 nor = lerp( GetVertexData_Normal(bufVerticesA,realid), GetVertexData_Normal(bufVerticesB,realid) , _Progress );
+				//float3 wpos = mul(unity_ObjectToWorld, pos);
+				float3 nor = GetVertexData_Normal(bufVerticesA,bufVerticesA_index,id);
 				o.normal = nor;
 
+				o.color = o.vertex;
+
 				//Rim
-				float wpos = mul(unity_ObjectToWorld, o.vertex);
-				float3 viewDir = normalize( _WorldSpaceCameraPos.xyz - wpos );
-				float rim = pow( 1.0 - saturate( dot( viewDir, o.normal ) ), 3.0 );
-				o.color = lerp( 0, _Color, rim );
+				//float3 wpos = mul(unity_ObjectToWorld, o.vertex);
+				//float3 viewDir = normalize( _WorldSpaceCameraPos.xyz - wpos );
+				//float rim = pow( 1.0 - saturate( dot( viewDir, o.normal ) ), 3.0 );
+				//o.color = lerp( 0, _Color, rim );
 
 				//o.uv = TRANSFORM_TEX(vertexBuffer[realid].uv, _MainTex);
 				//o.color = vertexBuffer[realid].col;
@@ -85,7 +91,7 @@ Shader "SkinnedMeshBuffer"
 
 				//fixed4 col = tex2D(_MainTex, i.uv);
 				//col.rgb *= i.color.rgb;
-				return i.color;//col*_Color;
+				return frac(i.color);//col*_Color;
 			}
 			ENDCG
 		}
