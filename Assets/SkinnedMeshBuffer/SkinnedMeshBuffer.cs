@@ -17,20 +17,42 @@ public class SkinnedMeshBuffer : MonoBehaviour
     [Header("Object Mid")]
     public Material[] materials;
 
-    void Start()
+    void Update()
     {
-        bufferA = smrA.GetVertexBuffer();
-        bufferB = smrB.GetVertexBuffer();
-
-        for(int i=0; i<materials.Length; i++)
+        //skinned mesh buffer is not available at Start(). so need to do it here
+        if(bufferA == null)
         {
-            materials[i].SetBuffer("bufVerticesA", bufferA);
-            materials[i].SetBuffer("bufVerticesB", bufferB);
+            bufferA = smrA.GetVertexBuffer();
+        }
+        if(bufferB == null)
+        {
+            bufferB = smrB.GetVertexBuffer();
+        }
+
+        //bind the buffer to materials
+        if(bufferA != null && bufferB != null)
+        {
+            for(int i=0; i<materials.Length; i++)
+            {
+                materials[i].SetBuffer("bufVerticesA", bufferA);
+                materials[i].SetBuffer("bufVerticesB", bufferB);
+            }
+        }
+        else
+        {
+            Debug.Log("Buffers are null");
         }
     }
 
-    void Update()
+    void OnDisable()
     {
-        
+        if(bufferA != null)
+        {
+            bufferA.Dispose();
+        }
+        if(bufferB != null)
+        {
+            bufferB.Dispose();
+        }
     }
 }

@@ -23,8 +23,8 @@ Shader "SkinnedMeshBuffer"
 			float _Progress;
 
 			//Vertex buffers
-			RWByteAddressBuffer bufVerticesA;
-			RWByteAddressBuffer bufVerticesB;
+			ByteAddressBuffer bufVerticesA;
+			ByteAddressBuffer bufVerticesB;
 
 			struct v2f
 			{
@@ -39,7 +39,7 @@ Shader "SkinnedMeshBuffer"
 			float4 _Color;
 
 			//from https://github.com/Unity-Technologies/MeshApiExamples/blob/master/Assets/ProceduralWaterMesh/WaterComputeShader.compute
-			float3 GetVertexData_Position(RWByteAddressBuffer addBuffer, uint vid)
+			float3 GetVertexData_Position(ByteAddressBuffer addBuffer, uint vid)
 			{
 				// We know that our vertex layout is 6 floats per vertex
 				// (float3 position + float3 normal).
@@ -47,7 +47,7 @@ Shader "SkinnedMeshBuffer"
 				float3 position = asfloat(addBuffer.Load3(vidx<<2));
 				return position;
 			}
-			float3 GetVertexData_Normal(RWByteAddressBuffer addBuffer, uint vid)
+			float3 GetVertexData_Normal(ByteAddressBuffer addBuffer, uint vid)
 			{
 				// We know that our vertex layout is 6 floats per vertex
 				// (float3 position + float3 normal).
