@@ -29,6 +29,8 @@ public class SkinnedMeshBuffer : MonoBehaviour
     {
         if( !initialized )
         {
+            Debug.Log("VertexCount of A="+smrA.sharedMesh.vertexCount+"  "+"VertexCount of B="+smrB.sharedMesh.vertexCount);
+
             //skinned mesh buffer is not available at Start(). so need to do it here
             if(bufferA == null) bufferA = smrA.GetVertexBuffer();
             if(bufferB == null) bufferB = smrB.GetVertexBuffer();

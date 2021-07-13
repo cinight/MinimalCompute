@@ -57,6 +57,9 @@ EditorBuildSettings:
     path: Assets/ComputeVertex/ComputeVertex.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
+    path: Assets/SkinnedMeshBuffer/SkinnedMeshBuffer.unity
+    guid: eb28c04b7ac15bc4ba95fe3e40129c23
+  - enabled: 1
     path: Assets/ComputeVertexLit/ComputeVertexLit_URP.unity
     guid: 2307b2e0966f0d14d80ea0b60be37f65
   - enabled: 1
