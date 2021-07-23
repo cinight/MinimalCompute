@@ -1,0 +1,185 @@
+fileFormatVersion: 2
+guid: 7fe3125bc2e932445827149ef4cf8111
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Controls
+    100004: DogMesh
+    100006: Eyes
+    100008: Head
+    100010: HeadEnd
+    100012: LeftArm
+    100014: LeftEar
+    100016: LeftEarEnd
+    100018: LeftFoot
+    100020: LeftFootEnd
+    100022: LeftHand
+    100024: LeftHandEnd
+    100026: LeftHip
+    100028: LeftLeg1
+    100030: LeftLeg2
+    100032: LeftLeg3
+    100034: LeftShoulder
+    100036: LeftUpperArm
+    100038: Mesh
+    100040: Mouth
+    100042: MouthEnd
+    100044: Neck
+    100046: Pelvis
+    100048: RightArm
+    100050: RightEar
+    100052: RightEarEnd
+    100054: RightFoot
+    100056: RightFootEnd
+    100058: RightHand
+    100060: RightHandEnd
+    100062: RightHip
+    100064: RightLeg1
+    100066: RightLeg2
+    100068: RightLeg3
+    100070: RightShoulder
+    100072: RightUpperArm
+    100074: Skeleton
+    100076: Spine
+    100078: Tail1
+    100080: Tail2
+    100082: Tail3
+    100084: Tail3 1
+    400000: //RootNode
+    400002: Controls
+    400004: DogMesh
+    400006: Eyes
+    400008: Head
+    400010: HeadEnd
+    400012: LeftArm
+    400014: LeftEar
+    400016: LeftEarEnd
+    400018: LeftFoot
+    400020: LeftFootEnd
+    400022: LeftHand
+    400024: LeftHandEnd
+    400026: LeftHip
+    400028: LeftLeg1
+    400030: LeftLeg2
+    400032: LeftLeg3
+    400034: LeftShoulder
+    400036: LeftUpperArm
+    400038: Mesh
+    400040: Mouth
+    400042: MouthEnd
+    400044: Neck
+    400046: Pelvis
+    400048: RightArm
+    400050: RightEar
+    400052: RightEarEnd
+    400054: RightFoot
+    400056: RightFootEnd
+    400058: RightHand
+    400060: RightHandEnd
+    400062: RightHip
+    400064: RightLeg1
+    400066: RightLeg2
+    400068: RightLeg3
+    400070: RightShoulder
+    400072: RightUpperArm
+    400074: Skeleton
+    400076: Spine
+    400078: Tail1
+    400080: Tail2
+    400082: Tail3
+    400084: Tail3 1
+    2300000: //RootNode
+    2300002: DogMesh
+    3300000: //RootNode
+    3300002: DogMesh
+    4300000: DogMesh
+    9500000: //RootNode
+    13700000: DogMesh
+    2186277476908879412: ImportLogs
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Dog
+    second: {fileID: 2100000, guid: 77b24526fea2ba6409c54ea3e9a43332, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 1
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 1
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 0
+    importBlendShapes: 0
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 0
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

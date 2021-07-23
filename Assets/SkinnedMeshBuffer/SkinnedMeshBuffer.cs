@@ -14,14 +14,17 @@ public class SkinnedMeshBuffer : MonoBehaviour
     public SkinnedMeshRenderer smrA;
     public Transform hipA;
     private GraphicsBuffer bufferA;
+    private int vertCountA;
 
     [Header("Object B")]
     public SkinnedMeshRenderer smrB;
     public Transform hipB;
     private GraphicsBuffer bufferB;
+    private int vertCountB;
 
     [Header("Object Mid")]
     public Material[] materials;
+    public MeshFilter mf;
 
     private bool initialized = false;
 
@@ -29,7 +32,18 @@ public class SkinnedMeshBuffer : MonoBehaviour
     {
         if( !initialized )
         {
-            Debug.Log("VertexCount of A="+smrA.sharedMesh.vertexCount+"  "+"VertexCount of B="+smrB.sharedMesh.vertexCount);
+            vertCountA = smrA.sharedMesh.vertexCount;
+            vertCountB = smrB.sharedMesh.vertexCount;
+            if(vertCountA > vertCountB)
+            {
+                mf.sharedMesh = smrA.sharedMesh;
+            }
+            else
+            {
+                mf.sharedMesh = smrB.sharedMesh;
+            }
+
+            Debug.Log("VertexCount of A="+vertCountA+"  "+"VertexCount of B="+vertCountB);
 
             //skinned mesh buffer is not available at Start(). so need to do it here
             if(bufferA == null) bufferA = smrA.GetVertexBuffer();
@@ -42,6 +56,8 @@ public class SkinnedMeshBuffer : MonoBehaviour
                 {
                     materials[i].SetBuffer("bufVerticesA", bufferA);
                     materials[i].SetBuffer("bufVerticesB", bufferB);
+                    materials[i].SetInt("vertCountA",vertCountA);
+                    materials[i].SetInt("vertCountB",vertCountB);
                 }
                 initialized = true;
             }

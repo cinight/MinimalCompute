@@ -1,0 +1,281 @@
+fileFormatVersion: 2
+guid: 61d4460f2263ab949964c65bf9dbfb8e
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Controls
+    100002: //RootNode
+    100004: Eyes
+    100006: Head
+    100008: HeadEnd
+    100010: LeftArm
+    100012: LeftEar
+    100014: LeftEarEnd
+    100016: LeftFoot
+    100018: LeftFootEnd
+    100020: LeftHand
+    100022: LeftHandEnd
+    100024: LeftHip
+    100026: LeftLeg1
+    100028: LeftLeg2
+    100030: LeftLeg3
+    100032: LeftShoulder
+    100034: LeftUpperArm
+    100036: Mouth
+    100038: MouthEnd
+    100040: Neck
+    100042: Pelvis
+    100044: RightArm
+    100046: RightEar
+    100048: RightEarEnd
+    100050: RightFoot
+    100052: RightFootEnd
+    100054: RightHand
+    100056: RightHandEnd
+    100058: RightHip
+    100060: RightLeg1
+    100062: RightLeg2
+    100064: RightLeg3
+    100066: RightShoulder
+    100068: RightUpperArm
+    100070: Skeleton
+    100072: Spine
+    100074: Tail1
+    100076: Tail2
+    100078: Tail3
+    100080: Tail3 1
+    400000: Controls
+    400002: //RootNode
+    400004: Eyes
+    400006: Head
+    400008: HeadEnd
+    400010: LeftArm
+    400012: LeftEar
+    400014: LeftEarEnd
+    400016: LeftFoot
+    400018: LeftFootEnd
+    400020: LeftHand
+    400022: LeftHandEnd
+    400024: LeftHip
+    400026: LeftLeg1
+    400028: LeftLeg2
+    400030: LeftLeg3
+    400032: LeftShoulder
+    400034: LeftUpperArm
+    400036: Mouth
+    400038: MouthEnd
+    400040: Neck
+    400042: Pelvis
+    400044: RightArm
+    400046: RightEar
+    400048: RightEarEnd
+    400050: RightFoot
+    400052: RightFootEnd
+    400054: RightHand
+    400056: RightHandEnd
+    400058: RightHip
+    400060: RightLeg1
+    400062: RightLeg2
+    400064: RightLeg3
+    400066: RightShoulder
+    400068: RightUpperArm
+    400070: Skeleton
+    400072: Spine
+    400074: Tail1
+    400076: Tail2
+    400078: Tail3
+    400080: Tail3 1
+    7400000: Dog_Run
+    9500000: //RootNode
+    2186277476908879412: ImportLogs
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Dog_Run
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 14
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Controls
+        weight: 1
+      - path: Skeleton
+        weight: 1
+      - path: Skeleton/Spine
+        weight: 1
+      - path: Skeleton/Spine/LeftShoulder
+        weight: 1
+      - path: Skeleton/Spine/LeftShoulder/LeftUpperArm
+        weight: 1
+      - path: Skeleton/Spine/LeftShoulder/LeftUpperArm/LeftArm
+        weight: 1
+      - path: Skeleton/Spine/LeftShoulder/LeftUpperArm/LeftArm/LeftHand
+        weight: 1
+      - path: Skeleton/Spine/LeftShoulder/LeftUpperArm/LeftArm/LeftHand/LeftHandEnd
+        weight: 1
+      - path: Skeleton/Spine/Neck
+        weight: 1
+      - path: Skeleton/Spine/Neck/Head
+        weight: 1
+      - path: Skeleton/Spine/Neck/Head/Eyes
+        weight: 1
+      - path: Skeleton/Spine/Neck/Head/HeadEnd
+        weight: 1
+      - path: Skeleton/Spine/Neck/Head/LeftEar
+        weight: 1
+      - path: Skeleton/Spine/Neck/Head/LeftEar/LeftEarEnd
+        weight: 1
+      - path: Skeleton/Spine/Neck/Head/Mouth
+        weight: 1
+      - path: Skeleton/Spine/Neck/Head/Mouth/MouthEnd
+        weight: 1
+      - path: Skeleton/Spine/Neck/Head/RightEar
+        weight: 1
+      - path: Skeleton/Spine/Neck/Head/RightEar/RightEarEnd
+        weight: 1
+      - path: Skeleton/Spine/Pelvis
+        weight: 1
+      - path: Skeleton/Spine/Pelvis/LeftHip
+        weight: 1
+      - path: Skeleton/Spine/Pelvis/LeftHip/LeftLeg1
+        weight: 1
+      - path: Skeleton/Spine/Pelvis/LeftHip/LeftLeg1/LeftLeg2
+        weight: 1
+      - path: Skeleton/Spine/Pelvis/LeftHip/LeftLeg1/LeftLeg2/LeftLeg3
+        weight: 1
+      - path: Skeleton/Spine/Pelvis/LeftHip/LeftLeg1/LeftLeg2/LeftLeg3/LeftFoot
+        weight: 1
+      - path: Skeleton/Spine/Pelvis/LeftHip/LeftLeg1/LeftLeg2/LeftLeg3/LeftFoot/LeftFootEnd
+        weight: 1
+      - path: Skeleton/Spine/Pelvis/RightHip
+        weight: 1
+      - path: Skeleton/Spine/Pelvis/RightHip/RightLeg1
+        weight: 1
+      - path: Skeleton/Spine/Pelvis/RightHip/RightLeg1/RightLeg2
+        weight: 1
+      - path: Skeleton/Spine/Pelvis/RightHip/RightLeg1/RightLeg2/RightLeg3
+        weight: 1
+      - path: Skeleton/Spine/Pelvis/RightHip/RightLeg1/RightLeg2/RightLeg3/RightFoot
+        weight: 1
+      - path: Skeleton/Spine/Pelvis/RightHip/RightLeg1/RightLeg2/RightLeg3/RightFoot/RightFootEnd
+        weight: 1
+      - path: Skeleton/Spine/Pelvis/Tail1
+        weight: 1
+      - path: Skeleton/Spine/Pelvis/Tail1/Tail2
+        weight: 1
+      - path: Skeleton/Spine/Pelvis/Tail1/Tail2/Tail3
+        weight: 1
+      - path: Skeleton/Spine/Pelvis/Tail1/Tail2/Tail3/Tail3 1
+        weight: 1
+      - path: Skeleton/Spine/RightShoulder
+        weight: 1
+      - path: Skeleton/Spine/RightShoulder/RightUpperArm
+        weight: 1
+      - path: Skeleton/Spine/RightShoulder/RightUpperArm/RightArm
+        weight: 1
+      - path: Skeleton/Spine/RightShoulder/RightUpperArm/RightArm/RightHand
+        weight: 1
+      - path: Skeleton/Spine/RightShoulder/RightUpperArm/RightArm/RightHand/RightHandEnd
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 0
+    importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
