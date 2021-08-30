@@ -60,6 +60,9 @@ EditorBuildSettings:
     path: Assets/SkinnedMeshBuffer/SkinnedMeshBuffer_sameMesh.unity
     guid: eb28c04b7ac15bc4ba95fe3e40129c23
   - enabled: 1
+    path: Assets/SkinnedMeshBuffer_DiffMesh/SkinnedMeshBuffer_DiffMesh.unity
+    guid: 1105acd185fcd204c8f3522523f72c5d
+  - enabled: 1
     path: Assets/ComputeVertexLit/ComputeVertexLit_URP.unity
     guid: 2307b2e0966f0d14d80ea0b60be37f65
   - enabled: 1
