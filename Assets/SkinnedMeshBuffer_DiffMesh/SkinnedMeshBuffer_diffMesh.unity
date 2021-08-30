@@ -1230,10 +1230,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1561926339}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 209fa598c1feff34ea9f71fdde25bbea, type: 3}
+  m_Script: {fileID: 11500000, guid: 88cda69131f13a643871599b7e5b25a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  progress: 1
+  progress: 0.5
   smrA: {fileID: 1435788126}
   hipA: {fileID: 2383871}
   smrB: {fileID: 6019764173250825577}
