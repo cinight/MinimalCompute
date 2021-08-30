@@ -1,21 +1,23 @@
-﻿Shader "SkinnedMeshBuffer_differentMesh"
+Shader "Unlit/Graphics_DrawMeshInstancedIndirect"
 {
-	Properties
-	{
-		_MainTex ("_MainTex (RGBA)", 2D) = "white" {}
+    Properties
+    {
+        _MainTex ("Texture", 2D) = "white" {}
 		_Color ("_Color", Color) = (1,1,1,1)
-		_upB ("_upB", Vector) = (0,1,0,0)
-	}
-	SubShader
-	{
-		Pass
-		{
-			CGPROGRAM
-			#pragma vertex vert
-			#pragma fragment frag
-			#pragma target 5.0
+    }
+    SubShader
+    {
+        Tags { "RenderType"="Opaque" }
+		Cull Off
 
-			#include "UnityCG.cginc"
+        Pass
+        {
+            CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma target 5.0
+
+            #include "UnityCG.cginc"
 
 			//Progress
 			float _Progress;
@@ -30,35 +32,35 @@
 
             struct appdata
             {
+                float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
             };
 
-			struct v2f
-			{
+            struct v2f
+            {
 				float4 vertex : SV_POSITION;
 				float2 uv : TEXCOORD0;
 				float3 normal : NORMAL;
 				float4 color : COLOR;
-			};
+            };
 
-			sampler2D _MainTex;
-			float4 _MainTex_ST;
+            sampler2D _MainTex;
+            float4 _MainTex_ST;
 			float4 _Color;
 			float3 _HipLocalPositionA;
 			float3 _HipLocalPositionB;
-			int vertCountA;
-			int vertCountB;
-			float4 _upB;
+			int triCountA;
+			int triCountB;
 
-			uniform float4 _LightColor0;
+            uniform float4 _LightColor0;
 
 			//ref: https://github.com/Unity-Technologies/MeshApiExamples/blob/master/Assets/ProceduralWaterMesh/WaterComputeShader.compute
-			float3 GetVertexData_Position(ByteAddressBuffer vBuffer, ByteAddressBuffer iBuffer, uint vid)
+			float3 GetVertexData_Position(ByteAddressBuffer vBuffer, ByteAddressBuffer iBuffer, uint vid, uint iid)
 			{
-				//get id from index buffer
-				//index format is UInt16 = 16 bits = 2 bytes
-
-				int id = asint(iBuffer.Load(vid * _upB.x));
+				//layout for index buffer
+				//uint32 = 4 bytes for each id
+                //3 ids for each triangle
+				uint id = asuint(iBuffer.Load( (iid * 3 + vid)*4 ));
 
 				//layout for vertex buffer (observed by using RenderDoc):
 				//float3 position
@@ -69,51 +71,51 @@
 				float3 data = asfloat(vBuffer.Load3(vidx));
 				return data;
 			}
-			float3 GetVertexData_Normal(ByteAddressBuffer vBuffer, ByteAddressBuffer iBuffer, uint vid)
+			float3 GetVertexData_Normal(ByteAddressBuffer vBuffer, ByteAddressBuffer iBuffer, uint vid, uint iid)
 			{
-				//get id from index buffer
-				int id = asint(iBuffer.Load(vid * _upB.x));
+				uint id = asuint(iBuffer.Load( (iid * 3 + vid)*4 ));
 
 				int vidx = id * 40;
 				float3 data = asfloat(vBuffer.Load3(vidx+12)); //offset by float3 (position) in front, so 3*4bytes = 12
 				return data;
 			}
-			
-			v2f vert (appdata v, uint id : SV_VertexID)
-			{
+
+            v2f vert (appdata v, uint vid : SV_VertexID, uint instanceID : SV_InstanceID)
+            {
 				v2f o;
 
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
 
 				//Blend position
-				float3 posA = GetVertexData_Position(bufVerticesA,bufVerticesA_index,id) + _HipLocalPositionA;
-				float3 posB = GetVertexData_Position(bufVerticesB,bufVerticesB_index,id) + _HipLocalPositionB;
+				float3 posA = GetVertexData_Position(bufVerticesA,bufVerticesA_index,vid,instanceID) + _HipLocalPositionA;
+				float3 posB = GetVertexData_Position(bufVerticesB,bufVerticesB_index,vid,instanceID) + _HipLocalPositionB;
 				float3 pos = lerp( posA, posB, _Progress );
 				o.vertex = UnityObjectToClipPos(pos);
 
 				//Blend normal
-				float3 norA = GetVertexData_Normal(bufVerticesA,bufVerticesA_index,id);
-				float3 norB = GetVertexData_Normal(bufVerticesB,bufVerticesB_index,id);
+				float3 norA = GetVertexData_Normal(bufVerticesA,bufVerticesA_index,vid,instanceID);
+				float3 norB = GetVertexData_Normal(bufVerticesB,bufVerticesB_index,vid,instanceID);
 				float3 nor = lerp( norA, norB , _Progress );
 				o.normal = nor;
 
 				//world position for rim
-				//o.color = mul(unity_ObjectToWorld, pos);
+				o.color = mul(unity_ObjectToWorld, pos);
 
-				//In this test scene B has less vertices so we want to discard excessive vertices
-				if(id > vertCountB)
-				{
-					o.color = float4(1,0,0,1);
-					o.vertex = 0;
-				}
-				else
-				{
-					o.color = 1;
-				}
+				//Highlight the extra trianges
+				// uint minTriCount = min(triCountA,triCountB);
+				// if(instanceID >= minTriCount)
+				// {
+				// 	o.color = float4(1,0,0,1);
+				// 	//o.vertex = 0;
+				// }
+				// else
+				// {
+				// 	o.color = 1;
+				// }
 
-				return o;
-			}
-			
+                return o;
+            }
+
 			fixed4 frag (v2f i) : SV_Target
 			{
 				//Texture
@@ -127,17 +129,17 @@
 				col *= float4(diffuse,1);
 
 				//Rim
-				// float3 viewDir = normalize( _WorldSpaceCameraPos.xyz - i.color.rgb );
-				// float rim = pow( 1.0 - saturate( dot( viewDir, wnor ) ), 3.0 );
-				// float4 rimColor = lerp( 0, _Color, rim );
-				// col += rimColor;
+				float3 viewDir = normalize( _WorldSpaceCameraPos.xyz - i.color.rgb );
+				float rim = pow( 1.0 - saturate( dot( viewDir, wnor ) ), 3.0 );
+				float4 rimColor = lerp( 0, _Color, rim );
+				col += rimColor;
 
-				//Discard fragment
-				col *= i.color;
+				//Debug Color
+				//col *= i.color;
 
 				return col;
 			}
 			ENDCG
-		}
-	}
+        }
+    }
 }

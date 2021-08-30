@@ -1,102 +1,290 @@
 fileFormatVersion: 2
 guid: 7fe3125bc2e932445827149ef4cf8111
 ModelImporter:
-  serializedVersion: 22
-  fileIDToRecycleName:
-    100000: //RootNode
-    100002: Controls
-    100004: DogMesh
-    100006: Eyes
-    100008: Head
-    100010: HeadEnd
-    100012: LeftArm
-    100014: LeftEar
-    100016: LeftEarEnd
-    100018: LeftFoot
-    100020: LeftFootEnd
-    100022: LeftHand
-    100024: LeftHandEnd
-    100026: LeftHip
-    100028: LeftLeg1
-    100030: LeftLeg2
-    100032: LeftLeg3
-    100034: LeftShoulder
-    100036: LeftUpperArm
-    100038: Mesh
-    100040: Mouth
-    100042: MouthEnd
-    100044: Neck
-    100046: Pelvis
-    100048: RightArm
-    100050: RightEar
-    100052: RightEarEnd
-    100054: RightFoot
-    100056: RightFootEnd
-    100058: RightHand
-    100060: RightHandEnd
-    100062: RightHip
-    100064: RightLeg1
-    100066: RightLeg2
-    100068: RightLeg3
-    100070: RightShoulder
-    100072: RightUpperArm
-    100074: Skeleton
-    100076: Spine
-    100078: Tail1
-    100080: Tail2
-    100082: Tail3
-    100084: Tail3 1
-    400000: //RootNode
-    400002: Controls
-    400004: DogMesh
-    400006: Eyes
-    400008: Head
-    400010: HeadEnd
-    400012: LeftArm
-    400014: LeftEar
-    400016: LeftEarEnd
-    400018: LeftFoot
-    400020: LeftFootEnd
-    400022: LeftHand
-    400024: LeftHandEnd
-    400026: LeftHip
-    400028: LeftLeg1
-    400030: LeftLeg2
-    400032: LeftLeg3
-    400034: LeftShoulder
-    400036: LeftUpperArm
-    400038: Mesh
-    400040: Mouth
-    400042: MouthEnd
-    400044: Neck
-    400046: Pelvis
-    400048: RightArm
-    400050: RightEar
-    400052: RightEarEnd
-    400054: RightFoot
-    400056: RightFootEnd
-    400058: RightHand
-    400060: RightHandEnd
-    400062: RightHip
-    400064: RightLeg1
-    400066: RightLeg2
-    400068: RightLeg3
-    400070: RightShoulder
-    400072: RightUpperArm
-    400074: Skeleton
-    400076: Spine
-    400078: Tail1
-    400080: Tail2
-    400082: Tail3
-    400084: Tail3 1
-    2300000: //RootNode
-    2300002: DogMesh
-    3300000: //RootNode
-    3300002: DogMesh
-    4300000: DogMesh
-    9500000: //RootNode
-    13700000: DogMesh
-    2186277476908879412: ImportLogs
+  serializedVersion: 21202
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: //RootNode
+  - first:
+      1: 100002
+    second: Controls
+  - first:
+      1: 100004
+    second: DogMesh
+  - first:
+      1: 100006
+    second: Eyes
+  - first:
+      1: 100008
+    second: Head
+  - first:
+      1: 100010
+    second: HeadEnd
+  - first:
+      1: 100012
+    second: LeftArm
+  - first:
+      1: 100014
+    second: LeftEar
+  - first:
+      1: 100016
+    second: LeftEarEnd
+  - first:
+      1: 100018
+    second: LeftFoot
+  - first:
+      1: 100020
+    second: LeftFootEnd
+  - first:
+      1: 100022
+    second: LeftHand
+  - first:
+      1: 100024
+    second: LeftHandEnd
+  - first:
+      1: 100026
+    second: LeftHip
+  - first:
+      1: 100028
+    second: LeftLeg1
+  - first:
+      1: 100030
+    second: LeftLeg2
+  - first:
+      1: 100032
+    second: LeftLeg3
+  - first:
+      1: 100034
+    second: LeftShoulder
+  - first:
+      1: 100036
+    second: LeftUpperArm
+  - first:
+      1: 100038
+    second: Mesh
+  - first:
+      1: 100040
+    second: Mouth
+  - first:
+      1: 100042
+    second: MouthEnd
+  - first:
+      1: 100044
+    second: Neck
+  - first:
+      1: 100046
+    second: Pelvis
+  - first:
+      1: 100048
+    second: RightArm
+  - first:
+      1: 100050
+    second: RightEar
+  - first:
+      1: 100052
+    second: RightEarEnd
+  - first:
+      1: 100054
+    second: RightFoot
+  - first:
+      1: 100056
+    second: RightFootEnd
+  - first:
+      1: 100058
+    second: RightHand
+  - first:
+      1: 100060
+    second: RightHandEnd
+  - first:
+      1: 100062
+    second: RightHip
+  - first:
+      1: 100064
+    second: RightLeg1
+  - first:
+      1: 100066
+    second: RightLeg2
+  - first:
+      1: 100068
+    second: RightLeg3
+  - first:
+      1: 100070
+    second: RightShoulder
+  - first:
+      1: 100072
+    second: RightUpperArm
+  - first:
+      1: 100074
+    second: Skeleton
+  - first:
+      1: 100076
+    second: Spine
+  - first:
+      1: 100078
+    second: Tail1
+  - first:
+      1: 100080
+    second: Tail2
+  - first:
+      1: 100082
+    second: Tail3
+  - first:
+      1: 100084
+    second: Tail3 1
+  - first:
+      4: 400000
+    second: //RootNode
+  - first:
+      4: 400002
+    second: Controls
+  - first:
+      4: 400004
+    second: DogMesh
+  - first:
+      4: 400006
+    second: Eyes
+  - first:
+      4: 400008
+    second: Head
+  - first:
+      4: 400010
+    second: HeadEnd
+  - first:
+      4: 400012
+    second: LeftArm
+  - first:
+      4: 400014
+    second: LeftEar
+  - first:
+      4: 400016
+    second: LeftEarEnd
+  - first:
+      4: 400018
+    second: LeftFoot
+  - first:
+      4: 400020
+    second: LeftFootEnd
+  - first:
+      4: 400022
+    second: LeftHand
+  - first:
+      4: 400024
+    second: LeftHandEnd
+  - first:
+      4: 400026
+    second: LeftHip
+  - first:
+      4: 400028
+    second: LeftLeg1
+  - first:
+      4: 400030
+    second: LeftLeg2
+  - first:
+      4: 400032
+    second: LeftLeg3
+  - first:
+      4: 400034
+    second: LeftShoulder
+  - first:
+      4: 400036
+    second: LeftUpperArm
+  - first:
+      4: 400038
+    second: Mesh
+  - first:
+      4: 400040
+    second: Mouth
+  - first:
+      4: 400042
+    second: MouthEnd
+  - first:
+      4: 400044
+    second: Neck
+  - first:
+      4: 400046
+    second: Pelvis
+  - first:
+      4: 400048
+    second: RightArm
+  - first:
+      4: 400050
+    second: RightEar
+  - first:
+      4: 400052
+    second: RightEarEnd
+  - first:
+      4: 400054
+    second: RightFoot
+  - first:
+      4: 400056
+    second: RightFootEnd
+  - first:
+      4: 400058
+    second: RightHand
+  - first:
+      4: 400060
+    second: RightHandEnd
+  - first:
+      4: 400062
+    second: RightHip
+  - first:
+      4: 400064
+    second: RightLeg1
+  - first:
+      4: 400066
+    second: RightLeg2
+  - first:
+      4: 400068
+    second: RightLeg3
+  - first:
+      4: 400070
+    second: RightShoulder
+  - first:
+      4: 400072
+    second: RightUpperArm
+  - first:
+      4: 400074
+    second: Skeleton
+  - first:
+      4: 400076
+    second: Spine
+  - first:
+      4: 400078
+    second: Tail1
+  - first:
+      4: 400080
+    second: Tail2
+  - first:
+      4: 400082
+    second: Tail3
+  - first:
+      4: 400084
+    second: Tail3 1
+  - first:
+      23: 2300000
+    second: //RootNode
+  - first:
+      23: 2300002
+    second: DogMesh
+  - first:
+      33: 3300000
+    second: //RootNode
+  - first:
+      33: 3300002
+    second: DogMesh
+  - first:
+      43: 4300000
+    second: DogMesh
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      137: 13700000
+    second: DogMesh
+  - first:
+      41386430: 2186277476908879412
+    second: ImportLogs
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -104,7 +292,7 @@ ModelImporter:
       name: Dog
     second: {fileID: 2100000, guid: 77b24526fea2ba6409c54ea3e9a43332, type: 2}
   materials:
-    importMaterials: 1
+    materialImportMode: 1
     materialName: 1
     materialSearch: 1
     materialLocation: 0
@@ -113,6 +301,7 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 1
+    removeConstantScaleCurves: 0
     motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: 
@@ -136,21 +325,33 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
     importVisibility: 0
     importBlendShapes: 0
     importCameras: 0
     importLights: 0
+    nodeNameCollisionStrategy: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
     preserveHierarchy: 0
-    indexFormat: 1
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 2
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
   tangentSpace:
@@ -158,10 +359,13 @@ ModelImporter:
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 0
-  copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -171,14 +375,17 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
+  avatarSetup: 1
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
   additionalBone: 0
   userData: 
   assetBundleName: 
