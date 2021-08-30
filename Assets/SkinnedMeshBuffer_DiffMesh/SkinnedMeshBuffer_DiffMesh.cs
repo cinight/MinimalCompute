@@ -14,12 +14,14 @@ public class SkinnedMeshBuffer_DiffMesh : MonoBehaviour
     public SkinnedMeshRenderer smrA;
     public Transform hipA;
     private GraphicsBuffer bufferA;
+    private GraphicsBuffer bufferA_index;
     private int vertCountA;
 
     [Header("Object B")]
     public SkinnedMeshRenderer smrB;
     public Transform hipB;
     private GraphicsBuffer bufferB;
+    private GraphicsBuffer bufferB_index;
     private int vertCountB;
 
     [Header("Object Mid")]
@@ -44,13 +46,17 @@ public class SkinnedMeshBuffer_DiffMesh : MonoBehaviour
             }
 
             Debug.Log("VertexCount of A="+vertCountA+"  "+"VertexCount of B="+vertCountB);
+            Debug.Log("IndexFormat of A="+smrA.sharedMesh.indexFormat+"  "+"IndexFormat of B="+smrB.sharedMesh.indexFormat);
+            Debug.Log("IndexCount of A="+smrA.sharedMesh.GetIndexCount(0)+"  "+"IndexCount of B="+smrB.sharedMesh.GetIndexCount(0));
 
             //skinned mesh buffer is not available at Start(). so need to do it here
             if(bufferA == null) bufferA = smrA.GetVertexBuffer();
             if(bufferB == null) bufferB = smrB.GetVertexBuffer();
+            if(bufferA_index == null) bufferA_index = smrA.sharedMesh.GetIndexBuffer();
+            if(bufferB_index == null) bufferB_index = smrB.sharedMesh.GetIndexBuffer();
 
             //bind the buffer to materials
-            if(bufferA != null && bufferB != null )
+            if(bufferA != null && bufferB != null && bufferA_index != null && bufferB_index != null)
             {
                 for(int i=0; i<materials.Length; i++)
                 {
@@ -58,6 +64,8 @@ public class SkinnedMeshBuffer_DiffMesh : MonoBehaviour
                     materials[i].SetBuffer("bufVerticesB", bufferB);
                     materials[i].SetInt("vertCountA",vertCountA);
                     materials[i].SetInt("vertCountB",vertCountB);
+                    materials[i].SetBuffer("bufVerticesA_index", bufferA_index);
+                    materials[i].SetBuffer("bufVerticesB_index", bufferB_index);
                 }
                 initialized = true;
             }
@@ -78,5 +86,7 @@ public class SkinnedMeshBuffer_DiffMesh : MonoBehaviour
     {
         if(bufferA != null) bufferA.Dispose();
         if(bufferB != null) bufferB.Dispose();
+        if(bufferA_index != null) bufferA_index.Dispose();
+        if(bufferB_index != null) bufferB_index.Dispose();
     }
 }
