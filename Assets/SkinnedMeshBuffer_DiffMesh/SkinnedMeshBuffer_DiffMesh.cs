@@ -37,10 +37,11 @@ public class SkinnedMeshBuffer_DiffMesh : MonoBehaviour
         uint indexCountB = smrB.sharedMesh.GetIndexCount(0);
         triangleCountA = (int) indexCountA/3;
         triangleCountB = (int) indexCountB/3;
+        count = Mathf.Max(triangleCountA,triangleCountB);
 
         Debug.Log("IndexFormat of A="+smrA.sharedMesh.indexFormat+"  "+"IndexFormat of B="+smrB.sharedMesh.indexFormat);
         Debug.Log("IndexCount of A="+indexCountA+"  "+"IndexCount of B="+indexCountB);
-        Debug.Log("TriangleCount of A="+triangleCountA+"  "+"TriangleCount of B="+triangleCountB);
+        Debug.Log("TriangleCount of A="+triangleCountA+"  "+"TriangleCount of B="+triangleCountB+" "+"Will draw "+count+" triangles.");
 
         smrA.sharedMesh.indexBufferTarget |= GraphicsBuffer.Target.Raw;
         smrB.sharedMesh.indexBufferTarget |= GraphicsBuffer.Target.Raw;
@@ -48,11 +49,8 @@ public class SkinnedMeshBuffer_DiffMesh : MonoBehaviour
         //Index buffer is only available here. If this is put in Update(), IsValid returns false
         bufferA_index = smrA.sharedMesh.GetIndexBuffer();
         bufferB_index = smrB.sharedMesh.GetIndexBuffer();
-
         material.SetBuffer("bufVerticesA_index", bufferA_index);
         material.SetBuffer("bufVerticesB_index", bufferB_index);
-        material.SetInt("triCountA",triangleCountA);
-        material.SetInt("triCountB",triangleCountB);
     }
 
     void Update()
@@ -63,7 +61,6 @@ public class SkinnedMeshBuffer_DiffMesh : MonoBehaviour
 
             vertCountA = smrA.sharedMesh.vertexCount;
             vertCountB = smrB.sharedMesh.vertexCount;
-            count = Mathf.Max(vertCountA,vertCountB);
             Debug.Log("VertexCount of A="+vertCountA+"  "+"VertexCount of B="+vertCountB);
 
             //skinned mesh buffer is not available at Start(). so need to do it here

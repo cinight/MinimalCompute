@@ -49,8 +49,6 @@ Shader "Unlit/Graphics_DrawMeshInstancedIndirect"
 			float4 _Color;
 			float3 _HipLocalPositionA;
 			float3 _HipLocalPositionB;
-			int triCountA;
-			int triCountB;
 
             uniform float4 _LightColor0;
 
@@ -60,7 +58,8 @@ Shader "Unlit/Graphics_DrawMeshInstancedIndirect"
 				//layout for index buffer
 				//uint32 = 4 bytes for each id
                 //3 ids for each triangle
-				uint id = asuint(iBuffer.Load( (iid * 3 + vid)*4 ));
+				uint tid = (iid * 3 + vid)*4 ;
+				uint id = asuint(iBuffer.Load( tid ));
 
 				//layout for vertex buffer (observed by using RenderDoc):
 				//float3 position
@@ -73,7 +72,8 @@ Shader "Unlit/Graphics_DrawMeshInstancedIndirect"
 			}
 			float3 GetVertexData_Normal(ByteAddressBuffer vBuffer, ByteAddressBuffer iBuffer, uint vid, uint iid)
 			{
-				uint id = asuint(iBuffer.Load( (iid * 3 + vid)*4 ));
+				uint tid = (iid * 3 + vid)*4 ;
+				uint id = asuint(iBuffer.Load( tid ));
 
 				int vidx = id * 40;
 				float3 data = asfloat(vBuffer.Load3(vidx+12)); //offset by float3 (position) in front, so 3*4bytes = 12
@@ -100,18 +100,6 @@ Shader "Unlit/Graphics_DrawMeshInstancedIndirect"
 
 				//world position for rim
 				o.color = mul(unity_ObjectToWorld, pos);
-
-				//Highlight the extra trianges
-				// uint minTriCount = min(triCountA,triCountB);
-				// if(instanceID >= minTriCount)
-				// {
-				// 	o.color = float4(1,0,0,1);
-				// 	//o.vertex = 0;
-				// }
-				// else
-				// {
-				// 	o.color = 1;
-				// }
 
                 return o;
             }
