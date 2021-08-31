@@ -18,6 +18,7 @@ Tested with : Win DX11
 | `ComputeParticlesIndirect` | ![](READMEimages/ComputeParticlesIndirect.gif) | GPU Particle, drawing dynamic no. of particles, no need to read back to CPU! |
 | `ComputeVertex` | ![](READMEimages/ComputeVertex.gif) | Replace vertex buffer with StructuredBuffer and drive vertex displacement by compute |
 | `SkinnedMeshBuffer` | ![](READMEimages/SkinnedMeshBuffer.gif) | Blend the vertex data from 2 SkinnedMeshRenderer vertex buffer and render it with MeshRenderer |
+| `SkinnedMeshBuffer_DiffMesh` | ![](READMEimages/SkinnedMeshBuffer_DiffMesh.gif) | Similar to above but blending 2 different SkinnedMeshes. The blended triangles are drawn with DrawMeshInstancedIndirect() |
 | `ComputeVertexLit` | ![](READMEimages/ComputeVertexLit.gif) | A usecase of ComputeVertex so that different shader passes share same vertex data |
 | `UAVInShader` | ![](READMEimages/UAVInShader.gif) | Read some data back to CPU from fragment shader |
 | `AsyncGPUReadback` | ![](READMEimages/AsyncGPUReadback.gif) | Similar to StructuredBufferWithCompute, but use AsyncGPUReadback to get array data back to CPU |
