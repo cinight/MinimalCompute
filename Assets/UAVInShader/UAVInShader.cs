@@ -17,6 +17,7 @@ public class UAVInShader : MonoBehaviour
 
     void OnDisable()
     {
+        Graphics.ClearRandomWriteTargets(); //this prevent crash
         if (fieldbuf != null)
         {
             fieldbuf.Release();
