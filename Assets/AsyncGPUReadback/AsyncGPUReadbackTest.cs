@@ -54,7 +54,7 @@ public class AsyncGPUReadbackTest : MonoBehaviour
         computeShader.SetBuffer(0, "particleBuffer", cBuffer);
         
         //Request AsyncReadback
-        request = AsyncGPUReadback.Request(cBuffer);
+        request = AsyncGPUReadback.Request(cBuffer); //here we can also use the callback method. see AsyncGPUReadbackMesh.cs
     }
 
     void Update()
@@ -74,7 +74,7 @@ public class AsyncGPUReadbackTest : MonoBehaviour
             }
 
             //Request AsyncReadback again
-            request = AsyncGPUReadback.Request(cBuffer);
+            request = AsyncGPUReadback.Request(cBuffer); //here we can also use the callback method. see AsyncGPUReadbackMesh.cs
         }
     }
 

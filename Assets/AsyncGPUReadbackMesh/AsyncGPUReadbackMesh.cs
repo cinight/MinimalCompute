@@ -50,7 +50,9 @@ public class AsyncGPUReadbackMesh : MonoBehaviour
         computeShader.SetBuffer(_kernel, "vertexBuffer", cBuffer);
 
         //Request AsyncReadback
-        request = AsyncGPUReadback.Request(cBuffer);
+        asyncGPUReadbackCallback -= AsyncGPUReadbackCallback;
+        asyncGPUReadbackCallback += AsyncGPUReadbackCallback;
+        request = AsyncGPUReadback.Request(cBuffer,asyncGPUReadbackCallback);
     }
 
     void Update()
@@ -58,28 +60,33 @@ public class AsyncGPUReadbackMesh : MonoBehaviour
         //run the compute shader, the position of particles will be updated in GPU
         computeShader.SetFloat("_Time",Time.time);
         computeShader.Dispatch(_kernel, dispatchCount, 1, 1);
-       
-        if(request.done && !request.hasError)
-        {
-            //Readback and show result on texture
-            vertData = request.GetData<Vector3>();
+    }
 
-            //Update mesh
-            mesh.MarkDynamic();
-            mesh.SetVertices(vertData);
-            mesh.RecalculateNormals();
+    //The callback will be run when the request is ready
+    private static event System.Action<AsyncGPUReadbackRequest> asyncGPUReadbackCallback;
+    public void AsyncGPUReadbackCallback(AsyncGPUReadbackRequest request)
+    {
+        if(!mesh) return;
 
-            //Update to collider
-            mc.sharedMesh = mesh;
+        //Readback and show result on texture
+        vertData = request.GetData<Vector3>();
 
-            //Request AsyncReadback again
-            request = AsyncGPUReadback.Request(cBuffer);
-        }
+        //Update mesh
+        mesh.MarkDynamic();
+        mesh.SetVertices(vertData);
+        mesh.RecalculateNormals();
+
+        //Update to collider
+        mc.sharedMesh = mesh;
+
+        //Request AsyncReadback again
+        request = AsyncGPUReadback.Request(cBuffer,asyncGPUReadbackCallback);
     }
 
     private void CleanUp()
     {
         if(cBuffer != null) cBuffer.Release();
+        asyncGPUReadbackCallback -= AsyncGPUReadbackCallback;
     }
 
     void OnDisable()
