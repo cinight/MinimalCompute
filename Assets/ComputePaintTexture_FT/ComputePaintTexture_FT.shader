@@ -3,7 +3,7 @@ Shader "Unlit/ComputePaintTexture_FS"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _Multiplier ("Multiplier", Range(0,50)) = 2
+        _Multiplier ("Multiplier", Range(0,500)) = 2
     }
     SubShader
     {

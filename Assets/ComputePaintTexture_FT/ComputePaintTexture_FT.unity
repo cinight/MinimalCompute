@@ -171,7 +171,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 9
+  isXaxis: 0
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &85274289
@@ -233,7 +234,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 7
+  isXaxis: 1
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &139486925
@@ -295,7 +297,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 16
+  isXaxis: 0
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &167988249
@@ -357,7 +360,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 15
+  isXaxis: 0
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &212751842
@@ -419,7 +423,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 7
+  isXaxis: 0
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &260975236
@@ -481,7 +486,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 8
+  isXaxis: 1
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &272284851
@@ -543,7 +549,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 19
+  isXaxis: 0
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &288551725
@@ -605,7 +612,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 14
+  isXaxis: 1
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &303322331
@@ -667,7 +675,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 16
+  isXaxis: 1
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &306274223
@@ -693,7 +702,6 @@ GameObject:
   m_Component:
   - component: {fileID: 309863814}
   - component: {fileID: 309863813}
-  - component: {fileID: 309863815}
   - component: {fileID: 309863812}
   m_Layer: 0
   m_Name: Yaxis
@@ -714,6 +722,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isXaxis: 1
   frequency: 0
   amplitude: 0
   phaseAngle: 0
@@ -738,7 +747,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 309863811}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5, y: 0, z: 0}
+  m_LocalPosition: {x: -4.4, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -746,21 +755,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &309863815
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 309863811}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cda4fd6c188a9442ea55decae9763675, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fts: []
-  tex: {fileID: 2800000, guid: 2f2f8aa5bc56a458f85c6dd74f2985da, type: 3}
-  isRow: 0
 --- !u!1 &314147610
 GameObject:
   m_ObjectHideFlags: 0
@@ -807,7 +801,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 3
+  isXaxis: 0
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &314147613
@@ -869,7 +864,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 14
+  isXaxis: 0
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &333796455
@@ -931,7 +927,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 9
+  isXaxis: 1
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &377107304
@@ -1095,7 +1092,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 11
+  isXaxis: 1
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &476090970
@@ -1157,7 +1155,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 10
+  isXaxis: 0
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &482739835
@@ -1218,7 +1217,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 20
+  isXaxis: 0
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &523200630
@@ -1280,7 +1280,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 17
+  isXaxis: 1
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &553503615
@@ -1342,7 +1343,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 11
+  isXaxis: 0
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &624500946
@@ -1404,7 +1406,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 18
+  isXaxis: 0
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &670504045
@@ -1466,7 +1469,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 8
+  isXaxis: 0
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &686075238
@@ -1528,7 +1532,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 10
+  isXaxis: 1
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &753051546
@@ -1544,6 +1549,89 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 476090968}
+--- !u!1 &774245835
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 774245836}
+  - component: {fileID: 774245838}
+  - component: {fileID: 774245837}
+  m_Layer: 0
+  m_Name: RefObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &774245836
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 774245835}
+  m_LocalRotation: {x: -0.3551644, y: -0.1590962, z: -0.37658095, w: 0.8406744}
+  m_LocalPosition: {x: 0, y: -0.14, z: 2.47}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1066870972}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: -45.806, y: 0, z: -48.26}
+--- !u!23 &774245837
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 774245835}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &774245838
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 774245835}
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &825734728
 GameObject:
   m_ObjectHideFlags: 0
@@ -1590,7 +1678,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 6
+  isXaxis: 1
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &825734731
@@ -1652,7 +1741,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 4
+  isXaxis: 1
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &856405857
@@ -1714,7 +1804,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 15
+  isXaxis: 1
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &875399591
@@ -1776,7 +1867,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 2
+  isXaxis: 1
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &879727988
@@ -1838,7 +1930,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 3
+  isXaxis: 1
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &946266566
@@ -1956,8 +2049,7 @@ MonoBehaviour:
 --- !u!1 &1066870968
 GameObject:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 1708412314701824, guid: a9c885fcc54c3bd46b62c448915fea34,
-    type: 2}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
@@ -2008,8 +2100,7 @@ MonoBehaviour:
 --- !u!20 &1066870971
 Camera:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 20977127325970938, guid: a9c885fcc54c3bd46b62c448915fea34,
-    type: 2}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1066870968}
@@ -2052,8 +2143,7 @@ Camera:
 --- !u!4 &1066870972
 Transform:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 4689123290455940, guid: a9c885fcc54c3bd46b62c448915fea34,
-    type: 2}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1066870968}
@@ -2061,7 +2151,8 @@ Transform:
   m_LocalPosition: {x: 5.71, y: 7.32, z: 0.26}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 774245836}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 60.137, y: -90, z: 0}
@@ -2111,7 +2202,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 12
+  isXaxis: 1
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &1146635220
@@ -2173,7 +2265,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 1
+  isXaxis: 1
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &1213335593
@@ -2199,7 +2292,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1227223763}
   - component: {fileID: 1227223765}
-  - component: {fileID: 1227223766}
   - component: {fileID: 1227223764}
   m_Layer: 0
   m_Name: Xaxis
@@ -2216,7 +2308,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1227223762}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -4.64}
+  m_LocalPosition: {x: 0, y: 0, z: -3.96}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2236,6 +2328,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isXaxis: 0
   frequency: 0
   amplitude: 0
   phaseAngle: 0
@@ -2252,21 +2345,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 2092450788}
---- !u!114 &1227223766
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1227223762}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cda4fd6c188a9442ea55decae9763675, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fts: []
-  tex: {fileID: 2800000, guid: 2f2f8aa5bc56a458f85c6dd74f2985da, type: 3}
-  isRow: 1
 --- !u!1 &1261699145
 GameObject:
   m_ObjectHideFlags: 0
@@ -2313,7 +2391,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 13
+  isXaxis: 0
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &1261699148
@@ -2375,7 +2454,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 6
+  isXaxis: 0
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &1326244480
@@ -2436,7 +2516,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 20
+  isXaxis: 1
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &1388058196
@@ -2498,7 +2579,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 12
+  isXaxis: 0
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &1539802824
@@ -2560,7 +2642,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 13
+  isXaxis: 1
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &1551682512
@@ -2622,7 +2705,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 5
+  isXaxis: 0
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &1665189231
@@ -2684,7 +2768,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 19
+  isXaxis: 1
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &1698201169
@@ -2730,7 +2815,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 2
+  isXaxis: 0
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &1721196976
@@ -2808,7 +2894,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 4
+  isXaxis: 0
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &1849877461
@@ -2824,6 +2911,54 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1665189229}
+--- !u!1 &1869476002
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1869476004}
+  - component: {fileID: 1869476003}
+  m_Layer: 0
+  m_Name: FTController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1869476003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1869476002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cda4fd6c188a9442ea55decae9763675, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mf: {fileID: 774245838}
+  fts_XaxisObj: {fileID: 1227223762}
+  fts_YaxisObj: {fileID: 309863811}
+  scale: 10
+--- !u!4 &1869476004
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1869476002}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1903509406
 GameObject:
   m_ObjectHideFlags: 0
@@ -2870,7 +3005,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 17
+  isXaxis: 0
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &1903509409
@@ -2932,7 +3068,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 18
+  isXaxis: 1
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &1945808064
@@ -2994,7 +3131,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 5
+  isXaxis: 1
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
 --- !u!114 &1980844563
@@ -3114,6 +3252,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803bea4ea62c46fcaef2d5d3b23e898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 1
+  isXaxis: 0
+  frequency: 0
   amplitude: 0
   phaseAngle: 0
