@@ -15,7 +15,7 @@ public class FTMain : MonoBehaviour
     public GameObject fts_XaxisObj;
     public GameObject fts_YaxisObj;
     public float scale = 1.0f;
-    public static float timeSpeed = 100.0f;
+    public static float timeSpeed = 10.0f;
     public QuadDraw quadDraw;
 
     private FTRotation[] fts_Xaxis;
@@ -52,7 +52,7 @@ public class FTMain : MonoBehaviour
 
             //Set the positions
             Vector3 tran_pos = fts[k].transform.localPosition;
-            tran_pos.x += fts[k].amplitude;
+            tran_pos.x = fts[k].amplitude;
             fts[k].transform.localPosition = tran_pos;
         }
 
@@ -71,14 +71,6 @@ public class FTMain : MonoBehaviour
         //Draw positions are used as signal
         N = quadDraw.drawingPositions.Count; //no. of signals
         Debug.Log("No. of positions = "+N);
-
-        //Sort the vertices array by top to bottom
-        // float[] keys = new float[vpos.Length];
-        // for (int i = 0; i < vpos.Length; i++)
-        // {
-        //     keys[i] = vpos[i].y;
-        // }
-        // System.Array.Sort(keys, vpos);
 
         //The epicycles we have in the scene = the frequency (filter) increases in later ones
         //i.e. more epicycles = more detailed the drawing is

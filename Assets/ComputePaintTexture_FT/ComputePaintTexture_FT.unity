@@ -2582,7 +2582,7 @@ MonoBehaviour:
   initTex: {fileID: 2800000, guid: b70936bced806405683e948fda44d9ff, type: 3}
   _mat: {fileID: 2100000, guid: 6887d0d16e3844a719aa6a413cfae12c, type: 2}
   mc: {fileID: 1401826791}
-  sampleInterval: 0.01
+  sampleInterval: 0.05
   sampleDistance: 0.01
   drawingPositions: []
 --- !u!64 &1401826791
