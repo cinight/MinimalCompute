@@ -1,0 +1,17 @@
+﻿#pragma kernel CSMain
+
+RWTexture2D<float4> Result;
+int _Size;
+float2 _MousePos;
+
+[numthreads(8,8,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+	//draw
+	int2 newPixelID = _MousePos*_Size;
+
+	//so that the brush is thicker
+	float dist = distance(float2(id.xy),float2(newPixelID));
+	if(dist < 1.5f) Result[id.xy] = float4(0,1,1,1);
+}
+
