@@ -15,7 +15,7 @@ public class FTMain : MonoBehaviour
     public GameObject fts_XaxisObj;
     public GameObject fts_YaxisObj;
     public float scale = 1.0f;
-    public static float timeSpeed = 10.0f;
+    public static float timeSpeed = 1.0f;
     public QuadDraw quadDraw;
 
     private FTRotation[] fts_Xaxis;
@@ -54,6 +54,10 @@ public class FTMain : MonoBehaviour
             Vector3 tran_pos = fts[k].transform.localPosition;
             tran_pos.x = fts[k].amplitude;
             fts[k].transform.localPosition = tran_pos;
+
+            //Set the rotations
+            float offset = isAxisX? 90f: 0f;
+            fts[k].transform.localRotation = Quaternion.Euler(0,fts[k].phaseAngle+offset, 0);
         }
 
         return fts;

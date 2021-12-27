@@ -11,7 +11,8 @@ public class FTRotation : MonoBehaviour
 
     void Update()
     {
-        phaseAngle += Time.deltaTime * frequency * FTMain.timeSpeed;
-        transform.localRotation = Quaternion.Euler(0,phaseAngle, 0);
+        Vector3 angle = transform.localRotation.eulerAngles;
+        angle.y += Time.deltaTime * frequency * FTMain.timeSpeed;
+        transform.localRotation = Quaternion.Euler(0,angle.y, 0);
     }
 }
