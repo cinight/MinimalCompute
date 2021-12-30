@@ -54,13 +54,16 @@ EditorBuildSettings:
     path: Assets/ComputePaintTexture/ComputePaintTexture3.unity
     guid: 160a65963f26fa64dafc878f0316cc00
   - enabled: 1
+    path: Assets/ComputePaintTexture_DFT/ComputePaintTexture_DFT.unity
+    guid: 29a7cb85cd9004d4cbbc062b23ab7fa5
+  - enabled: 1
     path: Assets/ComputeVertex/ComputeVertex.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
     path: Assets/SkinnedMeshBuffer/SkinnedMeshBuffer_sameMesh.unity
     guid: eb28c04b7ac15bc4ba95fe3e40129c23
   - enabled: 1
-    path: Assets/SkinnedMeshBuffer_DiffMesh/SkinnedMeshBuffer_DiffMesh.unity
+    path: Assets/SkinnedMeshBuffer_DiffMesh/SkinnedMeshBuffer_diffMesh.unity
     guid: 1105acd185fcd204c8f3522523f72c5d
   - enabled: 1
     path: Assets/ComputeVertexLit/ComputeVertexLit_URP.unity
