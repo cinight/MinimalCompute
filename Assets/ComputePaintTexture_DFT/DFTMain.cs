@@ -35,7 +35,7 @@ public class DFTMain : MonoBehaviour
     {
         //Discrete fourier transform
         //This is from the Coding Challenge #130.1: Drawing with Fourier Transform and Epicycles
-        //by The coding train https://www.youtube.com/watch?v=MY4luNgGfms
+        //by The Coding Train https://www.youtube.com/watch?v=MY4luNgGfms
         for(int k=0; k<epicycles.Length; k++) //k is the frequency
         {
             float freq = k;
@@ -71,10 +71,7 @@ public class DFTMain : MonoBehaviour
 
     void Start()
     {
-        Camera cam = Camera.main;
-
-        timeSpeed = (2f * Mathf.PI) / epicycleCount;
-        timeSpeed *= timeMultiplier;
+        timeSpeed = timeMultiplier;
 
         epicycles_Hor = new Epicycle[epicycleCount];
         epicycles_Ver = new Epicycle[epicycleCount];
@@ -94,7 +91,7 @@ public class DFTMain : MonoBehaviour
             Epicycle eX = newX.GetComponent<Epicycle>();
             Epicycle eY = newY.GetComponent<Epicycle>();
 
-            //Set the moving parent so that the epicycle moves according to parent position
+            //Set the moving parent so that the epicycle moves according to parent's tip position
             if(i==0)
             {
                 eX.tip_Par = par_Hor;
