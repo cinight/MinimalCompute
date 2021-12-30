@@ -5,6 +5,7 @@
 // https://www.myfourierepicycles.com/
 // 3Blue1Brown Fourier Series https://www.youtube.com/watch?v=r6sGWTCMz2k
 // 3Blue1Brown Fourier Transform https://www.youtube.com/watch?v=spUNpyF58BY
+// https://brettcvz.github.io/epicycles/
 
 using System.Collections;
 using System.Collections.Generic;
@@ -25,16 +26,16 @@ public class DFTMain : MonoBehaviour
     public Transform tip_Ver;
     public Transform sphere;
 
-    private Epicycle[] fts_Xaxis;
-    private Epicycle[] fts_Yaxis;
+    private Epicycle[] epicycles_Hor;
+    private Epicycle[] epicycles_Ver;
     private int N = 0; //no. of signals
 
-    public Epicycle[] DFT(Epicycle[] fts, bool isAxisX)
+    public Epicycle[] DFT(Epicycle[] epicycles, bool isHorizontal)
     {
         //Discrete fourier transform
         //This is from the Coding Challenge #130.1: Drawing with Fourier Transform and Epicycles
         //by The coding train https://www.youtube.com/watch?v=MY4luNgGfms
-        for(int k=0; k<fts.Length; k++) //k is the frequency
+        for(int k=0; k<epicycles.Length; k++) //k is the frequency
         {
             float freq = k;
 
@@ -43,7 +44,7 @@ public class DFTMain : MonoBehaviour
 
             for(int n=0; n<N; n++ )
             {
-                float pos = isAxisX? quadDraw.drawingPositions[n].x : quadDraw.drawingPositions[n].y;
+                float pos = isHorizontal? quadDraw.drawingPositions[n].x : quadDraw.drawingPositions[n].y;
                 float phi = (2f * Mathf.PI * freq * n) / N;
                 re += pos * Mathf.Cos(phi);
                 im -= pos * Mathf.Sin(phi);
@@ -54,18 +55,17 @@ public class DFTMain : MonoBehaviour
             im /= (float)N;
 
             //Assign the result to the epicycles
-            fts[k].frequency = freq;
-            fts[k].amplitude = Mathf.Sqrt(re*re + im*im) * scale; //c^2 = a^2+b^2
-            float offset = 0f;//isAxisX? 0f: 90f;
-            fts[k].phaseAngle = Mathf.Atan2(im,re) * Mathf.Rad2Deg + offset;
-            fts[k].transform.localRotation = Quaternion.Euler(0,fts[k].phaseAngle, 0);
+            epicycles[k].frequency = freq;
+            epicycles[k].amplitude = Mathf.Sqrt(re*re + im*im) * scale; //c^2 = a^2+b^2
+            epicycles[k].phaseAngle = Mathf.Atan2(im,re) * Mathf.Rad2Deg;
+            epicycles[k].transform.localRotation = Quaternion.Euler(0,epicycles[k].phaseAngle, 0);
 
-            //Set the positions
-            float position = fts[k].amplitude;
-            fts[k].tip.localPosition = new Vector3(position,0,0);
+            //Align the epicycles vertically, which is the Z axis on scene
+            float position = epicycles[k].amplitude;
+            epicycles[k].tip.localPosition = new Vector3(0,0,position); 
         }
 
-        return fts;
+        return epicycles;
     }
 
     void Start()
@@ -74,8 +74,8 @@ public class DFTMain : MonoBehaviour
 
         timeSpeed = (2f * Mathf.PI) / epicycleCount;
 
-        fts_Xaxis = new Epicycle[epicycleCount];
-        fts_Yaxis = new Epicycle[epicycleCount];
+        epicycles_Hor = new Epicycle[epicycleCount];
+        epicycles_Ver = new Epicycle[epicycleCount];
 
         //Generate epicycles
         for(int i=0; i<epicycleCount; i++)
@@ -100,29 +100,29 @@ public class DFTMain : MonoBehaviour
             }
             else
             {
-                eX.tip_Par = fts_Xaxis[i-1].tip;
-                eY.tip_Par = fts_Yaxis[i-1].tip;
+                eX.tip_Par = epicycles_Hor[i-1].tip;
+                eY.tip_Par = epicycles_Ver[i-1].tip;
             }
 
-            fts_Xaxis[i] = eX;
-            fts_Yaxis[i] = eY;
+            epicycles_Hor[i] = eX;
+            epicycles_Ver[i] = eY;
         }
 
         //The last tip is for moving the sphere
-        tip_Hor = fts_Xaxis[epicycleCount-1].tip;
-        tip_Ver = fts_Yaxis[epicycleCount-1].tip;
+        tip_Hor = epicycles_Hor[epicycleCount-1].tip;
+        tip_Ver = epicycles_Ver[epicycleCount-1].tip;
     }
 
     void Generate()
     {
         //Draw positions are used as signal
         N = quadDraw.drawingPositions.Count; //no. of signals
-        Debug.Log("No. of positions = "+N);
+        Debug.Log("No. of recorded positions from QuadDraw= "+N);
 
         //The epicycles we have in the scene = the frequency (filter) increases in later ones
         //i.e. more epicycles = more detailed the drawing is
-        fts_Xaxis = DFT(fts_Xaxis,true);
-        fts_Yaxis = DFT(fts_Yaxis,false);
+        epicycles_Hor = DFT(epicycles_Hor,true);
+        epicycles_Ver = DFT(epicycles_Ver,false);
     }
 
     void Update()
