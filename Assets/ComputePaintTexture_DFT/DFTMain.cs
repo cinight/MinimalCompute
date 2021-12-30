@@ -18,6 +18,7 @@ public class DFTMain : MonoBehaviour
     public Transform par_Hor;
     public Transform par_Ver;
     public float scale = 1.0f;
+    public float timeMultiplier = 2f;
     public static float timeSpeed = 1f;
     public QuadDraw quadDraw;
 
@@ -73,6 +74,7 @@ public class DFTMain : MonoBehaviour
         Camera cam = Camera.main;
 
         timeSpeed = (2f * Mathf.PI) / epicycleCount;
+        timeSpeed *= timeMultiplier;
 
         epicycles_Hor = new Epicycle[epicycleCount];
         epicycles_Ver = new Epicycle[epicycleCount];

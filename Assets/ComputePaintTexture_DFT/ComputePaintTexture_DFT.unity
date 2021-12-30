@@ -272,12 +272,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cda4fd6c188a9442ea55decae9763675, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  epicycleCount: 10
+  epicycleCount: 30
   epicyclePrefab: {fileID: 2627908420037292059, guid: 841d86cffa0be4ef1a0669b2c48ee77d,
     type: 3}
   par_Hor: {fileID: 1889722952}
   par_Ver: {fileID: 2133225076}
   scale: 10
+  timeMultiplier: 3
   quadDraw: {fileID: 1401826790}
   tip_Hor: {fileID: 0}
   tip_Ver: {fileID: 0}
