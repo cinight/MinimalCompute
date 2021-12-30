@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ComputePaintTexture_FT
+  m_Name: ComputePaintTexture_DFT
   m_Shader: {fileID: 4800000, guid: 61fa2d2c407c841f99d2431c2b10e68d, type: 3}
   m_ShaderKeywords: _EMISSION
   m_LightmapFlags: 1
