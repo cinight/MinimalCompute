@@ -118,6 +118,8 @@ public class DFTMain : MonoBehaviour
         N = quadDraw.drawingPositions.Count; //no. of signals
         Debug.Log("No. of recorded positions from QuadDraw= "+N);
 
+        quadDraw.MakeSampledPositionEvenlySpaced();
+
         //The epicycles we have in the scene = the frequency (filter) increases in later ones
         //i.e. more epicycles = more detailed the drawing is
         epicycles_Hor = DFT(epicycles_Hor,true);
