@@ -18,6 +18,7 @@ Tested with : Win DX11
 | `StructuredBufferNoCompute` | ![](READMEimages/StructuredBufferNoCompute.gif) | ComputeBuffer doesn't always need to stick with ComputeShader |
 | `IndirectCompute` | ![](READMEimages/IndirectCompute.gif) | Simple indirect compute (indirect dispatch) and CopyCount |
 | `IndirectReflectedStar` | ![](READMEimages/IndirectReflectedStar.gif) | Draw stars on the screen only if the pixels are bright enough |
+| `ComputeSketch` | ![](READMEimages/ComputeSketch.JPG) | Draw quads on the screen with color filled by compute shader |
 | `ComputeParticlesDirect` | ![](READMEimages/ComputeParticlesDirect.gif) | GPU Particle, drawing fixed no. of particles |
 | `ComputeParticlesIndirect` | ![](READMEimages/ComputeParticlesIndirect.gif) | GPU Particle, drawing dynamic no. of particles, no need to read back to CPU! |
 | `ComputeVertex` | ![](READMEimages/ComputeVertex.gif) | Replace vertex buffer with StructuredBuffer and drive vertex displacement by compute |
