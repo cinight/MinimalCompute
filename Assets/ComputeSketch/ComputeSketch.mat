@@ -36,13 +36,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _MaxSize: 10
+    - _MaxSize: 1.51
     - _Rotation: 0
     - _SampleDistance: 0.02
     - _Size: 0.092
-    - _SizeX: 0.0269
-    - _SizeY: 0.044
+    - _SizeX: 0.0174
+    - _SizeY: 0.054
     - _Threshold: 1
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 0.6666667}
+    - _Color: {r: 1, g: 1, b: 1, a: 0.46666667}
   m_BuildTextureStacks: []
