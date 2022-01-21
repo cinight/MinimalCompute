@@ -5,9 +5,9 @@ Shader "Custom/ComputeSketch"
 		[HideInInspector]_MainTex ("Screen", 2D) = "white" {}
 
 		_Color ("Color",Color) = (1,1,1,1)
-		_SizeX ("SizeX",Range(0,1)) = 0.1
-		_SizeY ("SizeY",Range(0,1)) = 0.1
-		_MaxSize ("MaxSize",Range(0,3)) = 0.1
+		_SizeX ("SizeX",Range(0,0.04)) = 0.03
+		_SizeY ("SizeY",Range(0,1)) = 1
+		_MaxSize ("MaxSize",Range(0,10)) = 0.1
 		_BrushTex ("BrushTex", 2D) = "white" {}
 	}
 	SubShader 
@@ -70,10 +70,9 @@ Shader "Custom/ComputeSketch"
 				float4 npos = v.vertex;
 
 				//size according to intensity
-				float size = _SizeX;
-				size *= particleBuffer[inst].intensity;
+				float size = particleBuffer[inst].intensity;
 				size = clamp(size,0,_MaxSize);
-				npos.x *= size;
+				npos.x *= _SizeX * size;
 				npos.y *= _SizeY;
 
 				//rotation

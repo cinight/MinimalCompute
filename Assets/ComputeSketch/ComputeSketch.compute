@@ -12,7 +12,7 @@ Texture2D<float4> texRef;
 uint texSizeX;
 uint texSizeY;
 
-#define STEP 10
+#define STEP 20
 
 [numthreads(32,1,1)]
 void CSMain (uint3 id : SV_DispatchThreadID)
