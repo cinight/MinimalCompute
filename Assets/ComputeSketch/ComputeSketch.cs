@@ -8,6 +8,7 @@ public class ComputeSketch : MonoBehaviour
 		public Vector2 position;
 		public float direction; //angle
 		public float intensity;
+		public Color color;
 	};
 
 	public int particleCount;
@@ -41,6 +42,7 @@ public class ComputeSketch : MonoBehaviour
             plists[i].position = new Vector2( Random.Range(0.00f,1.00f), Random.Range(0.00f,1.00f) );
 			plists[i].direction = Random.Range(0.00f,2.00f*Mathf.PI); //angle
 			plists[i].intensity = 0f;
+			plists[i].color = Color.white;
         }
 		
 		//arg buffer
@@ -54,11 +56,12 @@ public class ComputeSketch : MonoBehaviour
         bound = new Bounds(this.transform.position, Vector3.one*100f);
 		
 		//Set data to buffer
-		particleBuffer = new ComputeBuffer(particleCount, 4*4); // 4 floats * 4 bytes = sizeof(Particle)
+		particleBuffer = new ComputeBuffer(particleCount, 8*4); // 8 floats * 4 bytes = sizeof(Particle)
 		particleBuffer.SetData(plists);
 		
 		//Set buffer to computeShader and Material
-		computeShader.SetInt("texSize",texRef.width);
+		computeShader.SetInt("texSizeX",texRef.width);
+		computeShader.SetInt("texSizeY",texRef.height);
 		computeShader.SetTexture(_kernel,"texRef",texRef);
 		computeShader.SetBuffer(_kernel, "particleBuffer", particleBuffer);
 		material.SetBuffer ("particleBuffer", particleBuffer);

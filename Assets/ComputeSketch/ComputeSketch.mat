@@ -23,7 +23,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BrushTex:
-        m_Texture: {fileID: 2800000, guid: 03c7d4c57c33d25438f9cc3439040bb7, type: 3}
+        m_Texture: {fileID: 2800000, guid: 73dae73d48966b9438b017e033589ca6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -36,11 +36,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _MaxSize: 1
+    - _MaxSize: 3
     - _Rotation: 0
     - _SampleDistance: 0.02
     - _Size: 0.092
+    - _SizeX: 0.039
+    - _SizeY: 0.068
     - _Threshold: 1
     m_Colors:
-    - _Color: {r: 0.9150943, g: 0.047481313, b: 0.047481313, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 0.6392157}
   m_BuildTextureStacks: []
