@@ -58,8 +58,7 @@ public class IndirectReflectedStar : ScriptableRendererFeature
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
-        var cameraColorTarget = renderer.cameraColorTarget;
-        pass = new IndirectReflectedStarPass(evt, cameraColorTarget,maxCount,mesh,mat,cbDrawArgs,cbPoints);
+        pass = new IndirectReflectedStarPass(evt, maxCount,mesh,mat,cbDrawArgs,cbPoints);
         renderer.EnqueuePass(pass);
     }
 
@@ -82,8 +81,6 @@ public class IndirectReflectedStar : ScriptableRendererFeature
 
 	class IndirectReflectedStarPass : ScriptableRenderPass
 	{
-        private RenderTargetIdentifier colorHandle;
-
         private int maxCount;
         private Mesh mesh;
         private Material mat;
@@ -93,12 +90,11 @@ public class IndirectReflectedStar : ScriptableRendererFeature
         private ComputeBuffer cbPoints;
         private int m_ColorRTid = Shader.PropertyToID("_CameraScreenTexture");
 
-        public IndirectReflectedStarPass(RenderPassEvent renderPassEvent, RenderTargetIdentifier colorHandle,int count,Mesh mesh,Material material,ComputeBuffer cbDrawArgs,ComputeBuffer cbPoints)
+        public IndirectReflectedStarPass(RenderPassEvent renderPassEvent,int count,Mesh mesh,Material material,ComputeBuffer cbDrawArgs,ComputeBuffer cbPoints)
         {
             this.maxCount = count;
             this.mesh = mesh;
             this.mat = material;
-            this.colorHandle = colorHandle;
             this.renderPassEvent = renderPassEvent;
             this.cbDrawArgs = cbDrawArgs;
             this.cbPoints = cbPoints;
@@ -111,6 +107,7 @@ public class IndirectReflectedStar : ScriptableRendererFeature
 
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
+            var colorHandle = renderingData.cameraData.renderer.cameraColorTargetHandle;
             //Camera camera = renderingData.cameraData.camera;
 
 			CommandBuffer cmd = CommandBufferPool.Get("IndirectReflectedStarPass");

@@ -43,8 +43,7 @@ public class ComputeParticlesDirect : ScriptableRendererFeature
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
-        var cameraColorTarget = renderer.cameraColorTarget;
-        var pass = new ComputeParticlesDirectPass(evt, cameraColorTarget,count,mat,computeShader,buffer);
+        var pass = new ComputeParticlesDirectPass(evt,count,mat,computeShader,buffer);
         renderer.EnqueuePass(pass);
     }
 
@@ -67,13 +66,10 @@ public class ComputeParticlesDirect : ScriptableRendererFeature
 		private ComputeShader computeShader;
 		private ComputeBuffer buffer;
 
-		private RenderTargetIdentifier colorHandle;
-
-        public ComputeParticlesDirectPass(RenderPassEvent renderPassEvent, RenderTargetIdentifier colorHandle,int count,Material material,ComputeShader computeShader,ComputeBuffer buffer)
+        public ComputeParticlesDirectPass(RenderPassEvent renderPassEvent, int count,Material material,ComputeShader computeShader,ComputeBuffer buffer)
         {
             this.count = count;
             this.mat = material;
-            this.colorHandle = colorHandle;
             this.renderPassEvent = renderPassEvent;
             this.computeShader = computeShader;
             this.buffer = buffer;
@@ -85,6 +81,7 @@ public class ComputeParticlesDirect : ScriptableRendererFeature
 
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
+			var colorHandle = renderingData.cameraData.renderer.cameraColorTargetHandle;
 			CommandBuffer cmd = CommandBufferPool.Get("ComputeParticlesDirectPass");
             cmd.SetRenderTarget(colorHandle);
 			cmd.DispatchCompute(computeShader,0,Mathf.CeilToInt(count / 32),1,1);
