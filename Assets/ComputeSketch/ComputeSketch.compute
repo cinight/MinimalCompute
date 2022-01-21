@@ -1,0 +1,30 @@
+#pragma kernel CSMain
+
+struct Particle
+{
+	float2 position;
+	float direction;
+	float intensity;
+};
+RWStructuredBuffer<Particle> particleBuffer; //has to be same name with rendering shader
+Texture2D<float4> texRef;
+uint texSize;
+
+#define STEP 10
+
+[numthreads(32,1,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+	uint2 uv = particleBuffer[id.x].position * texSize;
+	float angle = particleBuffer[id.x].direction;
+	float2 dir = float2( cos(angle) , sin(angle) );
+	float intensity = 0;
+
+	for(int i=0; i<STEP; i++)
+	{
+		uint2 nuv = uv + i * dir;
+		intensity += 1.0 - texRef[nuv].r;
+	}
+
+	particleBuffer[id.x].intensity = intensity;
+}
