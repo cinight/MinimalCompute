@@ -39,6 +39,9 @@ EditorBuildSettings:
     path: Assets/ComputeParticlesIndirect/ComputeParticlesIndirect.unity
     guid: 9d7b6fbe1c7b0ae41b11aefa59d49916
   - enabled: 1
+    path: Assets/ComputeParticlesIndirect_VFX/ComputeParticlesIndirect_VFX.unity
+    guid: ce7f609e7cb2497448e77a84fbc627f5
+  - enabled: 1
     path: Assets/ComputeUAVTexFlow/ComputeUAVTexFlow.unity
     guid: a896f6a5cc103804e9d306e51225579a
   - enabled: 1
