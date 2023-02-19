@@ -13,6 +13,7 @@ Tested with : Win DX11
 | `ComputeUAVTexFlow` | ![](READMEimages/ComputeUAVTexFlow.gif) | Example of using compute to animate texture pixels |
 | `ComputePaintTexture` | ![](READMEimages/ComputePaintTexture.gif) | Paint the texture by sending object positions to compute shader |
 | `ComputePaintTexture_DFT` | ![](READMEimages/ComputePaintTexture_DFT.gif) | Similar to above but drawing with Epicycles using Discrete Fourier Transform. Ref to [The Coding Train's youtube video](https://www.youtube.com/watch?v=MY4luNgGfms) |
+| `Fluid` | ![](READMEimages/Fluid.gif) | GPU Fluid. Ref to [Scrawk/GPU-GEMS-2D-Fluid-Simulation](https://github.com/Scrawk/GPU-GEMS-2D-Fluid-Simulation) |
 | `StructuredBufferWithCompute` | ![](READMEimages/StructuredBufferWithCompute.gif) | Another basic one, use compute to calculate some data and send back to CPU |
 | `AsyncGPUReadback` | ![](READMEimages/AsyncGPUReadback.gif) | Similar to `StructuredBufferWithCompute`, but use AsyncGPUReadback to get array data back to CPU |
 | `StructuredBufferNoCompute` | ![](READMEimages/StructuredBufferNoCompute.gif) | ComputeBuffer doesn't always need to stick with ComputeShader |

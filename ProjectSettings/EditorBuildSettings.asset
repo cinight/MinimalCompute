@@ -30,6 +30,9 @@ EditorBuildSettings:
     path: Assets/AsyncGPUReadbackTex/AsyncGPUReadbackTex.unity
     guid: 95d7e59c232c643a4b03b5b4ea1eb63e
   - enabled: 1
+    path: Assets/Fluid/Fluid.unity
+    guid: cdba5a77155922c44a481ecbfc5e1306
+  - enabled: 1
     path: Assets/ComputeParticlesDirect/ComputeParticlesDirect_URP.unity
     guid: 863b2f68887b9a84093c35a56fe40fd7
   - enabled: 1

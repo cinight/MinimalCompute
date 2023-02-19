@@ -1,0 +1,204 @@
+﻿#pragma kernel Kernel_Init
+#pragma kernel Kernel_Diffusion
+#pragma kernel Kernel_UserInput
+#pragma kernel Kernel_Divergence
+#pragma kernel Kernel_Jacobi
+#pragma kernel Kernel_Advection
+#pragma kernel Kernel_SubtractGradient
+
+float2 spherePos;
+float2 sphereVelocity;
+float forceIntensity;
+float forceRange;
+float _deltaTime;
+
+Texture2D<float> ObstacleTex; //0 is obstacle, 1 is fluid
+RWTexture2D<float2> VelocityTex;
+RWTexture2D<float2> DensityTex;
+RWTexture2D<float2> PressureTex;
+RWTexture2D<float2> DivergenceTex;
+
+uint size; //texture resolution
+
+//Neighbour pixel offsets: top,bottom,left,right
+#define off_T int2(0,1);
+#define off_B int2(0,-1);
+#define off_L int2(-1,0);
+#define off_R int2(1,0);
+
+//===========================================================
+[numthreads(16,16,1)]
+void Kernel_Init (uint3 id : SV_DispatchThreadid)
+{
+	DensityTex[id.xy] = 0;
+	VelocityTex[id.xy] = 0;
+	PressureTex[id.xy] = 0;
+	DivergenceTex[id.xy] = 0;
+}
+//===========================================================
+[numthreads(16,16,1)]
+void Kernel_Diffusion (uint3 Id : SV_DispatchThreadid)
+{		
+	//Grid positions
+	int2 id = int2(Id.xy);
+	int2 id_T = id + off_T;
+	int2 id_B = id + off_B;
+	int2 id_L = id + off_L;
+	int2 id_R = id + off_R;
+
+	//Obstacle
+	float obstacle = ObstacleTex[id];
+	float obstacle_T = ObstacleTex[id_T];
+	float obstacle_R = ObstacleTex[id_R];
+	float obstacle_B = ObstacleTex[id_B];
+	float obstacle_L = ObstacleTex[id_L];
+
+	//Density
+	float d = DensityTex[id].x;
+	float d_T = DensityTex[id_T].x * obstacle_T;
+	float d_B = DensityTex[id_B].x * obstacle_R;
+	float d_R = DensityTex[id_R].x * obstacle_B;
+	float d_L = DensityTex[id_L].x * obstacle_L;
+
+	float dnew = (d + size * _deltaTime * (d_T + d_B + d_R + d_L)) / (1 + 4.0 * size * _deltaTime);
+	DensityTex[id.xy] = dnew * obstacle;
+}
+//===========================================================
+[numthreads(16,16,1)]
+void Kernel_Advection (uint3 id : SV_DispatchThreadid)
+{		
+	float2 velocity = VelocityTex[id.xy];
+	float obstacle = ObstacleTex[id.xy];
+
+	float2 displacement = velocity * _deltaTime * size;
+	int2 previd = float2(id.xy) - displacement;
+
+	//Prev value -> current value
+	DensityTex[id.xy] = 0.999f * DensityTex[previd] * obstacle;
+	VelocityTex[id.xy] = 0.99f * VelocityTex[previd] * obstacle;
+}
+//===========================================================
+[numthreads(16,16,1)]
+void Kernel_UserInput (uint3 id : SV_DispatchThreadid)
+{
+	//mouse position
+	float2 uv = float2(id.xy) / float(size);
+	float2 sphereUV = ( spherePos + 0.5f ); //sphere world position to 0-1 uv space
+
+	float2 velocity = VelocityTex[id.xy];
+	float density = DensityTex[id.xy].x;
+	float obstacle = ObstacleTex[id.xy];
+
+	//Impulse factor
+	float dist = distance(uv,sphereUV);
+	dist = 1.0-smoothstep(dist, 0.0, forceRange);
+	float impulse = forceIntensity * dist * _deltaTime * obstacle;
+
+	//Add dye
+	float speed = distance(sphereVelocity,0);
+	density += impulse * speed;
+
+	//Buoyancy, making the fluid goes out from center, instead of having gravity
+	float2 center = 0.5;
+	float2 cdir = uv - center;
+	velocity += _deltaTime * density * cdir * 2.0;
+
+	//Add mouse velocity
+	float2 dir = sphereVelocity;
+	velocity += dir * impulse;
+
+	//Assign
+	VelocityTex[id.xy] = velocity;
+	DensityTex[id.xy] = float2(density,0);
+}
+//===========================================================
+[numthreads(16,16,1)]
+void Kernel_Divergence (uint3 Id : SV_DispatchThreadid)
+{
+	//Grid positions
+	int2 id = int2(Id.xy);
+	int2 id_T = id + off_T;
+	int2 id_B = id + off_B;
+	int2 id_L = id + off_L;
+	int2 id_R = id + off_R;
+
+	//Obstacle
+	float obstacle_T = ObstacleTex[id_T];
+	float obstacle_R = ObstacleTex[id_R];
+	float obstacle_B = ObstacleTex[id_B];
+	float obstacle_L = ObstacleTex[id_L];
+
+	//Velocity
+	float2 v_T = VelocityTex[id_T] * obstacle_T;
+	float2 v_B = VelocityTex[id_B] * obstacle_R;
+	float2 v_R = VelocityTex[id_R] * obstacle_B;
+	float2 v_L = VelocityTex[id_L] * obstacle_L;
+
+	//Divergence
+	float halfPixelSize = ( 1.0/float(size) ) * 0.5;
+	float div = halfPixelSize * (v_R.x - v_L.x + v_T.y - v_B.y);
+	DivergenceTex[id.xy] = float2(div,0);
+}
+//===========================================================
+[numthreads(16,16,1)]
+void Kernel_Jacobi (uint3 Id : SV_DispatchThreadid)
+{
+	//Grid positions
+	int2 id = int2(Id.xy);
+	int2 id_T = id + off_T;
+	int2 id_B = id + off_B;
+	int2 id_L = id + off_L;
+	int2 id_R = id + off_R;
+
+	//Obstacle
+	float obstacle_T = ObstacleTex[id_T];
+	float obstacle_R = ObstacleTex[id_R];
+	float obstacle_B = ObstacleTex[id_B];
+	float obstacle_L = ObstacleTex[id_L];
+
+	//Pressure
+	float p = PressureTex[id.xy].x;
+	float p_T = lerp( p , PressureTex[id_T].x , obstacle_T ) ;
+	float p_B = lerp( p , PressureTex[id_B].x , obstacle_R ) ;
+	float p_R = lerp( p , PressureTex[id_R].x , obstacle_B ) ;
+	float p_L = lerp( p , PressureTex[id_L].x , obstacle_L ) ;
+
+	//New pressure
+	float div = DivergenceTex[id.xy].x * size;
+	p = (p_L + p_R + p_B + p_T - div ) / 4.0;
+	PressureTex[id.xy] = p;
+}
+//===========================================================
+[numthreads(16,16,1)]
+void Kernel_SubtractGradient (uint3 Id : SV_DispatchThreadid)
+{
+	//Grid positions
+	int2 id = int2(Id.xy);
+	int2 id_T = id + off_T;
+	int2 id_B = id + off_B;
+	int2 id_L = id + off_L;
+	int2 id_R = id + off_R;
+
+	//Obstacle
+	float obstacle_T = ObstacleTex[id_T];
+	float obstacle_R = ObstacleTex[id_R];
+	float obstacle_B = ObstacleTex[id_B];
+	float obstacle_L = ObstacleTex[id_L];
+
+	//Pressure
+	float p = PressureTex[id.xy].x;
+	float p_T = lerp( p , PressureTex[id_T].x , obstacle_T ) ;
+	float p_B = lerp( p , PressureTex[id_B].x , obstacle_R ) ;
+	float p_R = lerp( p , PressureTex[id_R].x , obstacle_B ) ;
+	float p_L = lerp( p , PressureTex[id_L].x , obstacle_L ) ;
+
+	//Pressure affect velocity, where the curl happens
+	float2 velocity = VelocityTex[id.xy];
+	float curlSize = 1.0; // 0.2 - feels like thicker, 1.0 - more flowy
+	float2 grad = float2(p_R - p_L, p_T - p_B) * curlSize;
+	velocity -= grad;
+	VelocityTex[id.xy] = velocity; 
+}
+
+
+
