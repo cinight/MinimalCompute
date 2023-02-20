@@ -20,6 +20,7 @@ public class Fluid : MonoBehaviour
 	public float forceIntensity = 200f;
 	public float forceRange = 0.01f;
 	private Vector2 sphere_prevPos = Vector3.zero;
+	public Color dyeColor = Color.white;
 
 	private RenderTexture velocityTex;
 	private RenderTexture densityTex;
@@ -43,7 +44,7 @@ public class Fluid : MonoBehaviour
 		You can probably either pack the data and utilize the channels thus use fewer textures,
 		or specific a more suitable GraphicsFormat for each texture according to what value they holds
 		*/
-		RenderTexture dataTex = new RenderTexture (size, size, 0, GraphicsFormat.R32G32_SFloat);
+		RenderTexture dataTex = new RenderTexture (size, size, 0, GraphicsFormat.R32G32B32A32_SFloat);
 		dataTex.filterMode = FilterMode.Bilinear;
 		dataTex.wrapMode = TextureWrapMode.Clamp;
 		dataTex.enableRandomWrite = true;
@@ -109,6 +110,7 @@ public class Fluid : MonoBehaviour
 		Vector2 velocity = npos - sphere_prevPos;
 		shader.SetVector("sphereVelocity",velocity);
 		shader.SetFloat("_deltaTime", Time.fixedDeltaTime);
+		shader.SetVector("dyeColor",dyeColor);
 
 		//Run compute shader
 		DispatchCompute (kernel_Diffusion);
