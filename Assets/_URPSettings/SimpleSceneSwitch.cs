@@ -6,6 +6,12 @@ using UnityEngine.SceneManagement;
 public class SimpleSceneSwitch : MonoBehaviour
 {
     public float scale = 1f;
+
+    private int fontSize = 16;
+    private GUIStyle customButton;
+    private float w = 0;
+    private float h = 0;
+
     public void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
@@ -13,6 +19,13 @@ public class SimpleSceneSwitch : MonoBehaviour
 
     public void Start()
     {
+        //Setup styles
+        fontSize = Mathf.RoundToInt ( 16 * scale );
+        customButton = new GUIStyle("button");
+        customButton.fontSize = fontSize;
+        w = 410 * scale;
+        h = 90 * scale;
+
         NextScene();
     }
 
@@ -30,17 +43,11 @@ public class SimpleSceneSwitch : MonoBehaviour
 
     void OnGUI()
     {
-        GUI.skin.label.fontSize = Mathf.RoundToInt ( 16 * scale );
-        //GUI.backgroundColor = new Color(0, 0, 0, .80f);
+        GUI.skin.label.fontSize = fontSize;
         GUI.color = new Color(1, 1, 1, 1);
-        float w = 410 * scale;
-        float h = 90 * scale;
         GUILayout.BeginArea(new Rect(Screen.width - w -5, Screen.height - h -5, w, h), GUI.skin.box);
 
         GUILayout.BeginHorizontal();
-        //GUI.backgroundColor = new Color(1, 1, 1, .80f);
-        GUIStyle customButton = new GUIStyle("button");
-        customButton.fontSize = GUI.skin.label.fontSize;
         if(GUILayout.Button("\n Prev \n",customButton,GUILayout.Width(200 * scale), GUILayout.Height(50 * scale))) PrevScene();
         if(GUILayout.Button("\n Next \n",customButton,GUILayout.Width(200 * scale), GUILayout.Height(50 * scale))) NextScene();
         GUILayout.EndHorizontal();
