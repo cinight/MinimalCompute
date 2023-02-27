@@ -25,7 +25,7 @@ Tested with : Win DX11
 | `03_2_AsyncGPUReadback` | <img src="READMEimages/03_2_AsyncGPUReadback.gif" width="250" /> | Similar to `StructuredBufferWithCompute`, but use AsyncGPUReadback to get array data back to CPU |
 | `03_3_AsyncGPUReadbackTex` | <img src="READMEimages/03_3_AsyncGPUReadbackTex.gif" width="250" /> | Result is same as `ComputeUAVTexture`, but this scene uses AsyncGPUReadback to get texture data back to CPU, and CPU send the texture data to Shader for rendering |
 | `03_4_AsyncGPUReadbackMesh` | <img src="READMEimages/03_4_AsyncGPUReadbackMesh.gif" width="250" /> | Update mesh vertices with compute + AsyncGPUReadback to get the vertex data back to CPU for physics |
-| `03_5_AsyncGPUReadbackMesh_NewMeshAPI` | <img src="READMEimages/03_5_AsyncGPUReadbackMesh_NewMeshAPI.gif" width="250" /> | Same as above but using the [new Mesh API](https://github.com/Unity-Technologies/MeshApiExamples) |
+| `03_5_AsyncGPUReadbackMesh_NewMeshAPI` | <img src="READMEimages/03_4_AsyncGPUReadbackMesh.gif" width="250" /> | Same as above but using the [new Mesh API](https://github.com/Unity-Technologies/MeshApiExamples) |
 | 🔷 **04_Indirect** 🔷 | |
 | `04_1_IndirectCompute` | <img src="READMEimages/04_1_IndirectCompute.gif" width="250" /> | Simple indirect compute (indirect dispatch) and CopyCount |
 | `04_2_ComputeParticlesIndirect` | <img src="READMEimages/04_2_ComputeParticlesIndirect.gif" width="250" /> | GPU Particle, drawing dynamic no. of particles, no need to read back to CPU! |
