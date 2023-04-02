@@ -38,7 +38,7 @@ Tested with : Win DX11
 | `06_2_ComputeVertexLit` | <img src="READMEimages/06_2_ComputeVertexLit.gif" width="250" /> | A usecase of above, with different shader passes share the same vertex data |
 | `06_3_SkinnedMeshBuffer_SameMesh` | <img src="READMEimages/06_3_SkinnedMeshBuffer_SameMesh.gif" width="250" /> | Blend the vertex data from 2 SkinnedMeshRenderer vertex buffer and render it with MeshRenderer |
 | `06_4_SkinnedMeshBuffer_DiffMesh` | <img src="READMEimages/06_4_SkinnedMeshBuffer_DiffMesh.gif" width="250" /> | Similar to above but blending 2 different SkinnedMeshes. The blended triangles are drawn with DrawMeshInstancedIndirect() |
-| `06_5_VFXGraphMeshDeform` | <img src="READMEimages/06_5_VFXGraphMeshDeform" width="250" /> | Using VFX Graph to deforming mesh (particle as vertex) |
+| `06_5_VFXGraphMeshDeform` | <img src="READMEimages/06_5_VFXGraphMeshDeform.gif" width="250" /> | Using VFX Graph to deforming mesh (particle as vertex) |
 -------------
 
 Disclaimer: The stuff here might not be the best practice / optimized :'(. But at least they works. Play them for fun.
