@@ -1,0 +1,31 @@
+﻿#pragma kernel CSMain
+
+struct VertexData
+{
+    uint id;
+    float3 pos;
+    float3 nor;
+    float2 uv;
+    float4 col;
+};
+
+RWStructuredBuffer<VertexData> vertexBuffer;
+ByteAddressBuffer attributeBuffer;
+
+[numthreads(1,1,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    // On ProjectView select the VFX Graph asset and click on small triangle to see the subAssets, double click on the "bla bla Update Particle" compute shader to open it
+    // Reference to attributeBuffer and struct VFXAttributes{} in the compute shader
+    // float3 position = asfloat(attributeBuffer.Load3(((instanceIndex * 0x6DDD00) + (index * 0x8 + 0x1B7740)) << 2));
+    // float3 direction = asfloat(attributeBuffer.Load3(((instanceIndex * 0x6DDD00) + (index * 0x8 + 0x1B7744)) << 2));
+    // uint particleId = (attributeBuffer.Load(((instanceIndex * 0x6DDD00) + (index * 0x1 + 0x64B540)) << 2));
+
+    float3 position = asfloat(attributeBuffer.Load3( ((id.x * 0x8 + 0x1B7740)) << 2 ));
+    float3 direction = asfloat(attributeBuffer.Load3(((id.x * 0x8 + 0x1B7744)) << 2 ));
+
+    //Assign data to vertex buffer
+    vertexBuffer[id.x].pos = position;
+    vertexBuffer[id.x].nor = direction;
+    vertexBuffer[id.x].col = float4(direction,1);
+}

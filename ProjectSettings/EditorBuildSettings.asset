@@ -110,4 +110,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/06_Compute_Mesh/06_4_SkinnedMeshBuffer_DiffMesh/SkinnedMeshBuffer_diffMesh.unity
     guid: 1105acd185fcd204c8f3522523f72c5d
+  - enabled: 1
+    path: Assets/06_Compute_Mesh/06_5_VFXGraphMeshDeform/VFXGraphMeshDeform.unity
+    guid: cb8d545472f591743a855ab30ead482c
   m_configObjects: {}
