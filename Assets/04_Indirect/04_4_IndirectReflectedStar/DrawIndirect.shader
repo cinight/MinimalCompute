@@ -145,7 +145,9 @@ Shader "Custom/IndirectReflectedStar"
 
 				//center position of star
 				float4 pos = float4(pointBuffer[inst].uv * 2.0 - 1.0, 0, 1);
+				#if UNITY_UV_STARTS_AT_TOP
 				pos.y *= -1;
+				#endif
 
 				//size according to intensity
 				float size = _Size;
