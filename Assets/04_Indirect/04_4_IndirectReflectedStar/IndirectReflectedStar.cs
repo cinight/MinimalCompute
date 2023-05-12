@@ -15,9 +15,11 @@ public class IndirectReflectedStar : ScriptableRendererFeature
     private ComputeBuffer cbDrawArgs;
     private ComputeBuffer cbPoints;
     private int[] args;
+    private bool reinit = false;
     
 	public IndirectReflectedStar()
 	{
+        reinit = true;
 	}
 
 	public override void Create()
@@ -43,7 +45,7 @@ public class IndirectReflectedStar : ScriptableRendererFeature
         }
 
         //Create resources
-        OnDisable();
+        CleanUp();
         if (cbDrawArgs == null)
         {
             cbDrawArgs = new ComputeBuffer (1, args.Length * 4, ComputeBufferType.IndirectArguments); //each int is 4 bytes
@@ -58,11 +60,16 @@ public class IndirectReflectedStar : ScriptableRendererFeature
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
+		if(reinit)
+		{
+			reinit = false;
+			Create();
+		}
         pass = new IndirectReflectedStarPass(evt, maxCount,mesh,mat,cbDrawArgs,cbPoints);
         renderer.EnqueuePass(pass);
     }
 
-    public void OnDisable()
+    public void CleanUp()
     {
         //Clean up
         if (cbDrawArgs != null)
@@ -75,6 +82,12 @@ public class IndirectReflectedStar : ScriptableRendererFeature
             cbPoints.Release(); 
             cbPoints = null;
         }
+    }
+
+    public void OnDisable()
+    {
+		CleanUp();
+		reinit = true;
     }
 
     //-------------------------------------------------------------------------

@@ -17,9 +17,11 @@ public class ComputeParticlesDirect : ScriptableRendererFeature
 
 	private ComputeBuffer buffer;
 	private Particle[] plists;
+	private bool reinit = false;
     
 	public ComputeParticlesDirect()
 	{
+		reinit = true;
 	}
 
 	public override void Create()
@@ -32,7 +34,7 @@ public class ComputeParticlesDirect : ScriptableRendererFeature
         }
 		
 		//Set data to buffer
-		OnDisable();
+		CleanUp();
 		buffer = new ComputeBuffer(count, 12); // 12 = sizeof(Particle)
 		buffer.SetData(plists);
 		
@@ -43,18 +45,29 @@ public class ComputeParticlesDirect : ScriptableRendererFeature
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
+		if(reinit)
+		{
+			reinit = false;
+			Create();
+		}
+		
         var pass = new ComputeParticlesDirectPass(evt,count,mat,computeShader,buffer);
         renderer.EnqueuePass(pass);
     }
 
-    public void OnDisable()
-    {
-        //Clean up
+	private void CleanUp()
+	{
         if (buffer != null)
         {
 			buffer.Release();
             buffer = null;
-        } 
+        }
+	}
+
+    public void OnDisable()
+    {
+		CleanUp();
+		reinit = true;
     }
 
     //-------------------------------------------------------------------------
