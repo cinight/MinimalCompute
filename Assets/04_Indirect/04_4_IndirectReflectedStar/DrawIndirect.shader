@@ -3,6 +3,7 @@ Shader "Custom/IndirectReflectedStar"
 	Properties 
 	{
 		[HideInInspector]_MainTex ("Screen", 2D) = "white" {}
+		[HideInInspector]_BlitTexture ("Screen RenderGraph", 2D) = "white" {}
 
 		[Header(Filter settings)]
 		_SampleDistance ("SampleDistance",Range(0,0.1)) = 0.02
@@ -20,6 +21,8 @@ Shader "Custom/IndirectReflectedStar"
 		//================= For defining star position
 		Pass
 		{
+			Name "Filter"
+
 			ZWrite Off ZTest Always Cull Off Fog { Mode Off }
 
 			CGPROGRAM
@@ -91,6 +94,8 @@ Shader "Custom/IndirectReflectedStar"
 		//================= Drawing the stars
 		Pass 
 		{
+			Name "DrawingStars"
+
 			Tags { "RenderPipeline" = "UniversalRenderPipeline"}
 			ZWrite Off ZTest Always Cull Off Fog { Mode Off }
 			Blend SrcAlpha One
@@ -173,6 +178,79 @@ Shader "Custom/IndirectReflectedStar"
 				return tex2D(_Star, i.uv) * i.color;
 			}
 			
+			ENDCG
+		}
+
+		//================= copy from above "For defining star position" for RenderGraph _BlitTexture
+		Pass
+		{
+			Name "Filter_RenderGraph"
+
+			ZWrite Off ZTest Always Cull Off Fog { Mode Off }
+
+			CGPROGRAM
+			#pragma vertex vert
+			#pragma fragment frag
+			#pragma target 5.0
+			#include "UnityCG.cginc"
+
+			struct appdata 
+			{
+				float4 vertex : POSITION;
+				float2 texcoord : TEXCOORD0;
+			};
+
+			struct v2f 
+			{
+				float4 pos : SV_POSITION;
+				float2 uv : TEXCOORD0;
+			};
+
+			v2f vert (appdata v)
+			{
+				v2f o;
+				o.pos = UnityObjectToClipPos (v.vertex);
+				o.uv = v.texcoord;
+				return o;
+			}
+
+			struct Particle
+			{
+				float2 uv;
+				float intensity;
+			};
+
+			sampler2D _BlitTexture;
+			AppendStructuredBuffer<Particle> pointBufferOutput : register(u1); //make sure you have same id in C# script
+			float _Threshold;
+			float _SampleDistance;
+
+			float4 frag (v2f i) : COLOR0
+			{
+				float2 uv = i.uv;
+
+				float4 c = tex2D (_BlitTexture, uv);
+				float4 c1 = tex2D (_BlitTexture, uv + saturate(float2(1,0) * _SampleDistance) );
+				float4 c2 = tex2D (_BlitTexture, uv + saturate(float2(0,1) * _SampleDistance) );
+				float4 c3 = tex2D (_BlitTexture, uv + saturate(float2(-1,0) * _SampleDistance) );
+				float4 c4 = tex2D (_BlitTexture, uv + saturate(float2(0,-1) * _SampleDistance) );
+
+				float lumc = Luminance(c) + Luminance(c1) + Luminance(c2) + Luminance(c3) + Luminance(c4);
+				lumc /= 5.0f;
+
+				[branch]
+				if (lumc > _Threshold )// && lumc > lumc1)
+				{
+					Particle p;
+					p.uv = i.uv;
+					p.intensity = lumc-_Threshold;
+					pointBufferOutput.Append (p);
+
+					c = float4(0,1,0,1); //For debug
+				}
+
+				return c;
+			}
 			ENDCG
 		}
 	}
