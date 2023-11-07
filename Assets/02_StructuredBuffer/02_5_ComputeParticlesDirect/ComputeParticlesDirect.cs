@@ -1,7 +1,8 @@
 using UnityEngine;
+using UnityEngine.Experimental.Rendering;
+using UnityEngine.Experimental.Rendering.RenderGraphModule;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
-using UnityEngine.Experimental.Rendering.RenderGraphModule;
 
 [CreateAssetMenu]
 public class ComputeParticlesDirect : ScriptableRendererFeature
@@ -120,7 +121,7 @@ public class ComputeParticlesDirect : ScriptableRendererFeature
 			public TextureHandle colorHandle;
         }
 
-       public override void RecordRenderGraph(RenderGraph renderGraph, FrameResources frameResources, ref RenderingData renderingData)
+       public override void RecordRenderGraph(RenderGraph renderGraph, ContextContainer frameData)
        {
 			//Dispatch compute
 			using (var builder = renderGraph.AddComputePass<PassData_DispatchCompute>(passName+"_DispatchCompute", out var passData, sampler))
@@ -136,8 +137,8 @@ public class ComputeParticlesDirect : ScriptableRendererFeature
 			}
 
 			//Render particles
-			var renderer = renderingData.cameraData.renderer as UniversalRenderer;
-			TextureHandle colorHandle = renderer.activeColorTexture;
+			var resourceData = frameData.Get<UniversalResourceData>();
+			TextureHandle colorHandle = resourceData.activeColorTexture;
 
 			using (var builder = renderGraph.AddRasterRenderPass<PassData_RenderParticles>(passName+"_RenderParticles", out var passData, sampler))
 			{   

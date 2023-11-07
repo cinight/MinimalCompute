@@ -174,11 +174,11 @@ public class IndirectReflectedStar : ScriptableRendererFeature
             public GraphicsBuffer cbDrawArgs;
         }
 
-        public override void RecordRenderGraph(RenderGraph renderGraph, FrameResources frameResources, ref RenderingData renderingData)
+        public override void RecordRenderGraph(RenderGraph renderGraph, ContextContainer frameData)
         {
             //Color handle
-            var renderer = renderingData.cameraData.renderer as UniversalRenderer;
-            TextureHandle colorTex = renderer.activeColorTexture;
+            var resourceData = frameData.Get<UniversalResourceData>();
+            TextureHandle colorTex = resourceData.activeColorTexture;
 
             //Set RadomWriteTarget
 			using (var builder = renderGraph.AddLowLevelPass<PassData_SetUAV>(passName+"_SetUAV", out var passData, sampler))
@@ -197,7 +197,8 @@ public class IndirectReflectedStar : ScriptableRendererFeature
 			}
             
             //Get temp RT
-            RenderTextureDescriptor rtDescriptor = renderingData.cameraData.cameraTargetDescriptor;
+            var cameraData = frameData.Get<UniversalCameraData>();
+            RenderTextureDescriptor rtDescriptor = cameraData.cameraTargetDescriptor;
             TextureDesc destinationDescriptor = new TextureDesc(rtDescriptor.width, rtDescriptor.height, false, false)
             {
                 colorFormat = rtDescriptor.graphicsFormat, 
