@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
-using UnityEngine.Experimental.Rendering.RenderGraphModule;
+using UnityEngine.Rendering.RenderGraphModule;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
@@ -112,45 +112,51 @@ public class ComputeParticlesDirect : ScriptableRendererFeature
 			CommandBufferPool.Release(cmd);
 		}
 
-        internal class PassData_DispatchCompute
+        #region RenderGraph
+        internal class PassData
         {
         }
-
-        internal class PassData_RenderParticles
-        {
-			public TextureHandle colorHandle;
-        }
-
+        
        public override void RecordRenderGraph(RenderGraph renderGraph, ContextContainer frameData)
        {
+	       UniversalResourceData resourceData = frameData.Get<UniversalResourceData>();
+	       
+	       //shouldn't blit from the backbuffer
+	       if (resourceData.isActiveTargetBackBuffer)
+		       return;
+	       
 			//Dispatch compute
-			using (var builder = renderGraph.AddComputePass<PassData_DispatchCompute>(passName+"_DispatchCompute", out var passData, sampler))
+			using (var builder = renderGraph.AddComputePass<PassData>(passName+"_DispatchCompute", out var passData, sampler))
 			{
 				//The compute will be culled because attachment dimensions is 0x0x0, so here we make sure it is not culled
 				builder.AllowPassCulling(false);
 
 				//Render function
-				builder.SetRenderFunc((PassData_DispatchCompute data, ComputeGraphContext rgContext) =>
+				builder.SetRenderFunc((PassData data, ComputeGraphContext rgContext) =>
 				{
 					rgContext.cmd.DispatchCompute(computeShader,0,Mathf.CeilToInt(count / 32),1,1);
 				});
 			}
 
 			//Render particles
-			var resourceData = frameData.Get<UniversalResourceData>();
 			TextureHandle colorHandle = resourceData.activeColorTexture;
+			
+			//To avoid error from material preview in the scene
+			if(!colorHandle.IsValid())
+				return;
 
-			using (var builder = renderGraph.AddRasterRenderPass<PassData_RenderParticles>(passName+"_RenderParticles", out var passData, sampler))
+			using (var builder = renderGraph.AddRasterRenderPass<PassData>(passName+"_RenderParticles", out var passData, sampler))
 			{   
-				//Setup passData
-				passData.colorHandle = builder.UseTextureFragment(colorHandle, 0, IBaseRenderGraphBuilder.AccessFlags.Write);
+				//Setup builder
+				builder.SetRenderAttachment(colorHandle, 0, AccessFlags.Write);
 
 				//Render function
-				builder.SetRenderFunc((PassData_RenderParticles data, RasterGraphContext rgContext) =>
+				builder.SetRenderFunc((PassData data, RasterGraphContext rgContext) =>
 				{
 					rgContext.cmd.DrawProcedural(Matrix4x4.identity,mat,0,MeshTopology.Points,1,count);
 				});
 			}
 	   }
+       #endregion
     }
 }

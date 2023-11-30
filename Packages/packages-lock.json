@@ -10,7 +10,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.burst": {
-      "version": "1.8.9",
+      "version": "1.8.10",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -97,7 +97,16 @@
         "com.unity.mathematics": "1.2.1",
         "com.unity.burst": "1.8.9",
         "com.unity.render-pipelines.core": "17.0.1",
-        "com.unity.shadergraph": "17.0.1"
+        "com.unity.shadergraph": "17.0.1",
+        "com.unity.render-pipelines.universal-config": "17.0.1"
+      }
+    },
+    "com.unity.render-pipelines.universal-config": {
+      "version": "17.0.1",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.render-pipelines.core": "17.0.1"
       }
     },
     "com.unity.rendering.light-transport": {
@@ -127,7 +136,7 @@
       }
     },
     "com.unity.test-framework": {
-      "version": "1.3.9",
+      "version": "1.4.0",
       "depth": 0,
       "source": "registry",
       "dependencies": {

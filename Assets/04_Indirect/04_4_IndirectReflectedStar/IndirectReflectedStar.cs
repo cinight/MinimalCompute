@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
-using UnityEngine.Experimental.Rendering.RenderGraphModule;
+using UnityEngine.Rendering.RenderGraphModule;
 
 [CreateAssetMenu]
 public class IndirectReflectedStar : ScriptableRendererFeature
@@ -151,6 +151,7 @@ public class IndirectReflectedStar : ScriptableRendererFeature
 			CommandBufferPool.Release(cmd);
 		}
 
+        #region RenderGraph
         internal class PassData_SetUAV
         {
             public GraphicsBuffer cbPoints;
@@ -168,7 +169,6 @@ public class IndirectReflectedStar : ScriptableRendererFeature
 
         internal class PassData_RenderParticles
         {
-			public TextureHandle colorHandle;
             public Material material;
             public Mesh mesh;
             public GraphicsBuffer cbDrawArgs;
@@ -176,12 +176,15 @@ public class IndirectReflectedStar : ScriptableRendererFeature
 
         public override void RecordRenderGraph(RenderGraph renderGraph, ContextContainer frameData)
         {
-            //Color handle
             var resourceData = frameData.Get<UniversalResourceData>();
-            TextureHandle colorTex = resourceData.activeColorTexture;
+            var cameraData = frameData.Get<UniversalCameraData>();
+            
+            //shouldn't blit from the backbuffer
+            if (resourceData.isActiveTargetBackBuffer)
+                return;
 
             //Set RadomWriteTarget
-			using (var builder = renderGraph.AddLowLevelPass<PassData_SetUAV>(passName+"_SetUAV", out var passData, sampler))
+			using (var builder = renderGraph.AddUnsafePass<PassData_SetUAV>(passName+"_SetUAV", out var passData, sampler))
 			{
 				//Make sure the pass will not be culled
 				builder.AllowPassCulling(false);
@@ -190,24 +193,25 @@ public class IndirectReflectedStar : ScriptableRendererFeature
                 passData.cbPoints = cbPoints;
 
 				//Render function
-				builder.SetRenderFunc((PassData_SetUAV data, LowLevelGraphContext rgContext) =>
+				builder.SetRenderFunc((PassData_SetUAV data, UnsafeGraphContext rgContext) =>
 				{
-					rgContext.legacyCmd.SetRandomWriteTarget(1, cbPoints); //match the id with shader
+                    CommandBufferHelpers.GetNativeCommandBuffer(rgContext.cmd).SetRandomWriteTarget(1, data.cbPoints); //match the id with shader
 				});
 			}
             
+            //Color handle
+            TextureHandle colorTex = resourceData.activeColorTexture;
+            
             //Get temp RT
-            var cameraData = frameData.Get<UniversalCameraData>();
             RenderTextureDescriptor rtDescriptor = cameraData.cameraTargetDescriptor;
-            TextureDesc destinationDescriptor = new TextureDesc(rtDescriptor.width, rtDescriptor.height, false, false)
-            {
-                colorFormat = rtDescriptor.graphicsFormat, 
-                name = "_CameraScreenTexture"
-            };
-            TextureHandle tempTex = renderGraph.CreateTexture(destinationDescriptor);
+            TextureHandle tempTex = UniversalRenderer.CreateRenderGraphTexture(renderGraph,rtDescriptor, "_CameraScreenTexture", false);
+            
+            //To avoid error from material preview in the scene
+            if(!colorTex.IsValid() || !tempTex.IsValid())
+                return;
 
             //Brightness filter - don't do with AddRasterRenderPass because we are not really writing to a texture, but to the append buffer
-            using (var builder = renderGraph.AddLowLevelPass<PassData_BrightnessFilter>(passName+"_BrightnessFilter", out var passData, sampler))
+            using (var builder = renderGraph.AddUnsafePass<PassData_BrightnessFilter>(passName+"_BrightnessFilter", out var passData, sampler))
             {
                 //Make sure the pass will not be culled
                 builder.AllowPassCulling(false);
@@ -216,15 +220,19 @@ public class IndirectReflectedStar : ScriptableRendererFeature
                 passData.cbPoints = cbPoints;//builder.UseBuffer(cbPointsHandle, IBaseRenderGraphBuilder.AccessFlags.Read);
                 passData.cbDrawArgs = cbDrawArgs;//builder.UseBuffer(cbDrawArgsHandle, IBaseRenderGraphBuilder.AccessFlags.Write);
                 passData.material = mat;
-                passData.colorTex = builder.UseTexture(colorTex, IBaseRenderGraphBuilder.AccessFlags.Read);
-                passData.tempTex = builder.UseTexture(tempTex, IBaseRenderGraphBuilder.AccessFlags.Write);
+                passData.colorTex = colorTex;
+                passData.tempTex = tempTex;
+                
+                //Setup builder
+                builder.UseTexture(colorTex, AccessFlags.Read);
+                builder.UseTexture(tempTex, AccessFlags.Write);
 
                 //Render function
-                builder.SetRenderFunc((PassData_BrightnessFilter data, LowLevelGraphContext rgContext) =>
+                builder.SetRenderFunc((PassData_BrightnessFilter data, UnsafeGraphContext rgContext) =>
                 {
-                    rgContext.legacyCmd.Blit(data.colorTex ,data.tempTex, data.material, 0);
-                    rgContext.legacyCmd.ClearRandomWriteTargets();
-                    rgContext.legacyCmd.CopyCounterValue(data.cbPoints, data.cbDrawArgs, 4);
+                    CommandBufferHelpers.GetNativeCommandBuffer(rgContext.cmd).Blit(data.colorTex ,data.tempTex, data.material, 0);
+                    CommandBufferHelpers.GetNativeCommandBuffer(rgContext.cmd).ClearRandomWriteTargets();
+                    CommandBufferHelpers.GetNativeCommandBuffer(rgContext.cmd).CopyCounterValue(data.cbPoints, data.cbDrawArgs, 4);
                 });
             }
 
@@ -235,10 +243,12 @@ public class IndirectReflectedStar : ScriptableRendererFeature
 				builder.AllowPassCulling(false);
                 
                 //Setup passData
-                passData.colorHandle = builder.UseTextureFragment(colorTex, 0, IBaseRenderGraphBuilder.AccessFlags.Write);
                 passData.material = mat;
                 passData.mesh = mesh;
                 passData.cbDrawArgs = cbDrawArgs;
+                
+                //Setup builder
+                builder.SetRenderAttachment(colorTex, 0, AccessFlags.Write);
 
                 //Render function
                 builder.SetRenderFunc((PassData_RenderParticles data, RasterGraphContext rgContext) =>
@@ -259,5 +269,6 @@ public class IndirectReflectedStar : ScriptableRendererFeature
             Debug.Log(t);
             */
         }
+        #endregion
     }
 }

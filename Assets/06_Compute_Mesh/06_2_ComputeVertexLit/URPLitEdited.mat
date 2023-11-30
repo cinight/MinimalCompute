@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: My Mat
+  m_Name: URPLitEdited
   m_Shader: {fileID: 4800000, guid: aa7f4cd0397d4344d8d57ed2d6490791, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
