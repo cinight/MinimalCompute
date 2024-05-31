@@ -33,6 +33,7 @@ Tested with : Win DX11
 | `04_4_IndirectReflectedStar` | <img src="READMEimages/04_4_IndirectReflectedStar.gif" width="250" /> | Draw stars on the screen only if the pixels are bright enough |
 | 🔷 **05_Shader_to_CPU** 🔷 | |
 | `05_1_UAVInShader` | <img src="READMEimages/05_1_UAVInShader.gif" width="250" /> | Read some data back to CPU from fragment shader |
+| `05_2_ShaderBakeToTexture` | <img src="READMEimages/05_2_ShaderBakeToTexture.gif" width="250" /> | Bake shader pixel result to texture |
 | 🔷 **06_Compute_Mesh** 🔷 | |
 | `06_1_ComputeVertex` | <img src="READMEimages/06_1_ComputeVertex.gif" width="250" /> | Replace vertex buffer with StructuredBuffer and drive vertex displacement by compute |
 | `06_2_ComputeVertexLit` | <img src="READMEimages/06_2_ComputeVertexLit.gif" width="250" /> | A usecase of above, with different shader passes share the same vertex data |
