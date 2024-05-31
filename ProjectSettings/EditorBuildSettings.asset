@@ -72,6 +72,9 @@ EditorBuildSettings:
     path: Assets/05_Shader_to_CPU/05_1_UAVInShader/UAVInShader.unity
     guid: d1fd244de4303924f9bfcd55058b72aa
   - enabled: 1
+    path: Assets/05_Shader_to_CPU/05_2_ShaderBakeToTexture/ShaderBakeToTexture_URP.unity
+    guid: fc372576688b5554fbfc6501332eb540
+  - enabled: 1
     path: Assets/06_Compute_Mesh/06_1_ComputeVertex/ComputeVertex.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
