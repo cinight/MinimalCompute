@@ -60,6 +60,9 @@ EditorBuildSettings:
     path: Assets/03_GPU_to_CPU/03_5_AsyncGPUReadbackMesh_NewMeshAPI/AsyncGPUReadbackMesh_NewMeshAPI_Builtin.unity
     guid: 706a906aaa3f7d84487a4b258545ddf6
   - enabled: 1
+    path: Assets/03_GPU_to_CPU/03_6_PixelPercentage/PixelPercentage.unity
+    guid: b7e89e479f8eede4794b4683309282cd
+  - enabled: 1
     path: Assets/04_Indirect/04_1_IndirectCompute/IndirectCompute.unity
     guid: 9252618d4c859429bb078dc64994a59d
   - enabled: 1
@@ -71,9 +74,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/05_Shader_to_CPU/05_1_UAVInShader/UAVInShader.unity
     guid: d1fd244de4303924f9bfcd55058b72aa
-  - enabled: 1
-    path: Assets/05_Shader_to_CPU/05_2_ShaderBakeToTexture/ShaderBakeToTexture_URP.unity
-    guid: fc372576688b5554fbfc6501332eb540
   - enabled: 1
     path: Assets/06_Compute_Mesh/06_1_ComputeVertex/ComputeVertex.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
@@ -110,6 +110,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/04_Indirect/04_4_IndirectReflectedStar/IndirectReflectedStar_URP.unity
     guid: 04f2d743f4a47564db46164bb9b1dae5
+  - enabled: 1
+    path: Assets/05_Shader_to_CPU/05_2_ShaderBakeToTexture/ShaderBakeToTexture_URP.unity
+    guid: fc372576688b5554fbfc6501332eb540
   - enabled: 1
     path: Assets/06_Compute_Mesh/06_2_ComputeVertexLit/ComputeVertexLit_URP.unity
     guid: 2307b2e0966f0d14d80ea0b60be37f65
