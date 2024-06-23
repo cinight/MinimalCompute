@@ -30,9 +30,9 @@ public class ColorPalette : MonoBehaviour
 	};
 	private const int _maxColorCount = 100; //max colorLevel * colorLevel
 	private ColorData[] _colorList = new ColorData[_maxColorCount];
-	private ComputeBuffer cBuffer;
+	private ComputeBuffer _cBuffer;
 	private Vector4[] _tempNewColor;
-	private bool firstTime = true;
+	private bool _firstTime = true;
 	
 
 	void Start () 
@@ -68,21 +68,21 @@ public class ColorPalette : MonoBehaviour
 		shader.SetTexture (_kernelPixelate, "Original", originalTexture);
 		
 		//For kernel 1
-		cBuffer = new ComputeBuffer(_maxColorCount, 32); // 4*4bytes + 3*4bytes+ 4bytes
-		cBuffer.SetData(_colorList);
-		shader.SetBuffer(_kernelExtractColor, "ColorList", cBuffer);
+		_cBuffer = new ComputeBuffer(_maxColorCount, 32); // 4*4bytes + 3*4bytes+ 4bytes
+		_cBuffer.SetData(_colorList);
+		shader.SetBuffer(_kernelExtractColor, "ColorList", _cBuffer);
 		shader.SetTexture (_kernelExtractColor, "Pixelated", texPalette);
 		
 		//For kernel 2
 		shader.SetTexture (_kernelFrequency, "Palette", texPalette);
 		shader.SetTexture (_kernelFrequency, "Original", originalTexture);
-		shader.SetBuffer(_kernelFrequency, "ColorList", cBuffer);
+		shader.SetBuffer(_kernelFrequency, "ColorList", _cBuffer);
 		
 		//For kernel 3
 		shader.SetTexture (_kernelReplace, "Result", texResult);
 		shader.SetTexture (_kernelReplace, "Original", originalTexture);
 		shader.SetTexture (_kernelReplace, "Palette", texPalette);
-		shader.SetBuffer(_kernelReplace, "ColorList", cBuffer);
+		shader.SetBuffer(_kernelReplace, "ColorList", _cBuffer);
 	}
 
 	void Update()
@@ -100,7 +100,7 @@ public class ColorPalette : MonoBehaviour
 		shader.Dispatch (_kernelFrequency, _dispatchSize.x, _dispatchSize.y, 1);
 		
 		//Get data back
-		cBuffer.GetData(_colorList);
+		_cBuffer.GetData(_colorList);
 		
 		//Deduplicate the same colors
 		for(int i=0; i<_colorList.Length-1; i++)
@@ -124,7 +124,7 @@ public class ColorPalette : MonoBehaviour
 		
 		//Sort _colorList by frequency
 		Array.Sort(_colorList, (x, y) => y.frequency.CompareTo(x.frequency));
-		cBuffer.SetData(_colorList);
+		_cBuffer.SetData(_colorList);
 		
 		//Fill the palettes
 		for(int i=0; i<palettes.Length; i++)
@@ -135,10 +135,10 @@ public class ColorPalette : MonoBehaviour
 		}
 		
 		//Run Kernel 3
-		if (firstTime)
+		if (_firstTime)
 		{
 			RandomPaletteReplace();
-			firstTime = false;
+			_firstTime = false;
 		}
 		UpdateNewColorGrids();
 		for(int i=0; i<palettesReplace.Length; i++)
@@ -208,6 +208,6 @@ public class ColorPalette : MonoBehaviour
 	
 	void OnDestroy()
 	{
-		cBuffer.Release();
+		_cBuffer.Release();
 	}
 }

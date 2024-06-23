@@ -17,11 +17,8 @@ void CSMainPixelate (uint3 id : SV_DispatchThreadID)
 {
 	//Pixelate
 	float2 uv = id.xy;
-	uv /= _Size;
-	uv += 1.0/float(_ColorLevel);
-	uv = floor(uv * _ColorLevel) / _ColorLevel;
-	uv -= 1.0/float(_ColorLevel);
-	uv *= _Size;
+	float2 levels = float(_ColorLevel)/_Size;
+	uv = floor(uv * levels) / levels;
 	float4 col = Original[uv];//Original.SampleLevel(sampler_Original, uv, _MipmapLevel);
 	Palette[id.xy] = col;
 }
