@@ -13,7 +13,7 @@ public class ColorPalette : MonoBehaviour
 
 	//Settings
 	[Range(3, 10)] public int colorLevel = 3;
-	[Range(0.1f, 2f)] public float mergeThreshold = 0.1f;
+	[Range(0.1f, 3f)] public float mergeThreshold = 0.1f;
 	
 	private Vector2 _size;
 	private int _kernelPixelate;
@@ -112,6 +112,11 @@ public class ColorPalette : MonoBehaviour
 			float dist = GetColorDistance(c, cNext);
 			if(dist < mergeThreshold)
 			{
+				Vector3 hsv;
+				hsv.x = cNext.hsv.x;
+				hsv.y = Mathf.Max(c.hsv.y, + cNext.hsv.y);
+				hsv.z = (c.hsv.z + cNext.hsv.z) / 2f;
+				_colorList[i + 1].color = Color.HSVToRGB(hsv.x,hsv.y, hsv.z);
 				_colorList[i+1].frequency += c.frequency;
 				_colorList[i].frequency = 0;
 			}
@@ -149,10 +154,13 @@ public class ColorPalette : MonoBehaviour
 		Color col1 = c1.color;
 		Color col2 = c2.color;
 		float dist = Mathf.Abs(col1.r - col2.r) + Mathf.Abs(col1.g - col2.g) + Mathf.Abs(col1.b - col2.b);
+		dist *= 0.7f;
 		
 		Vector3 col1HSV = c1.hsv;
 		Vector3 col2HSV = c2.hsv;
-		dist += Mathf.Abs(col1HSV.x - col2HSV.x) + Mathf.Abs(col1HSV.y - col2HSV.y) + Mathf.Abs(col1HSV.z - col2HSV.z);
+		float hueDiff = Mathf.Abs(col1HSV.x - col2HSV.x);
+		hueDiff = Mathf.Min(hueDiff, 1f-hueDiff); //because hue value is circular
+		dist += hueDiff + Mathf.Abs(col1HSV.y - col2HSV.y) + Mathf.Abs(col1HSV.z - col2HSV.z);
 		
 		return dist;
 	}
@@ -190,7 +198,6 @@ public class ColorPalette : MonoBehaviour
 		}
 	}
 
-	private Rect rect = new Rect();
 	private void OnGUI()
 	{
 		if (GUI.Button(new Rect(Screen.width - 400, Screen.height - 150, 250, 100), "Random Palette Colors"))

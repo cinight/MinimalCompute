@@ -73,8 +73,11 @@ void CSMainExtractColor (uint3 id : SV_DispatchThreadID)
 float GetColorDistance(float3 col1, float3 col2, float3 col1HSV)
 {
 	float dist = abs(col1.r - col2.r) + abs(col1.g - col2.g) + abs(col1.b - col2.b);
+	dist *= 0.7f;
 	float3 col2HSV = Unity_ColorspaceConversion_RGB_HSV_float(col2);
-	dist += abs(col1HSV.x - col2HSV.x) + abs(col1HSV.y - col2HSV.y) + abs(col1HSV.z - col2HSV.z);
+	float hueDiff = abs(col1HSV.x - col2HSV.x);
+	hueDiff = min(hueDiff, 1-hueDiff); //because hue value is circular
+	dist += hueDiff + abs(col1HSV.y - col2HSV.y) + abs(col1HSV.z - col2HSV.z);
 	return dist;
 }
 
@@ -99,12 +102,8 @@ void CSMainFrequency (uint3 id : SV_DispatchThreadID)
 
 	//High saturation and value has more frequency points
 	float4 matchedColor = ColorList[matchedId].color;
-	int frequency = 1;
 	float3 hsv = ColorList[matchedId].hsv;
-	if(hsv.y >= 0.5 && hsv.z >= 0.5)
-	{
-		frequency = 3;
-	}
+	uint frequency = 1.0+round(10.0 * max(hsv.y,hsv.z));
 
 	//Accumulate the frequency
 	InterlockedAdd(ColorList[matchedId].frequency, frequency);

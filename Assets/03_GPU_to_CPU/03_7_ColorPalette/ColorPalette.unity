@@ -787,7 +787,7 @@ MonoBehaviour:
   - {fileID: 949334553}
   colorNew: []
   colorLevel: 5
-  mergeThreshold: 1.2
+  mergeThreshold: 1.04
 --- !u!1 &488501289
 GameObject:
   m_ObjectHideFlags: 0
