@@ -63,6 +63,9 @@ EditorBuildSettings:
     path: Assets/03_GPU_to_CPU/03_6_PixelPercentage/PixelPercentage.unity
     guid: b7e89e479f8eede4794b4683309282cd
   - enabled: 1
+    path: Assets/03_GPU_to_CPU/03_7_ColorPalette/ColorPalette.unity
+    guid: 1f78974875a81ef4abafa7a19acd31dd
+  - enabled: 1
     path: Assets/04_Indirect/04_1_IndirectCompute/IndirectCompute.unity
     guid: 9252618d4c859429bb078dc64994a59d
   - enabled: 1

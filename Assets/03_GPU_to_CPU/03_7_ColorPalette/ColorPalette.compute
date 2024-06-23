@@ -1,0 +1,149 @@
+﻿#pragma kernel CSMainPixelate
+#pragma kernel CSMainExtractColor
+#pragma kernel CSMainFrequency
+#pragma kernel CSMainReplace
+
+//General properties
+float2 _Size;
+int _ColorLevel;
+
+// ======================= Pixelate ==============================
+Texture2D Original;
+//SamplerState sampler_Original;
+RWTexture2D<float4> Palette;
+
+[numthreads(8,8,1)]
+void CSMainPixelate (uint3 id : SV_DispatchThreadID)
+{
+	//Pixelate
+	float2 uv = id.xy;
+	uv /= _Size;
+	uv += 1.0/float(_ColorLevel);
+	uv = floor(uv * _ColorLevel) / _ColorLevel;
+	uv -= 1.0/float(_ColorLevel);
+	uv *= _Size;
+	float4 col = Original[uv];//Original.SampleLevel(sampler_Original, uv, _MipmapLevel);
+	Palette[id.xy] = col;
+}
+
+// ========================== Extract ===========================
+struct ColorData
+{
+	float4 color;
+	float3 hsv;
+	uint frequency;
+};
+RWStructuredBuffer<ColorData> ColorList;
+Texture2D Pixelated;
+
+//https://docs.unity3d.com/Packages/com.unity.shadergraph@17.0/manual/Colorspace-Conversion-Node.html
+float3 Unity_ColorspaceConversion_RGB_HSV_float(float3 In)
+{
+	float4 K = float4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+	float4 P = lerp(float4(In.bg, K.wz), float4(In.gb, K.xy), step(In.b, In.g));
+	float4 Q = lerp(float4(P.xyw, In.r), float4(In.r, P.yzx), step(P.x, In.r));
+	float D = Q.x - min(Q.w, Q.y);
+	float  E = 1e-10;
+	return float3(abs(Q.z + (Q.w - Q.y)/(6.0 * D + E)), D / (Q.x + E), Q.x);
+}
+float3 Unity_ColorspaceConversion_HSV_RGB_float(float3 In)
+{
+	float4 K = float4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+	float3 P = abs(frac(In.xxx + K.xyz) * 6.0 - K.www);
+	return In.z * lerp(K.xxx, saturate(P - K.xxx), In.y);
+}
+
+[numthreads(8,8,1)]
+void CSMainExtractColor (uint3 id : SV_DispatchThreadID)
+{
+	float2 gridSize = float2(_Size) / float(_ColorLevel);
+	
+	//Find the id of the closet grid
+	float2 uv = id.xy;
+	uv /= gridSize;
+	uv = floor(uv);
+	uint gridId = uv.y*_ColorLevel + uv.x;
+	
+	ColorList[gridId].color = Pixelated[id.xy];
+	ColorList[gridId].hsv = Unity_ColorspaceConversion_RGB_HSV_float(Pixelated[id.xy].rgb);
+	ColorList[id.x].frequency = 0; //reset 0 to all entries
+}
+
+// ========================== Frequency ===========================
+float GetColorDistance(float3 col1, float3 col2, float3 col1HSV)
+{
+	float dist = abs(col1.r - col2.r) + abs(col1.g - col2.g) + abs(col1.b - col2.b);
+	float3 col2HSV = Unity_ColorspaceConversion_RGB_HSV_float(col2);
+	dist += abs(col1HSV.x - col2HSV.x) + abs(col1HSV.y - col2HSV.y) + abs(col1HSV.z - col2HSV.z);
+	return dist;
+}
+
+[numthreads(8,8,1)]
+void CSMainFrequency (uint3 id : SV_DispatchThreadID)
+{
+	float4 col = Original[id.xy];
+	float minDist = 9999999;
+	int matchedId = -1;
+	int gridCount = _ColorLevel*_ColorLevel;
+
+	for(int i=0; i<gridCount; i++)
+	{
+		float4 paletteCol = ColorList[i].color;
+		float dist = GetColorDistance(paletteCol.rgb, col.rgb, ColorList[i].hsv);
+		if(dist < minDist)
+		{
+			minDist = dist;
+			matchedId = i;
+		}
+	}
+
+	//High saturation and value has more frequency points
+	float4 matchedColor = ColorList[matchedId].color;
+	int frequency = 1;
+	float3 hsv = ColorList[matchedId].hsv;
+	if(hsv.y >= 0.5 && hsv.z >= 0.5)
+	{
+		frequency = 3;
+	}
+
+	//Accumulate the frequency
+	InterlockedAdd(ColorList[matchedId].frequency, frequency);
+
+	//Apply the palette color
+	Palette[id.xy] = matchedColor;
+}
+
+// ========================== ReplaceColor ===========================
+#define MAX_COLOR 10
+RWTexture2D<float4> Result;
+float4 NewColorList[MAX_COLOR];
+
+[numthreads(8,8,1)]
+void CSMainReplace (uint3 id : SV_DispatchThreadID)
+{
+	float4 col = Original[id.xy];
+	float minDist = 9999999;
+	int matchedId = -1;
+
+	for(int i=0; i<MAX_COLOR; i++)
+	{
+		float4 paletteCol = ColorList[i].color;
+		float dist = GetColorDistance(paletteCol.rgb, col.rgb, ColorList[i].hsv);
+		if(dist < minDist)
+		{
+			minDist = dist;
+			matchedId = i;
+		}
+	}
+
+	//Get the matching palette color
+	float3 newColorHSV = Unity_ColorspaceConversion_RGB_HSV_float(NewColorList[matchedId].rgb);
+	float3 originalHSV = Unity_ColorspaceConversion_RGB_HSV_float(col.rgb);
+	newColorHSV.y = originalHSV.y; //keep original saturation
+	newColorHSV.z = originalHSV.z; //keep original value
+	float3 newColor = Unity_ColorspaceConversion_HSV_RGB_float(newColorHSV);
+
+	//Apply the palette color
+	Palette[id.xy] = ColorList[matchedId].color;
+	Result[id.xy] = float4(newColor,1);
+}
