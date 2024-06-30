@@ -8,7 +8,7 @@ public class ShaderBakeToTexture : MonoBehaviour
 	public Material resultSphereMat;
 	public int size = 256;
 	
-	private RenderTexture tex;
+	public static RenderTexture tex;
 	private int targetID = 6; //match with shader "register(u6)"
 	private Texture2D tex2D;
 	
@@ -30,7 +30,8 @@ public class ShaderBakeToTexture : MonoBehaviour
 		tex2D = new Texture2D(size, size, tex.graphicsFormat, TextureCreationFlags.None);
 		resultSphereMat.mainTexture = tex2D;
 	}
-
+	
+	// This does not work in RenderGraph path, only works in Compatible Mode
 	private void OnRenderObject()
 	{
 		Graphics.ClearRandomWriteTargets();
