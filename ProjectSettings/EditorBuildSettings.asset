@@ -96,6 +96,9 @@ EditorBuildSettings:
     path: Assets/02_StructuredBuffer/02_5_ComputeParticlesDirect/ComputeParticlesDirect_URP.unity
     guid: 863b2f68887b9a84093c35a56fe40fd7
   - enabled: 1
+    path: Assets/02_StructuredBuffer/02_7_ShimmerSphere/ShimmerSphere_URP.unity
+    guid: d30c72ffe5eaf5849a07028ef81bc62e
+  - enabled: 1
     path: Assets/03_GPU_to_CPU/03_5_AsyncGPUReadbackMesh_NewMeshAPI/AsyncGPUReadbackMesh_NewMeshAPI_URP.unity
     guid: d3c96eb219a2eec4bbf5d7453836300a
   - enabled: 1
