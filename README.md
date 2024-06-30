@@ -20,6 +20,7 @@ Tested with : Win DX11
 | `02_4_ComputePaintTexture_DFT` | <img src="READMEimages/02_4_ComputePaintTexture_DFT.gif" width="250" /> | Similar to above but drawing with Epicycles using Discrete Fourier Transform. Ref to [The Coding Train's youtube video](https://www.youtube.com/watch?v=MY4luNgGfms) |
 | `02_5_ComputeParticlesDirect` | <img src="READMEimages/02_5_ComputeParticlesDirect.gif" width="250" /> | GPU Particle, drawing fixed no. of particles |
 | `02_6_ComputeSketch` | <img src="READMEimages/02_6_ComputeSketch.gif" width="250" /> | Draw quads on the screen with color filled by compute shader |
+| `02_7_ShimmerSphere` | <img src="READMEimages/02_7_ShimmerSphere.gif" width="250" /> | Pass spheres position and radius to quad material for a fake shimmer effect |
 | 🔷 **03_GPU_to_CPU** 🔷 | |
 | `03_1_StructuredBufferWithCompute` | <img src="READMEimages/03_1_StructuredBufferWithCompute.gif" width="250" /> | Another basic one, use compute to calculate some data and send back to CPU |
 | `03_2_AsyncGPUReadback` | <img src="READMEimages/03_2_AsyncGPUReadback.gif" width="250" /> | Similar to `StructuredBufferWithCompute`, but use AsyncGPUReadback to get array data back to CPU |
