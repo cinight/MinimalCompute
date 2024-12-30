@@ -39,8 +39,8 @@ public class ComputeParticlesDirect : ScriptableRendererFeature
 		buffer.SetData(plists);
 		
 		//Set buffer to computeShader and Material
-		computeShader.SetBuffer(0, "particleBuffer", buffer);
-		mat.SetBuffer ("particleBuffer", buffer);
+		if(computeShader != null) computeShader.SetBuffer(0, "particleBuffer", buffer);
+		if(mat != null) mat.SetBuffer ("particleBuffer", buffer);
 	}
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
