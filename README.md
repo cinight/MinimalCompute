@@ -2,7 +2,7 @@
 Minimal test scenes contains compute shaders, compute buffers etc
 Playing with the transport between CPU <-> GPU
 
-Unity version : 2022.2.4f1+, contains both `BuiltinRP` and `Universal Render Pipeline (URP)` scenes \
+Unity version : 2022.3 LTS, contains both `BuiltinRP` and `Universal Render Pipeline (URP)` scenes \
 See branches for older Unity versions \
 Tested with : Win DX11
 
