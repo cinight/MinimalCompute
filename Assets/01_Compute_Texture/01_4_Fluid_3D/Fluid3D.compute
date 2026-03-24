@@ -83,8 +83,8 @@ void Kernel_Diffusion (uint3 Id : SV_DispatchThreadid)
 	//Density
 	float4 d = DensityTex[id];
 	float4 d_T = DensityTex[id_T] * obstacle_T;
-	float4 d_B = DensityTex[id_B] * obstacle_R;
-	float4 d_R = DensityTex[id_R] * obstacle_B;
+	float4 d_B = DensityTex[id_B] * obstacle_B;
+	float4 d_R = DensityTex[id_R] * obstacle_R;
 	float4 d_L = DensityTex[id_L] * obstacle_L;
 	float4 d_F = DensityTex[id_F] * obstacle_F;
 	float4 d_K = DensityTex[id_K] * obstacle_K;
@@ -180,8 +180,8 @@ void Kernel_Divergence (uint3 Id : SV_DispatchThreadid)
 
 	//Velocity
 	float3 v_T = VelocityTex[id_T].xyz * obstacle_T;
-	float3 v_B = VelocityTex[id_B].xyz * obstacle_R;
-	float3 v_R = VelocityTex[id_R].xyz * obstacle_B;
+	float3 v_B = VelocityTex[id_B].xyz * obstacle_B;
+	float3 v_R = VelocityTex[id_R].xyz * obstacle_R;
 	float3 v_L = VelocityTex[id_L].xyz * obstacle_L;
 	float3 v_F = VelocityTex[id_F].xyz * obstacle_F;
 	float3 v_K = VelocityTex[id_K].xyz * obstacle_K;
@@ -216,8 +216,8 @@ void Kernel_Jacobi (uint3 Id : SV_DispatchThreadid)
 	//Pressure
 	float p = PressureTex[id].x;
 	float p_T = lerp( p , PressureTex[id_T].x , obstacle_T ) ;
-	float p_B = lerp( p , PressureTex[id_B].x , obstacle_R ) ;
-	float p_R = lerp( p , PressureTex[id_R].x , obstacle_B ) ;
+	float p_B = lerp( p , PressureTex[id_B].x , obstacle_B ) ;
+	float p_R = lerp( p , PressureTex[id_R].x , obstacle_R ) ;
 	float p_L = lerp( p , PressureTex[id_L].x , obstacle_L ) ;
 	float p_F = lerp( p , PressureTex[id_F].x , obstacle_F ) ;
 	float p_K = lerp( p , PressureTex[id_K].x , obstacle_K ) ;
@@ -252,8 +252,8 @@ void Kernel_SubtractGradient (uint3 Id : SV_DispatchThreadid)
 	//Pressure
 	float p = PressureTex[id].x;
 	float p_T = lerp( p , PressureTex[id_T].x , obstacle_T ) ;
-	float p_B = lerp( p , PressureTex[id_B].x , obstacle_R ) ;
-	float p_R = lerp( p , PressureTex[id_R].x , obstacle_B ) ;
+	float p_B = lerp( p , PressureTex[id_B].x , obstacle_B ) ;
+	float p_R = lerp( p , PressureTex[id_R].x , obstacle_R ) ;
 	float p_L = lerp( p , PressureTex[id_L].x , obstacle_L ) ;
 	float p_F = lerp( p , PressureTex[id_F].x , obstacle_F ) ;
 	float p_K = lerp( p , PressureTex[id_K].x , obstacle_K ) ;

@@ -63,8 +63,8 @@ void Kernel_Diffusion (uint3 Id : SV_DispatchThreadid)
 	//Density
 	float4 d = DensityTex[id];
 	float4 d_T = DensityTex[id_T] * obstacle_T;
-	float4 d_B = DensityTex[id_B] * obstacle_R;
-	float4 d_R = DensityTex[id_R] * obstacle_B;
+	float4 d_B = DensityTex[id_B] * obstacle_B;
+	float4 d_R = DensityTex[id_R] * obstacle_R;
 	float4 d_L = DensityTex[id_L] * obstacle_L;
 	
 	//Diffision
@@ -153,8 +153,8 @@ void Kernel_Divergence (uint3 Id : SV_DispatchThreadid)
 
 	//Velocity
 	float2 v_T = VelocityTex[id_T].xy * obstacle_T;
-	float2 v_B = VelocityTex[id_B].xy * obstacle_R;
-	float2 v_R = VelocityTex[id_R].xy * obstacle_B;
+	float2 v_B = VelocityTex[id_B].xy * obstacle_B;
+	float2 v_R = VelocityTex[id_R].xy * obstacle_R;
 	float2 v_L = VelocityTex[id_L].xy * obstacle_L;
 
 	//Divergence
@@ -211,8 +211,8 @@ void Kernel_SubtractGradient (uint3 Id : SV_DispatchThreadid)
 	//Pressure
 	float p = PressureTex[id.xy].x;
 	float p_T = lerp( p , PressureTex[id_T].x , obstacle_T ) ;
-	float p_B = lerp( p , PressureTex[id_B].x , obstacle_R ) ;
-	float p_R = lerp( p , PressureTex[id_R].x , obstacle_B ) ;
+	float p_B = lerp( p , PressureTex[id_B].x , obstacle_B ) ;
+	float p_R = lerp( p , PressureTex[id_R].x , obstacle_R ) ;
 	float p_L = lerp( p , PressureTex[id_L].x , obstacle_L ) ;
 
 	//Pressure affect velocity, where the curl happens
