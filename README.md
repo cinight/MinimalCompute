@@ -2,7 +2,7 @@
 Minimal test scenes contains compute shaders, compute buffers etc
 Playing with the transport between CPU <-> GPU
 
-Unity version : 6000.0 (Unity 6.0), contains both `BuiltinRP` and `Universal Render Pipeline (URP)` scenes \
+Unity version : 6000.3 (Unity 6.3), contains both `BuiltinRP` and `Universal Render Pipeline (URP)` scenes \
 See branches for older Unity versions \
 Tested with : Win DX11
 
